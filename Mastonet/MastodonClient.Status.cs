@@ -91,7 +91,7 @@ partial class MastodonClient
     /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null,
         IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
-        DateTime? scheduledAt = null, string? language = null, PollParameters? pollParameters = null)
+        DateTime? scheduledAt = null, string? language = null, PollParameters? poll = null)
     {
         if (string.IsNullOrEmpty(status) && (mediaIds == null || !mediaIds.Any()))
         {
@@ -141,86 +141,18 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("language", language));
         }
 
-        if (pollParameters != null)
+        if (poll != null)
         {
-            data.AddRange(pollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", pollParameters.ExpiresIn.TotalSeconds.ToString()));
-            if (pollParameters.Multiple.HasValue)
+            data.AddRange(poll.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", poll.ExpiresIn.TotalSeconds.ToString()));
+            if (poll.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", pollParameters.Multiple.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", poll.Multiple.Value.ToString().ToLowerInvariant()));
             }
 
-            if (pollParameters.HideTotals.HasValue)
+            if (poll.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", pollParameters.HideTotals.Value.ToString().ToLowerInvariant()));
-            }
-        }
-
-        return Post<Status>("/api/v1/statuses", data);
-    }
-
-    public Task<Status> PublishStatus(StatusParameters statusParameters)
-    {
-        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
-        {
-            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters.Status));
-        }
-
-        var data = new List<KeyValuePair<string, string>>()
-        {
-            new KeyValuePair<string, string>("status", statusParameters.Status),
-        };
-
-        if (!string.IsNullOrEmpty(statusParameters.ReplyStatusId))
-        {
-            data.Add(new KeyValuePair<string, string>("in_reply_to_id", statusParameters.ReplyStatusId!));
-        }
-
-        if (statusParameters.MediaIds != null)
-        {
-            foreach (var mediaId in statusParameters.MediaIds)
-            {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId));
-            }
-        }
-
-        if (statusParameters.Sensitive)
-        {
-            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
-        }
-
-        if (statusParameters.SpoilerText != null)
-        {
-            data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
-        }
-
-        if (statusParameters.Visibility.HasValue)
-        {
-            data.Add(new KeyValuePair<string, string>("visibility", statusParameters.Visibility.Value.ToString().ToLowerInvariant()));
-        }
-
-        if (statusParameters.ScheduledAt.HasValue)
-        {
-            data.Add(new KeyValuePair<string, string>("scheduled_at", statusParameters.ScheduledAt.Value.ToString("o")));
-        }
-
-        if (statusParameters.Language != null)
-        {
-            data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
-        }
-
-        if (statusParameters.PollParameters != null)
-        {
-            data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", statusParameters.PollParameters.ExpiresIn.TotalSeconds.ToString()));
-            if (statusParameters.PollParameters.Multiple.HasValue)
-            {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", statusParameters.PollParameters.Multiple.Value.ToString().ToLowerInvariant()));
-            }
-
-            if (statusParameters.PollParameters.HideTotals.HasValue)
-            {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", statusParameters.PollParameters.HideTotals.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", poll.HideTotals.Value.ToString().ToLowerInvariant()));
             }
         }
 
