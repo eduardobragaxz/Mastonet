@@ -91,7 +91,7 @@ partial class MastodonClient
     /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null,
         IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
-        DateTime? scheduledAt = null, string? language = null, PollParameters? poll = null)
+        DateTime? scheduledAt = null, string? language = null, PollParameters? pollParameters = null)
     {
         if (string.IsNullOrEmpty(status) && (mediaIds == null || !mediaIds.Any()))
         {
@@ -141,18 +141,18 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("language", language));
         }
 
-        if (poll != null)
+        if (pollParameters != null)
         {
-            data.AddRange(poll.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", poll.ExpiresIn.TotalSeconds.ToString()));
-            if (poll.Multiple.HasValue)
+            data.AddRange(pollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", pollParameters.ExpiresIn.TotalSeconds.ToString()));
+            if (pollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", poll.Multiple.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", pollParameters.Multiple.Value.ToString().ToLowerInvariant()));
             }
 
-            if (poll.HideTotals.HasValue)
+            if (pollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", poll.HideTotals.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", pollParameters.HideTotals.Value.ToString().ToLowerInvariant()));
             }
         }
 
