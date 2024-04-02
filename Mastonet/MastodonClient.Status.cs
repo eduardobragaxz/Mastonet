@@ -80,11 +80,11 @@ partial class MastodonClient
     /// Posting a new status
     /// </summary>
     /// <param name="status">The text of the status</param>
-    /// <param name="visibility">either "direct", "private", "unlisted" or "public"</param>
-    /// <param name="replyStatusId">local ID of the status you want to reply to</param>
-    /// <param name="mediaIds">array of media IDs to attach to the status (maximum 4)</param>
-    /// <param name="sensitive">set this to mark the media of the status as NSFW</param>
-    /// <param name="spoilerText">text to be shown as a warning before the actual content</param>
+    /// <param name="visibility">Either "direct", "private", "unlisted" or "public"</param>
+    /// <param name="replyStatusId">Local ID of the status you want to reply to</param>
+    /// <param name="mediaIds">Array of media IDs to attach to the status (maximum 4)</param>
+    /// <param name="sensitive">Set this to mark the media of the status as NSFW</param>
+    /// <param name="spoilerText">Text to be shown as a warning before the actual content</param>
     /// <param name="scheduledAt">DateTime to schedule posting of status</param>
     /// <param name="language">Override language code of the toot (ISO 639-2)</param>
     /// <param name="poll">Nested parameters to attach a poll to the status</param>
