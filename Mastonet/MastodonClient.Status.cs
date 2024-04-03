@@ -162,6 +162,8 @@ partial class MastodonClient
     /// <summary>
     /// Posting a new status
     /// </summary>
+    /// <param name="statusParameters">A set of parameters to upload the status</param>
+    /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(StatusParameters statusParameters)
     {
         if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
@@ -230,6 +232,17 @@ partial class MastodonClient
         return Post<Status>("/api/v1/statuses", data);
     }
 
+    /// <summary>
+    /// Edit a status
+    /// </summary>
+    /// <param name="statusId">The Id of the status you want to edit</param>
+    /// <param name="status">The text of the status</param>
+    /// <param name="mediaIds">Array of media IDs to attach to the status (maximum 4)</param>
+    /// <param name="sensitive">Set this to mark the media of the status as NSFW</param>
+    /// <param name="spoilerText">Text to be shown as a warning before the actual content</param>
+    /// <param name="language">Override language code of the toot (ISO 639-2)</param>
+    /// <param name="poll">Nested parameters to attach a poll to the status</param>
+    /// <returns>Returns Status</returns>
     public Task<Status> EditStatus(string statusId, string status, IEnumerable<string>? mediaIds = null,
         bool sensitive = false, string? spoilerText = null, string? language = null, PollParameters? poll = null)
     {
