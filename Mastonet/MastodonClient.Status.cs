@@ -297,6 +297,65 @@ partial class MastodonClient
         return Put<Status>("/api/v1/statuses/" + statusId, data);
     }
 
+    /// <summary>
+    /// Edit a status
+    /// </summary>
+    /// <param name="statusId">The Id of the status you want to edit</param>
+    /// <param name="statusParameters">A set of parameters to edit the status</param>
+    /// <returns>Returns Status</returns>
+    public Task<Status> EditStatus(string statusId, StatusParameters statusParameters)
+    {
+        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
+        {
+            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters.Status));
+        }
+
+        var data = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("status", statusParameters.Status!),
+        };
+
+        if (statusParameters.MediaIds != null)
+        {
+            foreach (var mediaId in statusParameters.MediaIds)
+            {
+                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId.ToString()));
+            }
+        }
+
+        if (statusParameters.Sensitive)
+        {
+            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
+        }
+
+        if (statusParameters.SpoilerText != null)
+        {
+            data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
+        }
+
+        if (statusParameters.Language != null)
+        {
+            data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
+        }
+
+        if (statusParameters.PollParameters != null)
+        {
+            data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", statusParameters.PollParameters.ExpiresIn.TotalSeconds.ToString()));
+            if (statusParameters.PollParameters.Multiple.HasValue)
+            {
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", statusParameters.PollParameters.Multiple.Value.ToString()));
+            }
+
+            if (statusParameters.PollParameters.HideTotals.HasValue)
+            {
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", statusParameters.PollParameters.HideTotals.Value.ToString()));
+            }
+        }
+
+        return Put<Status>("/api/v1/statuses/" + statusId, data);
+    }
+
 
     /// <summary>
     /// Deleting a status
