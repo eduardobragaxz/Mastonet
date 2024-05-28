@@ -14,7 +14,7 @@ namespace Mastonet;
 
 public abstract partial class BaseHttpClient
 {
-    protected readonly HttpClient client;
+    public HttpClient client { get; private set; }
 
     public string AccessToken { get; protected set; } = string.Empty;
 
