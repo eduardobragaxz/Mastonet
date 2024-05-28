@@ -369,7 +369,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<IEnumerable<FeaturedTag>> GetAccountFeaturedTags(string id)
     {
-        return Get<IEnumerable<FeaturedTag>>($"/api/v1/accounts/{id}featured_tags");
+        return Get<IEnumerable<FeaturedTag>>($"/api/v1/accounts/{id}/featured_tags");
     }
 
     /// <summary>
