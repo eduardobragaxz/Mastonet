@@ -38,5 +38,5 @@ public class FeaturedTag
     /// The timestamp of the last authored status containing this hashtag.
     /// </summary>
     [JsonPropertyName("last_status_at")]
-    public DateTime LastStatusAt { get; set; }
+    public DateTime? LastStatusAt { get; set; }
 }
