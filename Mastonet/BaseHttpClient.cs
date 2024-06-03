@@ -306,7 +306,7 @@ public abstract partial class BaseHttpClient
     {
 #if NET6_0_OR_GREATER
 
-        if (json[0] == '{')
+        if (json.StartsWith("{\"error\":", StringComparison.OrdinalIgnoreCase))
         {
             var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
 
@@ -314,6 +314,10 @@ public abstract partial class BaseHttpClient
             {
                 throw new ServerErrorException(error);
             }
+        }
+        else if (json[0] == '<')
+        {
+
         }
 
         return (T?)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
