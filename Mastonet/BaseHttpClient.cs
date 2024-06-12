@@ -306,7 +306,7 @@ public abstract partial class BaseHttpClient
     {
 #if NET6_0_OR_GREATER
 
-        if (json.StartsWith("{\"error\":", StringComparison.OrdinalIgnoreCase))
+        if (json.StartsWith("""{"error":""", StringComparison.OrdinalIgnoreCase))
         {
             var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
 
