@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Mastonet;
@@ -13,11 +14,16 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 {
     #region Ctor
 
+    public MastodonClient() : base()
+    {
+
+    }
     public MastodonClient(string instance, string accessToken)
         : this(instance, accessToken, DefaultHttpClient.Instance)
     {
     }
 
+    [JsonConstructor]
     public MastodonClient(string instance, string accessToken, HttpClient client)
         : base(client)
     {

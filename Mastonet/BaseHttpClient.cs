@@ -56,6 +56,10 @@ public abstract partial class BaseHttpClient
 
     #endregion
 
+    protected BaseHttpClient()
+    {
+        this.client = DefaultHttpClient.Instance;
+    }
     protected BaseHttpClient(HttpClient client)
     {
         this.client = client;
