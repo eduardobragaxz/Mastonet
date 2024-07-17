@@ -14,7 +14,11 @@ namespace Mastonet;
 
 public abstract partial class BaseHttpClient
 {
+#if NET6_0_OR_GREATER
+    public HttpClient client { get; private init; }
+#else
     public HttpClient client { get; private set; }
+#endif
 
     public string AccessToken { get; protected set; } = string.Empty;
 
