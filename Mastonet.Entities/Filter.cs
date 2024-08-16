@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mastonet.Entities.Enums;
 
 namespace Mastonet.Entities;
 

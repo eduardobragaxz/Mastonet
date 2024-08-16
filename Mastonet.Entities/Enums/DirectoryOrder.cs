@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mastonet;
+namespace Mastonet.Entities.Enums;
 
 public enum DirectoryOrder
 {

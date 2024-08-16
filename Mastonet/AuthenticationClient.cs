@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +40,9 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
     {
         var scopeString = GetScopeParam(scope);
         var data = new List<KeyValuePair<string, string>>() {
-            new KeyValuePair<string, string>("client_name", appName),
-            new KeyValuePair<string, string>("scopes", scopeString),
-            new KeyValuePair<string, string>("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
+            new("client_name", appName),
+            new("scopes", scopeString),
+            new("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
         };
 
         if (website != null)
@@ -71,12 +72,12 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("client_id", AppRegistration.ClientId),
-            new KeyValuePair<string, string>("client_secret", AppRegistration.ClientSecret),
-            new KeyValuePair<string, string>("grant_type", "password"),
-            new KeyValuePair<string, string>("username", email),
-            new KeyValuePair<string, string>("password", password),
-            new KeyValuePair<string, string>("scope", AppRegistration.Scope),
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("grant_type", "password"),
+            new("username", email),
+            new("password", password),
+            new("scope", AppRegistration.Scope),
         };
 
         return Post<Auth>("/oauth/token", data);
@@ -91,11 +92,11 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("client_id", AppRegistration.ClientId),
-            new KeyValuePair<string, string>("client_secret", AppRegistration.ClientSecret),
-            new KeyValuePair<string, string>("grant_type", "authorization_code"),
-            new KeyValuePair<string, string>("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
-            new KeyValuePair<string, string>("code", code),
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("grant_type", "authorization_code"),
+            new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
+            new("code", code),
         };
 
         return Post<Auth>("/oauth/token", data);
@@ -134,9 +135,9 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("client_id", AppRegistration.ClientId),
-            new KeyValuePair<string, string>("client_secret", AppRegistration.ClientSecret),
-            new KeyValuePair<string, string>("token", token),
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("token", token),
         };
 
         return Post<Auth>("/oauth/revoke", data);

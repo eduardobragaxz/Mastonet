@@ -84,7 +84,7 @@ public class Account
     /// Custom emoji entities to be used when rendering the profile. If none, an empty array will be returned.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; } = Enumerable.Empty<Emoji>();
+    public IEnumerable<Emoji> Emojis { get; set; } = [];
 
     /// <summary>
     /// Whether the account has opted into discovery features such as the profile directory.

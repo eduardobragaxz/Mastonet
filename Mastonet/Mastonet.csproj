@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<Title>Mastonet</Title>
@@ -19,8 +19,7 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>Mastodon</PackageTags>
-		<IsAotCompatible Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) >= 8">true</IsAotCompatible>
-		<IsTrimmable Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) >= 6">true</IsTrimmable>
+		<IsAotCompatible>true</IsAotCompatible>
 	</PropertyGroup>
 	
 	<ItemGroup>

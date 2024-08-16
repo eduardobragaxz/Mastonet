@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mastonet;
+namespace Mastonet.Entities.Enums;
 
 public enum GranularScope
 {
@@ -45,7 +45,7 @@ public enum GranularScope
     Admin__Read__Ip_Blocks,
     Admin__Read__Email_Domain_Blocks,
     Admin__Read__Canonical_Email_Blocks,
-         
+
     Admin__Write,
     Admin__Write__Accounts,
     Admin__Write__Reports,

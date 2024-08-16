@@ -52,7 +52,7 @@ public class Instance
     /// Primary languages of the website and its staff.
     /// </summary>
     [JsonPropertyName("languages")]
-    public IEnumerable<string> Languages { get; set; } = Enumerable.Empty<string>();
+    public IEnumerable<string> Languages { get; set; } = [];
 
     /// <summary>
     /// Whether registrations are enabled.

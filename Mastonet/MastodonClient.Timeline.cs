@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,12 +138,12 @@ partial class MastodonClient
 
     #region Streaming
 
-    private Lazy<Task<InstanceV2>> instanceGetter;
+    private readonly Lazy<Task<InstanceV2>> instanceGetter;
 
 
-    private TimelineStreaming GetStreaming(StreamingType streamingType, string? param)
+    private TimelineWebSocketStreaming GetStreaming(StreamingType streamingType, string? param)
     {
-        return new TimelineWebSocketStreaming(streamingType, param, Instance, instanceGetter.Value, AccessToken, client);
+        return new TimelineWebSocketStreaming(streamingType, param, Instance, instanceGetter.Value, AccessToken, Client);
     }
 
 

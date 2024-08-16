@@ -21,7 +21,7 @@ public class Conversation
     /// Participants in the conversation.
     /// </summary>
     [JsonPropertyName("accounts")]
-    public IEnumerable<Account> Accounts { get; set; } = Enumerable.Empty<Account>();
+    public IEnumerable<Account> Accounts { get; set; } = [];
 
     /// <summary>
     /// Is the conversation currently marked as unread?

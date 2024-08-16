@@ -94,7 +94,7 @@ public class InstanceConfigurationMediaAttachments
     /// Contains MIME types that can be uploaded.
     /// </summary>
     [JsonPropertyName("supported_mime_types")]
-    public IEnumerable<string> SupportedMimeTypes { get; set; }= Enumerable.Empty<string>();
+    public IEnumerable<string> SupportedMimeTypes { get; set; }= [];
 
     /// <summary>
     /// The maximum size of any uploaded image, in bytes.

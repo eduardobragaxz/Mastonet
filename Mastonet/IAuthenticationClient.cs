@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;

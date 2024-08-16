@@ -14,11 +14,7 @@ namespace Mastonet;
 
 public abstract partial class BaseHttpClient
 {
-#if NET6_0_OR_GREATER
-    public HttpClient client { get; private init; }
-#else
-    public HttpClient client { get; private set; }
-#endif
+    public HttpClient Client { get; private init; }
 
     public string AccessToken { get; protected set; } = string.Empty;
 
@@ -45,7 +41,7 @@ public abstract partial class BaseHttpClient
 
         if (instance.StartsWith("https://"))
         {
-            instance = instance.Substring("https://".Length);
+            instance = instance["https://".Length..];
         }
 
         var notSupportedList = new List<string> { "gab.", "truthsocial." };
@@ -62,11 +58,11 @@ public abstract partial class BaseHttpClient
 
     protected BaseHttpClient()
     {
-        this.client = DefaultHttpClient.Instance;
+        this.Client = DefaultHttpClient.Instance;
     }
     protected BaseHttpClient(HttpClient client)
     {
-        this.client = client;
+        this.Client = client;
     }
 
     #region Http helpers
@@ -90,13 +86,11 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using (var request = new HttpRequestMessage(HttpMethod.Delete, url))
-        {
-            AddHttpHeader(request);
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
-        }
+        using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        AddHttpHeader(request);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
 
@@ -109,13 +103,11 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-        {
-            AddHttpHeader(request);
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
-        }
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        AddHttpHeader(request);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
     protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
@@ -126,13 +118,8 @@ public abstract partial class BaseHttpClient
     }
 
     private const string ID_FINDER_PATTERN = "_id=([0-9]+)";
-#if NET7_0_OR_GREATER
     [GeneratedRegex(ID_FINDER_PATTERN, RegexOptions.None, 100)]
     private static partial Regex IdFinder();
-#else
-    private static readonly Regex idFinderRegex = new Regex(ID_FINDER_PATTERN, RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
-    private static Regex IdFinder() => idFinderRegex;
-#endif
 
     protected async Task<MastodonList<T>> GetMastodonList<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
@@ -143,58 +130,51 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        AddHttpHeader(request);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        var content = await response.Content.ReadAsStringAsync();
+        var result = TryDeserialize<MastodonList<T>>(content);
+
+        // Read `Link` header
+        if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
         {
-            AddHttpHeader(request);
-            using (var response = await client.SendAsync(request))
+            var links = linkHeader.Single().Split(',');
+            foreach (var link in links)
             {
-                OnResponseReceived(response);
-                var content = await response.Content.ReadAsStringAsync();
-                var result = TryDeserialize<MastodonList<T>>(content);
-
-                // Read `Link` header
-                IEnumerable<string>? linkHeader;
-                if (response.Headers.TryGetValues("Link", out linkHeader))
+                if (link.Contains("rel=\"next\""))
                 {
-                    var links = linkHeader.Single().Split(',');
-                    foreach (var link in links)
-                    {
-                        if (link.Contains("rel=\"next\""))
-                        {
-                            result.NextPageMaxId = IdFinder().Match(link).Groups[1].Value;
-                        }
-
-                        if (link.Contains("rel=\"prev\""))
-                        {
-                            if (link.Contains("since_id"))
-                            {
-                                result.PreviousPageSinceId = IdFinder().Match(link).Groups[1].Value;
-                            }
-                            if (link.Contains("min_id"))
-                            {
-                                result.PreviousPageMinId = IdFinder().Match(link).Groups[1].Value;
-                            }
-                        }
-                    }
+                    result.NextPageMaxId = IdFinder().Match(link).Groups[1].Value;
                 }
 
-                return result;
+                if (link.Contains("rel=\"prev\""))
+                {
+                    if (link.Contains("since_id"))
+                    {
+                        result.PreviousPageSinceId = IdFinder().Match(link).Groups[1].Value;
+                    }
+                    if (link.Contains("min_id"))
+                    {
+                        result.PreviousPageMinId = IdFinder().Match(link).Groups[1].Value;
+                    }
+                }
             }
         }
+
+        return result;
     }
 
     protected async Task<string> Post(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = "https://" + this.Instance + route;
 
-        using (var request = new HttpRequestMessage(HttpMethod.Post, url))
-        {
-            AddHttpHeader(request);
-            request.Content = new FormUrlEncodedContent(data ?? Enumerable.Empty<KeyValuePair<string, string>>());
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
-        }
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        AddHttpHeader(request);
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
     protected async Task<T> Post<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
@@ -230,7 +210,7 @@ public abstract partial class BaseHttpClient
         }
         request.Content = content;
 
-        using var response = await client.SendAsync(request);
+        using var response = await Client.SendAsync(request);
         OnResponseReceived(response);
         return await response.Content.ReadAsStringAsync();
     }
@@ -239,15 +219,13 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using (var request = new HttpRequestMessage(HttpMethod.Put, url))
-        {
-            AddHttpHeader(request);
+        using var request = new HttpRequestMessage(HttpMethod.Put, url);
+        AddHttpHeader(request);
 
-            request.Content = new FormUrlEncodedContent(data ?? Enumerable.Empty<KeyValuePair<string, string>>());
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
-        }
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
     protected async Task<T> Put<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
@@ -259,14 +237,12 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), url))
-        {
-            AddHttpHeader(request);
-            request.Content = new FormUrlEncodedContent(data ?? Enumerable.Empty<KeyValuePair<string, string>>());
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
-        }
+        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+        AddHttpHeader(request);
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
     protected async Task<T> Patch<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
@@ -280,41 +256,38 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), url))
+        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+
+        AddHttpHeader(request);
+
+        var content = new MultipartFormDataContent();
+
+        if (media != null)
         {
-
-            AddHttpHeader(request);
-
-            var content = new MultipartFormDataContent();
-
-            if (media != null)
+            foreach (var m in media)
             {
-                foreach (var m in media)
-                {
-                    content.Add(new StreamContent(m.Media), m.ParamName!, m.FileName);
-                }
+                content.Add(new StreamContent(m.Media), m.ParamName!, m.FileName);
             }
-
-            if (data != null)
-            {
-                foreach (var pair in data)
-                {
-                    content.Add(new StringContent(pair.Value), pair.Key);
-                }
-            }
-
-            request.Content = content;
-            using var response = await client.SendAsync(request);
-            OnResponseReceived(response);
-            return await response.Content.ReadAsStringAsync();
         }
+
+        if (data != null)
+        {
+            foreach (var pair in data)
+            {
+                content.Add(new StringContent(pair.Value), pair.Key);
+            }
+        }
+
+        request.Content = content;
+        using var response = await Client.SendAsync(request);
+        OnResponseReceived(response);
+        return await response.Content.ReadAsStringAsync();
     }
 
     private static T TryDeserialize<T>(string json)
     {
-#if NET6_0_OR_GREATER
 
-        if (json.StartsWith("""{"error":""", StringComparison.OrdinalIgnoreCase))
+        if (json.StartsWith("""{"error":""", StringComparison.OrdinalIgnoreCase) || json[0] == '<')
         {
             var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
 
@@ -323,27 +296,12 @@ public abstract partial class BaseHttpClient
                 throw new ServerErrorException(error);
             }
         }
-        else if (json[0] == '<')
+        else if (json.StartsWith('<'))
         {
-
+            throw new JsonException();
         }
 
         return (T?)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
-#else
-
-if (json[0] == '{')
-        {
-            var error = JsonSerializer.Deserialize<Error>(json);
-
-            if (error != null && !string.IsNullOrEmpty(error.Description))
-            {
-                throw new ServerErrorException(error);
-            }
-        }
-
-        return JsonSerializer.Deserialize<T>(json)!;
-
-#endif
     }
 
     protected static string AddQueryStringParam(string queryParams, string queryStringParam, string? value)

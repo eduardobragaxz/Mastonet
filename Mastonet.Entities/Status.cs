@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mastonet.Entities.Enums;
 
 namespace Mastonet.Entities;
 
@@ -66,7 +67,7 @@ public class Status
     /// Media that is attached to this status.
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public IEnumerable<Attachment> MediaAttachments { get; set; } = Enumerable.Empty<Attachment>();
+    public IEnumerable<Attachment> MediaAttachments { get; set; } = [];
 
     /// <summary>
     /// The application used to post this status.
@@ -80,19 +81,19 @@ public class Status
     /// Mentions of users within the status content.
     /// </summary>
     [JsonPropertyName("mentions")]
-    public IEnumerable<Mention> Mentions { get; set; } = Enumerable.Empty<Mention>();
+    public IEnumerable<Mention> Mentions { get; set; } = [];
 
     /// <summary>
     /// Hashtags used within the status content.
     /// </summary>
     [JsonPropertyName("tags")]
-    public IEnumerable<Tag> Tags { get; set; } = Enumerable.Empty<Tag>();
+    public IEnumerable<Tag> Tags { get; set; } = [];
 
     /// <summary>
     /// Custom emoji to be used when rendering status content.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; } = Enumerable.Empty<Emoji>();
+    public IEnumerable<Emoji> Emojis { get; set; } = [];
 
 
     // Informational attributes

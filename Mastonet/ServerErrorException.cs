@@ -5,10 +5,6 @@ using System.Text;
 
 namespace Mastonet;
 
-public class ServerErrorException : Exception
+public class ServerErrorException(Error error) : Exception(error.Description)
 {
-    public ServerErrorException(Error error)
-        :base(error.Description)
-    {
-    }
 }

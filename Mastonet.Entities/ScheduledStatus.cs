@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mastonet.Entities.Enums;
 
 namespace Mastonet.Entities;
 
@@ -33,7 +34,7 @@ public class ScheduledStatus
     /// Media attached to the scheduled status
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public IEnumerable<Attachment> MediaAttachments { get; set; } = Enumerable.Empty<Attachment>();
+    public IEnumerable<Attachment> MediaAttachments { get; set; } = [];
 }
 
 public class StatusParams

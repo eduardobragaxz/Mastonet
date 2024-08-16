@@ -59,7 +59,7 @@ public class Announcement
     /// Emoji reactions attached to the announcement.
     /// </summary>
     [JsonPropertyName("reactions")]
-    public IEnumerable<AnnouncementReaction> Reactions { get; set; } = Enumerable.Empty<AnnouncementReaction>();
+    public IEnumerable<AnnouncementReaction> Reactions { get; set; } = [];
 
     // Optional attributes
 

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Mastonet.Entities.Enums;
 
 
 namespace Mastonet;
@@ -100,7 +101,7 @@ partial class MastodonClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("status", status),
+            new("status", status),
         };
 
         if (!string.IsNullOrEmpty(replyStatusId))
@@ -168,12 +169,13 @@ partial class MastodonClient
     {
         if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
         {
-            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters.Status));
+            //testing. should be nameof(statusParameters.Status)
+            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("status", statusParameters.Status!),
+            new("status", statusParameters.Status!),
         };
 
         if (!string.IsNullOrEmpty(statusParameters.ReplyStatusId))
@@ -253,7 +255,7 @@ partial class MastodonClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("status", status),
+            new("status", status),
         };
 
         if (mediaIds != null)
@@ -307,12 +309,13 @@ partial class MastodonClient
     {
         if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
         {
-            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters.Status));
+            //testing. should be nameof(statusParameters.Status)
+            throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("status", statusParameters.Status!),
+            new("status", statusParameters.Status!),
         };
 
         if (statusParameters.MediaIds != null)

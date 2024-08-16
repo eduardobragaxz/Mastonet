@@ -23,8 +23,8 @@ partial class MastodonClient
     {
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("reblogs", reblogs.ToString()),
-            new KeyValuePair<string, string>("notify", notify.ToString().ToLowerInvariant())
+            new("reblogs", reblogs.ToString()),
+            new("notify", notify.ToString().ToLowerInvariant())
         };
         return this.Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
     }
@@ -48,7 +48,7 @@ partial class MastodonClient
     {
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("uri", uri)
+            new("uri", uri)
         };
         return this.Post<Account>($"/api/v1/follows", data);
     }

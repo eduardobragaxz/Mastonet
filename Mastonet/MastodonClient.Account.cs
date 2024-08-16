@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -133,7 +134,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Relationships of the current user to a given account</returns>
     public Task<IEnumerable<Relationship>> GetAccountRelationships(string id)
     {
-        return GetAccountRelationships(new string[] { id });
+        return GetAccountRelationships([id]);
     }
 
     /// <summary>
@@ -381,7 +382,7 @@ partial class MastodonClient
     {
         var data = new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>("name",name)
+            new("name",name)
         };
 
         return Post<FeaturedTag>("/api/v1/featured_tags", data);

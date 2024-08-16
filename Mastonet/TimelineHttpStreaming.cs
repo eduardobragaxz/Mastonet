@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,85 +10,57 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public class TimelineHttpStreaming : TimelineStreaming
+public class TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken, HttpClient client) : TimelineStreaming(type, param, accessToken)
 {
-    private string instance;
-    private HttpClient client;
     private CancellationTokenSource? cts;
 
     public TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken)
         : this(type, param, instance, accessToken, DefaultHttpClient.Instance) { }
-    public TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken, HttpClient client)
-        : base(type, param, accessToken)
-    {
-        this.client = client;
-        this.instance = instance;
-    }
 
     public override async Task Start()
     {
         string url = "https://" + instance;
-        switch (streamingType)
+        url += streamingType switch
         {
-            case StreamingType.User:
-                url += "/api/v1/streaming/user";
-                break;
-            case StreamingType.Public:
-                url += "/api/v1/streaming/public";
-                break;
-            case StreamingType.PublicLocal:
-                url += "/api/v1/streaming/public/local";
-                break;
-            case StreamingType.Hashtag:
-                url += "/api/v1/streaming/hashtag?tag=" + param;
-                break;
-            case StreamingType.HashtagLocal:
-                url += "/api/v1/streaming/hashtag/local?tag=" + param;
-                break;
-            case StreamingType.List:
-                url += "/api/v1/streaming/list?list=" + param;
-                break;
-            case StreamingType.Direct:
-                url += "/api/v1/streaming/direct";
-                break;
-            default:
-                throw new NotImplementedException();
-        }
-
+            StreamingType.User => "/api/v1/streaming/user",
+            StreamingType.Public => "/api/v1/streaming/public",
+            StreamingType.PublicLocal => "/api/v1/streaming/public/local",
+            StreamingType.Hashtag => "/api/v1/streaming/hashtag?tag=" + param,
+            StreamingType.HashtagLocal => "/api/v1/streaming/hashtag/local?tag=" + param,
+            StreamingType.List => "/api/v1/streaming/list?list=" + param,
+            StreamingType.Direct => "/api/v1/streaming/direct",
+            _ => throw new NotImplementedException(),
+        };
         using (var request = new HttpRequestMessage(HttpMethod.Get, url))
         using (cts = new CancellationTokenSource())
         {
             request.Headers.Add("Authorization", "Bearer " + accessToken);
-            using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token))
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            var stream = await response.Content.ReadAsStreamAsync();
+            using var reader = new StreamReader(stream);
+            string? eventName = null;
+            string? data = null;
+
+            while (true)
             {
-                var stream = await response.Content.ReadAsStreamAsync();
-                using (var reader = new StreamReader(stream))
+                var line = await reader.ReadLineAsync();
+
+                if (string.IsNullOrEmpty(line) || line.StartsWith(':'))
                 {
-                    string? eventName = null;
-                    string? data = null;
+                    eventName = null;
+                    continue;
+                }
 
-                    while (true)
+                if (line.StartsWith("event: "))
+                {
+                    eventName = line["event: ".Length..].Trim();
+                }
+                else if (line.StartsWith("data: "))
+                {
+                    data = line["data: ".Length..];
+                    if (eventName != null)
                     {
-                        var line = await reader.ReadLineAsync();
-
-                        if (string.IsNullOrEmpty(line) || line.StartsWith(":"))
-                        {
-                            eventName = data = null;
-                            continue;
-                        }
-
-                        if (line.StartsWith("event: "))
-                        {
-                            eventName = line.Substring("event: ".Length).Trim();
-                        }
-                        else if (line.StartsWith("data: "))
-                        {
-                            data = line.Substring("data: ".Length);
-                            if (eventName != null)
-                            {
-                                SendEvent(eventName, data);
-                            }
-                        }
+                        SendEvent(eventName, data);
                     }
                 }
             }

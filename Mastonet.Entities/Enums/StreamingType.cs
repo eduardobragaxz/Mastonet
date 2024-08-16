@@ -1,4 +1,4 @@
-﻿namespace Mastonet;
+﻿namespace Mastonet.Entities.Enums;
 
 public enum StreamingType
 {

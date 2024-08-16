@@ -16,17 +16,17 @@ public class SearchResults
     /// Accounts which match the given query
     /// </summary>
     [JsonPropertyName("accounts")]
-    public IEnumerable<Account> Accounts { get; set; } = Enumerable.Empty<Account>();
+    public IEnumerable<Account> Accounts { get; set; } = [];
 
     /// <summary>
     /// Statuses which match the given query
     /// </summary>
     [JsonPropertyName("statuses")]
-    public IEnumerable<Status> Statuses { get; set; } = Enumerable.Empty<Status>();
+    public IEnumerable<Status> Statuses { get; set; } = [];
 
     /// <summary>
     /// Hashtags which match the given query
     /// </summary>
     [JsonPropertyName("hashtags")]
-    public IEnumerable<Tag> Hashtags { get; set; } = Enumerable.Empty<Tag>();
+    public IEnumerable<Tag> Hashtags { get; set; } = [];
 }

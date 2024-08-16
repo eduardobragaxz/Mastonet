@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using Mastonet.Entities;
 
-namespace Mastonet;
+namespace Mastonet.Entities.Enums;
 
 [Flags]
 [JsonConverter(typeof(FilterContextConverter))]
@@ -22,11 +22,9 @@ public class FilterContextConverter : JsonConverter<FilterContext>
     public override FilterContext Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         FilterContext context = 0;
-#if NET6_0_OR_GREATER
+        
         var contextStrings = JsonSerializer.Deserialize(ref reader, EntitiesContext.Default.IEnumerableString);
-#else
-var contextStrings = JsonSerializer.Deserialize<IEnumerable<string>>(ref reader, options);
-#endif
+        
         if (contextStrings != null)
         {
             foreach (var contextString in contextStrings)
@@ -59,10 +57,8 @@ var contextStrings = JsonSerializer.Deserialize<IEnumerable<string>>(ref reader,
         if ((value & FilterContext.Notifications) == FilterContext.Notifications) contextStrings.Add("notifications");
         if ((value & FilterContext.Public) == FilterContext.Public) contextStrings.Add("public");
         if ((value & FilterContext.Thread) == FilterContext.Thread) contextStrings.Add("thread");
-#if NET6_0_OR_GREATER
+        
         JsonSerializer.Serialize(writer, contextStrings, EntitiesContext.Default.ListString);
-#else
-JsonSerializer.Serialize(writer, contextStrings, options);
-#endif
+
     }
 }

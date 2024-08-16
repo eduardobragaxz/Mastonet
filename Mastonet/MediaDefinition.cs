@@ -5,17 +5,11 @@ using System.Text;
 
 namespace Mastonet;
 
-public class MediaDefinition
+public class MediaDefinition(Stream media, string fileName)
 {
-    public MediaDefinition(Stream media, string fileName)
-    {
-        this.Media = media ?? throw new ArgumentException("All the params must be defined", nameof(media));
-        this.FileName = fileName ?? throw new ArgumentException("All the params must be defined", nameof(fileName));
-    }
+    public Stream Media { get; set; } = media ?? throw new ArgumentException("All the params must be defined", nameof(media));
 
-    public Stream Media { get; set; }
-
-    public string FileName { get; set; }
+    public string FileName { get; set; } = fileName ?? throw new ArgumentException("All the params must be defined", nameof(fileName));
 
     internal string? ParamName { get; set; }
 }

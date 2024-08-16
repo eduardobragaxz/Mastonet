@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,19 +14,13 @@ using static Mastonet.TimelineWebSocketStreaming;
 
 namespace Mastonet;
 
-public class TimelineWebSocketStreaming : TimelineHttpStreaming
+public class TimelineWebSocketStreaming(StreamingType type, string? param, string instance, Task<InstanceV2> instanceGetter, string? accessToken, HttpClient client) : TimelineHttpStreaming(type, param, instance, accessToken, client)
 {
     private ClientWebSocket? socket;
-    readonly Task<InstanceV2> instanceGetter;
     private const int receiveChunkSize = 512;
 
     public TimelineWebSocketStreaming(StreamingType type, string? param, string instance, Task<InstanceV2> instanceGetter, string? accessToken)
         : this(type, param, instance, instanceGetter, accessToken, DefaultHttpClient.Instance) { }
-    public TimelineWebSocketStreaming(StreamingType type, string? param, string instance, Task<InstanceV2> instanceGetter, string? accessToken, HttpClient client)
-        : base(type, param, instance, accessToken, client)
-    {
-        this.instanceGetter = instanceGetter;
-    }
 
     public override async Task Start()
     {
@@ -41,38 +36,22 @@ public class TimelineWebSocketStreaming : TimelineHttpStreaming
 
         url += "/api/v1/streaming?access_token=" + accessToken;
 
-        switch (streamingType)
+        url += streamingType switch
         {
-            case StreamingType.User:
-                url += "&stream=user";
-                break;
-            case StreamingType.Public:
-                url += "&stream=public";
-                break;
-            case StreamingType.PublicLocal:
-                url += "&stream=public:local";
-                break;
-            case StreamingType.Hashtag:
-                url += "&stream=hashtag&tag=" + param;
-                break;
-            case StreamingType.HashtagLocal:
-                url += "&stream=hashtag:local&tag=" + param;
-                break;
-            case StreamingType.List:
-                url += "&stream=list&list=" + param;
-                break;
-            case StreamingType.Direct:
-                url += "&stream=direct";
-                break;
-            default:
-                throw new NotImplementedException();
-        }
-
+            StreamingType.User => "&stream=user",
+            StreamingType.Public => "&stream=public",
+            StreamingType.PublicLocal => "&stream=public:local",
+            StreamingType.Hashtag => "&stream=hashtag&tag=" + param,
+            StreamingType.HashtagLocal => "&stream=hashtag:local&tag=" + param,
+            StreamingType.List => "&stream=list&list=" + param,
+            StreamingType.Direct => "&stream=direct",
+            _ => throw new NotImplementedException(),
+        };
         socket = new ClientWebSocket();
         await socket.ConnectAsync(new Uri(url), CancellationToken.None);
 
         byte[] buffer = new byte[receiveChunkSize];
-        MemoryStream ms = new MemoryStream();
+        MemoryStream ms = new();
         while (socket != null)
         {
             var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -83,11 +62,8 @@ public class TimelineWebSocketStreaming : TimelineHttpStreaming
             {
                 var messageStr = Encoding.UTF8.GetString(ms.ToArray());
 
-#if NET6_0_OR_GREATER
                 var message = JsonSerializer.Deserialize(messageStr, TimelineMessageContext.Default.TimelineMessage);
-#else
-var message = JsonSerializer.Deserialize<TimelineMessage>(messageStr);
-#endif
+
                 if (message != null)
                 {
                     SendEvent(message.Event, message.Payload);

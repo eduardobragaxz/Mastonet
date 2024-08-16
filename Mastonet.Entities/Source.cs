@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
+using Mastonet.Entities.Enums;
 
 namespace Mastonet.Entities;
 
@@ -20,7 +21,7 @@ public class Source
     /// Metadata about the account.
     /// </summary>
     [JsonPropertyName("fields")]
-    public IEnumerable<Field> Fields { get; set; } = Enumerable.Empty<Field>();
+    public IEnumerable<Field> Fields { get; set; } = [];
 
     // Nullable attributes
 

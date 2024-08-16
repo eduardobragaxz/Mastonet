@@ -5,46 +5,26 @@ using System.Text;
 
 namespace Mastonet;
 
-public class StreamUpdateEventArgs : EventArgs
+public class StreamUpdateEventArgs(Status status) : EventArgs
 {
-    public StreamUpdateEventArgs(Status status)
-    {
-        Status = status;
-    }
-
-    public Status Status { get; set; }
+    public Status Status { get; set; } = status;
 }
 
-public class StreamNotificationEventArgs : EventArgs
+public class StreamNotificationEventArgs(Notification notification) : EventArgs
 {
-    public StreamNotificationEventArgs(Notification notification)
-    {
-        this.Notification = notification;
-    }
-
-    public Notification Notification { get; set; }
+    public Notification Notification { get; set; } = notification;
 }
 
-public class StreamDeleteEventArgs : EventArgs
+public class StreamDeleteEventArgs(long statusId) : EventArgs
 {
-    public StreamDeleteEventArgs(long statusId)
-    {
-        StatusId = statusId;
-    }
-
-    public long StatusId { get; set; }
+    public long StatusId { get; set; } = statusId;
 }
 
 public class StreamFiltersChangedEventArgs : EventArgs
 {
 }
 
-public class StreamConversationEvenTargs : EventArgs
+public class StreamConversationEvenTargs(Conversation conversation) : EventArgs
 {
-    public StreamConversationEvenTargs(Conversation conversation)
-    {
-        Conversation = conversation;
-    }
-
-    public Conversation Conversation { get; set; }
+    public Conversation Conversation { get; set; } = conversation;
 }

@@ -105,7 +105,7 @@ public class AdminAccount
     /// All known IP addresses associated with this account.
     /// </summary>
     [JsonPropertyName("ips")]
-    public IEnumerable<AccountIp> Ips { get; set; } = Enumerable.Empty<AccountIp>();
+    public IEnumerable<AccountIp> Ips { get; set; } = [];
 
     /// <summary>
     /// User-level information about the account.

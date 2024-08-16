@@ -1,4 +1,5 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     public MastodonClient() : base()
     {
-
+        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
     }
     public MastodonClient(string instance, string accessToken)
         : this(instance, accessToken, DefaultHttpClient.Instance)
@@ -264,7 +265,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("title", title),
+            new("title", title),
         };
 
         return this.Post<List>("/api/v1/lists", data);
@@ -286,9 +287,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("title", newTitle),
-            new KeyValuePair<string, string>("exclusive", exclusive.ToString()),
-            new KeyValuePair<string, string>("replies_policy", replies_policy)
+            new("title", newTitle),
+            new("exclusive", exclusive.ToString()),
+            new("replies_policy", replies_policy)
         };
 
         return this.Put<List>("/api/v1/lists/" + listId, data);
@@ -562,7 +563,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     {
         var data = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("account_id", accountId),
+            new("account_id", accountId),
         };
         if (statusIds != null)
         {
@@ -681,7 +682,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context must be specified", nameof(context));
         }
 
-        var data = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("phrase", phrase) };
+        var data = new List<KeyValuePair<string, string>>() { new("phrase", phrase) };
         foreach (FilterContext checkFlag in new[]
                      { FilterContext.Home, FilterContext.Notifications, FilterContext.Public, FilterContext.Thread })
         {

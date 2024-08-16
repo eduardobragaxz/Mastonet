@@ -57,7 +57,7 @@ public class InstanceV2
     /// Primary languages of the website and its staff.
     /// </summary>
     [JsonPropertyName("languages")]
-    public IEnumerable<string> Languages { get; set; } = Enumerable.Empty<string>();
+    public IEnumerable<string> Languages { get; set; } = [];
 
     /// <summary>
     /// Configured values and limits for this website.
@@ -81,7 +81,7 @@ public class InstanceV2
     /// An itemized list of rules for this website.
     /// </summary>
     [JsonPropertyName("rules")]
-    public IEnumerable<InstanceRule> Rules { get; set; }= Enumerable.Empty<InstanceRule>();
+    public IEnumerable<InstanceRule> Rules { get; set; }= [];
 }
 
 public class InstanceUsage

@@ -58,19 +58,19 @@ public class Poll
     /// Contains an array of index values for options.
     /// </summary>
     [JsonPropertyName("own_votes")]
-    public IEnumerable<int> OwnVotes { get; set; }= Enumerable.Empty<int>();
+    public IEnumerable<int> OwnVotes { get; set; }= [];
 
     /// <summary>
     /// Possible answers for the poll.
     /// </summary>
     [JsonPropertyName("options")]
-    public IEnumerable<PollOption> Options { get; set; } = Enumerable.Empty<PollOption>();
+    public IEnumerable<PollOption> Options { get; set; } = [];
 
     /// <summary>
     /// Custom emoji to be used for rendering poll options.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; }= Enumerable.Empty<Emoji>();
+    public IEnumerable<Emoji> Emojis { get; set; }= [];
 }
 
 public class PollOption
@@ -93,7 +93,7 @@ public class PollParameters
     /// <summary>
     /// The array of options
     /// </summary>
-    public IEnumerable<string> Options { get; set; } = Enumerable.Empty<string>();
+    public IEnumerable<string> Options { get; set; } = [];
 
     /// <summary>
     /// The timespan until expiration
