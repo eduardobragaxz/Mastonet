@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace Mastonet.Entities;
 
@@ -110,8 +111,30 @@ public class AttachmentSizeData
 public class AttachmentFocusData
 {
     [JsonPropertyName("x")]
+    [JsonConverter(typeof(NullToDoubleConverter))]
     public double X { get; set; }
 
     [JsonPropertyName("y")]
+    [JsonConverter(typeof(NullToDoubleConverter))]
     public double Y { get; set; }
+}
+
+public class NullToDoubleConverter : JsonConverter<double>
+{
+    public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            return 0;
+        }
+        else
+        {
+            return reader.GetDouble();
+        }
+    }
+
+    public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
+    {
+        writer.WriteNumberValue(value);
+    }
 }
