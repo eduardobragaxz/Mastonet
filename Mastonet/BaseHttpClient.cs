@@ -286,7 +286,6 @@ public abstract partial class BaseHttpClient
 
     private static T TryDeserialize<T>(string json)
     {
-
         if (json.StartsWith("""{"error":""", StringComparison.OrdinalIgnoreCase) || json[0] == '<')
         {
             var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
@@ -295,10 +294,6 @@ public abstract partial class BaseHttpClient
             {
                 throw new ServerErrorException(error);
             }
-        }
-        else if (json.StartsWith('<'))
-        {
-            throw new JsonException();
         }
 
         return (T?)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
