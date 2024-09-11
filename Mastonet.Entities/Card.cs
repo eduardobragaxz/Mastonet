@@ -37,16 +37,23 @@ public class Card
     /// </summary>
     [JsonPropertyName("type")]
     public string Type { get; set; } = string.Empty;
+    /// <summary>
+    /// Fediverse account of the authors of the original resource.
+    /// </summary>
+    [JsonPropertyName("authors")]
+    public IEnumerable<CardAuthor> Authors { get; set; } = [];
 
     /// <summary>
     /// The author of the original resource.
     /// </summary>
+    [Obsolete("This entity was deprecated in Mastodon v4.3")]
     [JsonPropertyName("author_name")]
     public string? AuthorName { get; set; }
 
     /// <summary>
     /// A link to the author of the original resource.
     /// </summary>
+    [Obsolete("This entity was deprecated in Mastodon v4.3")]
     [JsonPropertyName("author_url")]
     public string? AuthorUrl { get; set; }
 

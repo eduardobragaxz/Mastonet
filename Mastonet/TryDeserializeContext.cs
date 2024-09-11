@@ -14,6 +14,7 @@ namespace Mastonet;
 [JsonSerializable(typeof(Account))]
 [JsonSerializable(typeof(Attachment))]
 [JsonSerializable(typeof(Card))]
+[JsonSerializable(typeof(CardAuthor))]
 [JsonSerializable(typeof(Poll))]
 [JsonSerializable(typeof(Tag))]
 [JsonSerializable(typeof(IEnumerable<Tag>))]
