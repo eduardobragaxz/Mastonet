@@ -51,7 +51,7 @@ public class Poll
     /// When called with a user token, has the authorized user voted?
     /// </summary>
     [JsonPropertyName("voted")]
-    public bool? Voted { get; set; }
+    public bool Voted { get; set; }
 
     /// <summary>
     /// When called with a user token, which options has the authorized user chosen? 
