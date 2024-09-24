@@ -117,8 +117,8 @@ public abstract partial class BaseHttpClient
         return TryDeserialize<T>(content);
     }
 
-    private const string ID_FINDER_PATTERN = "_id=([0-9]+)";
-    [GeneratedRegex(ID_FINDER_PATTERN, RegexOptions.None, 100)]
+    //private const string ID_FINDER_PATTERN = "_id=([0-9]+)";
+    [GeneratedRegex("_id=([0-9]+)", RegexOptions.None, 100)]
     private static partial Regex IdFinder();
 
     protected async Task<MastodonList<T>> GetMastodonList<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
@@ -290,13 +290,13 @@ public abstract partial class BaseHttpClient
         {
             var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
 
-            if (error != null && !string.IsNullOrEmpty(error.Description))
+            if (error is not null)
             {
                 throw new ServerErrorException(error);
             }
         }
 
-        return (T?)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
+        return (T)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
     }
 
     protected static string AddQueryStringParam(string queryParams, string queryStringParam, string? value)

@@ -21,6 +21,15 @@
 		<PackageTags>Mastodon</PackageTags>
 		<IsTrimmable>true</IsTrimmable>
 		<IsAotCompatible>true</IsAotCompatible>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0|AnyCPU'">
+	  <WarningLevel>8</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+	  <WarningLevel>8</WarningLevel>
 	</PropertyGroup>
 	
 	<ItemGroup>
