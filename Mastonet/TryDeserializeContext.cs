@@ -26,7 +26,6 @@ namespace Mastonet;
 [JsonSerializable(typeof(IEnumerable<List>))]
 [JsonSerializable(typeof(Conversation))]
 [JsonSerializable(typeof(Filter))]
-[JsonSerializable(typeof(IdentityProof))]
 [JsonSerializable(typeof(InstanceV2))]
 [JsonSerializable(typeof(List<Account>))]
 [JsonSerializable(typeof(Marker))]
@@ -53,7 +52,6 @@ namespace Mastonet;
 [JsonSerializable(typeof(IEnumerable<Filter>))]
 [JsonSerializable(typeof(IEnumerable<ScheduledStatus>))]
 [JsonSerializable(typeof(IEnumerable<string>))]
-[JsonSerializable(typeof(IdentityProof))]
 internal partial class TryDeserializeContext : JsonSerializerContext
 {
 }

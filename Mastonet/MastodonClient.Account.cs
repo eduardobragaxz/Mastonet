@@ -29,10 +29,10 @@ partial class MastodonClient
         return Get<Account>($"/api/v1/accounts/verify_credentials");
     }
 
-    public Task<IdentityProof> GetIdentityProof()
-    {
-        return Get<IdentityProof>($"/api/proofs");
-    }
+    //public Task<IdentityProof> GetIdentityProof()
+    //{
+    //    return Get<IdentityProof>($"/api/proofs");
+    //}
 
     /// <summary>
     /// Update the user's display and preferences.
