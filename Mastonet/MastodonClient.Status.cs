@@ -129,7 +129,7 @@ partial class MastodonClient
 
         if (visibility.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("visibility", visibility.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("visibility", $"{visibility.Value}".ToLowerInvariant()));
         }
 
         if (scheduledAt.HasValue)
@@ -145,15 +145,15 @@ partial class MastodonClient
         if (pollParameters != null)
         {
             data.AddRange(pollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", pollParameters.ExpiresIn.TotalSeconds.ToString()));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{pollParameters.ExpiresIn.TotalSeconds}"));
             if (pollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", pollParameters.Multiple.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{pollParameters.Multiple.Value}".ToLowerInvariant()));
             }
 
             if (pollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", pollParameters.HideTotals.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{pollParameters.HideTotals.Value}".ToLowerInvariant()));
             }
         }
 
@@ -203,7 +203,7 @@ partial class MastodonClient
 
         if (statusParameters.Visibility.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("visibility", statusParameters.Visibility.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("visibility", $"{statusParameters.Visibility.Value}".ToLowerInvariant()));
         }
 
         if (statusParameters.ScheduledAt.HasValue)
@@ -219,15 +219,15 @@ partial class MastodonClient
         if (statusParameters.PollParameters != null)
         {
             data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", statusParameters.PollParameters.ExpiresIn.TotalSeconds.ToString()));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));
             if (statusParameters.PollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", statusParameters.PollParameters.Multiple.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}".ToLowerInvariant()));
             }
 
             if (statusParameters.PollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", statusParameters.PollParameters.HideTotals.Value.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}".ToLowerInvariant()));
             }
         }
 
@@ -262,7 +262,7 @@ partial class MastodonClient
         {
             foreach (var mediaId in mediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId.ToString()));
+                data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
             }
         }
 
@@ -284,15 +284,15 @@ partial class MastodonClient
         if (poll != null)
         {
             data.AddRange(poll.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", poll.ExpiresIn.TotalSeconds.ToString()));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{poll.ExpiresIn.TotalSeconds}"));
             if (poll.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", poll.Multiple.Value.ToString()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{poll.Multiple.Value}"));
             }
 
             if (poll.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", poll.HideTotals.Value.ToString()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{poll.HideTotals.Value}"));
             }
         }
 
@@ -322,7 +322,7 @@ partial class MastodonClient
         {
             foreach (var mediaId in statusParameters.MediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId.ToString()));
+                data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
             }
         }
 
@@ -344,15 +344,15 @@ partial class MastodonClient
         if (statusParameters.PollParameters != null)
         {
             data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", statusParameters.PollParameters.ExpiresIn.TotalSeconds.ToString()));
+            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));
             if (statusParameters.PollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", statusParameters.PollParameters.Multiple.Value.ToString()));
+                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}"));
             }
 
             if (statusParameters.PollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", statusParameters.PollParameters.HideTotals.Value.ToString()));
+                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}"));
             }
         }
 
@@ -399,7 +399,7 @@ partial class MastodonClient
         var data = new List<KeyValuePair<string, string>>();
         if (scheduledAt.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("scheduled_at", scheduledAt.Value.ToString()));
+            data.Add(new KeyValuePair<string, string>("scheduled_at", $"{scheduledAt.Value}"));
         }
 
         return Put<ScheduledStatus>("/api/v1/scheduled_statuses/" + scheduledStatusId, data);

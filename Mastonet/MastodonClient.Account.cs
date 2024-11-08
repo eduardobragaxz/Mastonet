@@ -72,12 +72,12 @@ partial class MastodonClient
 
         if (discoverable != null)
         {
-            data.Add(new KeyValuePair<string, string>("discoverable", discoverable.Value.ToString()));
+            data.Add(new KeyValuePair<string, string>("discoverable", $"{discoverable.Value}"));
         }
 
         if (bot != null)
         {
-            data.Add(new KeyValuePair<string, string>("bot", bot.Value.ToString()));
+            data.Add(new KeyValuePair<string, string>("bot", $"{bot.Value}"));
         }
 
         if (display_name != null)
@@ -101,15 +101,15 @@ partial class MastodonClient
         }
         if (locked.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("locked", locked.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("locked", $"{locked.Value}".ToLowerInvariant()));
         }
         if (source_privacy.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("source[privacy]", source_privacy.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("source[privacy]", $"{source_privacy.Value}".ToLowerInvariant()));
         }
         if (source_sensitive.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("source[sensitive]", source_sensitive.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("source[sensitive]", $"{source_sensitive.Value}".ToLowerInvariant()));
         }
         if (source_language != null)
         {
@@ -147,7 +147,7 @@ partial class MastodonClient
         var data = new List<KeyValuePair<string, string>>();
         foreach (var id in ids)
         {
-            data.Add(new KeyValuePair<string, string>("id[]", id.ToString()));
+            data.Add(new KeyValuePair<string, string>("id[]", $"{id}"));
         }
         return Get<IEnumerable<Relationship>>("/api/v1/accounts/relationships", data);
     }

@@ -189,7 +189,7 @@ partial class MastodonClient
 
     public TimelineStreaming GetListStreaming(long listId)
     {
-        return GetStreaming(StreamingType.List, listId.ToString());
+        return GetStreaming(StreamingType.List, $"{listId}");
     }
 
     public TimelineStreaming GetListStreaming(List list)
@@ -199,7 +199,7 @@ partial class MastodonClient
             throw new ArgumentException("You must specify a list", nameof(list));
         }
 
-        return GetStreaming(StreamingType.List, list.Id.ToString());
+        return GetStreaming(StreamingType.List, $"{list.Id}");
     }
 
     #endregion

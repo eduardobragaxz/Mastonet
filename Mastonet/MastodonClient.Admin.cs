@@ -26,8 +26,8 @@ public partial class MastodonClient
     {
         const string url = "/api/v2/admin/accounts";
         var queryParams = "";
-        queryParams = AddQueryStringParam(queryParams, "origin", origin?.ToString().ToLowerInvariant());
-        queryParams = AddQueryStringParam(queryParams, "status", status?.ToString().ToLowerInvariant());
+        queryParams = AddQueryStringParam(queryParams, "origin", $"{origin}".ToLowerInvariant());
+        queryParams = AddQueryStringParam(queryParams, "status", $"{status}".ToLowerInvariant());
         queryParams = AddQueryStringParam(queryParams, "permissions", permissions);
         queryParams = AddQueryStringParam(queryParams, "invited_by", invitedBy);
         queryParams = AddQueryStringParam(queryParams, "username", username);

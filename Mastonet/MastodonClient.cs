@@ -150,7 +150,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (order.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "order=" + order.Value.ToString().ToLowerInvariant();
+            queryParams += (queryParams != "" ? "&" : "?") + "order=" + $"{order.Value}".ToLowerInvariant();
         }
 
         if (local.HasValue)
@@ -288,7 +288,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         var data = new List<KeyValuePair<string, string>>()
         {
             new("title", newTitle),
-            new("exclusive", exclusive.ToString()),
+            new("exclusive", $"{exclusive}"),
             new("replies_policy", replies_policy)
         };
 
@@ -580,7 +580,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (forward.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("forward", forward.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("forward", $"{forward.Value}".ToLowerInvariant()));
         }
 
         return Post<Report>("/api/v1/reports", data);
@@ -688,7 +688,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         {
             if ((context & checkFlag) == checkFlag)
             {
-                data.Add(new KeyValuePair<string, string>("context[]", checkFlag.ToString().ToLowerInvariant()));
+                data.Add(new KeyValuePair<string, string>("context[]", $"{checkFlag}".ToLowerInvariant()));
             }
         }
 
@@ -704,7 +704,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (expiresIn.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("expires_in", expiresIn.Value.ToString()));
+            data.Add(new KeyValuePair<string, string>("expires_in", $"{expiresIn.Value}"));
         }
 
         return Post<Filter>("/api/v1/filters", data);
@@ -753,7 +753,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             {
                 if ((context & checkFlag) == checkFlag)
                 {
-                    data.Add(new KeyValuePair<string, string>("context[]", checkFlag.ToString().ToLowerInvariant()));
+                    data.Add(new KeyValuePair<string, string>("context[]", $"{checkFlag}".ToLowerInvariant()));
                 }
             }
         }
@@ -761,17 +761,17 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         if (irreversible.HasValue)
         {
             data.Add(new KeyValuePair<string, string>("irreversible",
-                irreversible.Value.ToString().ToLowerInvariant()));
+                $"{irreversible.Value}".ToLowerInvariant()));
         }
 
         if (wholeWord.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("whole_word", wholeWord.Value.ToString().ToLowerInvariant()));
+            data.Add(new KeyValuePair<string, string>("whole_word", $"{wholeWord.Value}".ToLowerInvariant()));
         }
 
         if (expiresIn.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("expires_in", expiresIn.Value.ToString()));
+            data.Add(new KeyValuePair<string, string>("expires_in", $"{expiresIn.Value}"));
         }
 
         return Put<Filter>($"/api/v1/filters/{filterId}", data);
@@ -797,7 +797,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns Poll</returns>
     public Task<Poll> GetPoll(string id)
     {
-        return Get<Poll>("/api/v1/polls/" + id.ToString());
+        return Get<Poll>("/api/v1/polls/" + $"{id}");
     }
 
     /// <summary>
@@ -809,9 +809,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<Poll> Vote(string id, IEnumerable<int> choices)
     {
         var data = choices
-            .Select(index => new KeyValuePair<string, string>("choices[]", index.ToString()))
+            .Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))
             .ToArray();
-        return Post<Poll>("/api/v1/polls/" + id.ToString() + "/votes", data);
+        return Post<Poll>("/api/v1/polls/" + $"{id}" + "/votes", data);
     }
 
     #endregion

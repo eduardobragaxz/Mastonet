@@ -150,7 +150,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             return "";
         }
 
-        return String.Join(" ", scopes.Select(s => s.ToString().ToLowerInvariant().Replace("__", ":")));
+        return String.Join(" ", scopes.Select(s => $"{s}".ToLowerInvariant().Replace("__", ":")));
     }
 
     #endregion
