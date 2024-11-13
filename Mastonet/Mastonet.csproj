@@ -31,10 +31,6 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
 	  <WarningLevel>8</WarningLevel>
 	</PropertyGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\README.md">
