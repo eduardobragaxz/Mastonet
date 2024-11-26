@@ -295,10 +295,6 @@ public abstract partial class BaseHttpClient
                 throw new ServerErrorException(error);
             }
         }
-        else if(json.StartsWith('<'))
-        {
-
-        }
 
         return (T)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
     }
