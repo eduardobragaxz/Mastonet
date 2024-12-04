@@ -44,7 +44,7 @@ public class VisibilityConverter : JsonConverter<Visibility>
         var buffer = ArrayPool<char>.Shared.Rent(valueLength);
         var charsRead = reader.CopyString(buffer);
         var val = buffer.AsSpan(0, charsRead);
-        var result = Enum.Parse(typeof(Visibility), val, true);
+        var result = Enum.Parse<Visibility>(val, true);
         ArrayPool<char>.Shared.Return(buffer, clearArray: true);
 
         return (Visibility)result;
