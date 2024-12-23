@@ -86,9 +86,10 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        var request = new HttpRequestMessage(HttpMethod.Delete, url);
         AddHttpHeader(request);
         using var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStringAsync();
     }
@@ -169,10 +170,11 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        var request = new HttpRequestMessage(HttpMethod.Post, url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
-        using var response = await Client.SendAsync(request);
+        var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -188,9 +190,10 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         AddHttpHeader(request);
+        
         var content = new MultipartFormDataContent();
 
         if (media != null)
@@ -210,7 +213,8 @@ public abstract partial class BaseHttpClient
         }
         request.Content = content;
 
-        using var response = await Client.SendAsync(request);
+        var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -219,11 +223,12 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using var request = new HttpRequestMessage(HttpMethod.Put, url);
+        var request = new HttpRequestMessage(HttpMethod.Put, url);
         AddHttpHeader(request);
 
         request.Content = new FormUrlEncodedContent(data ?? []);
         using var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -237,10 +242,11 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
         using var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -256,7 +262,7 @@ public abstract partial class BaseHttpClient
     {
         string url = "https://" + this.Instance + route;
 
-        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
 
         AddHttpHeader(request);
 
@@ -280,6 +286,7 @@ public abstract partial class BaseHttpClient
 
         request.Content = content;
         using var response = await Client.SendAsync(request);
+        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -319,6 +326,4 @@ public abstract partial class BaseHttpClient
     }
 
     #endregion
-
-
 }
