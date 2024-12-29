@@ -34,16 +34,16 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
             return;
         }
 
-        url += "/api/v1/streaming?access_token=" + accessToken;
+        url += $"/api/v1/streaming?access_token={accessToken}";
 
         url += streamingType switch
         {
             StreamingType.User => "&stream=user",
             StreamingType.Public => "&stream=public",
             StreamingType.PublicLocal => "&stream=public:local",
-            StreamingType.Hashtag => "&stream=hashtag&tag=" + param,
-            StreamingType.HashtagLocal => "&stream=hashtag:local&tag=" + param,
-            StreamingType.List => "&stream=list&list=" + param,
+            StreamingType.Hashtag => $"&stream=hashtag&tag={param}",
+            StreamingType.HashtagLocal => $"&stream=hashtag:local&tag={param}",
+            StreamingType.List => $"&stream=list&list={param}",
             StreamingType.Direct => "&stream=direct",
             _ => throw new NotImplementedException(),
         };

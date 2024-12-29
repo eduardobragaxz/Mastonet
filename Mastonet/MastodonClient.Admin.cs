@@ -38,10 +38,10 @@ public partial class MastodonClient
         if (options != null)
         {
             var concatChar = GetQueryStringConcatChar(queryParams);
-            queryParams += concatChar + options.ToQueryString();
+            queryParams += $"{concatChar}{options.ToQueryString()}";
         }
 
-        return GetMastodonList<AdminAccount>(url + queryParams);
+        return GetMastodonList<AdminAccount>($"{url}{queryParams}");
     }
 
 

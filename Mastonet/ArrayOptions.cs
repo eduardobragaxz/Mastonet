@@ -20,19 +20,19 @@ public class ArrayOptions
         var query = new Collection<string>();
         if (!string.IsNullOrEmpty(MaxId))
         {
-            query.Add("max_id=" + MaxId);
+            query.Add($"max_id={MaxId}");
         }
         if (!string.IsNullOrEmpty(SinceId))
         {
-            query.Add("since_id=" + SinceId);
+            query.Add($"since_id={SinceId}");
         }
         if (!string.IsNullOrEmpty(MinId))
         {
-            query.Add("min_id=" + MinId);
+            query.Add($"min_id={MinId}");
         }
         if (Limit.HasValue)
         {
-            query.Add("limit=" + Limit);
+            query.Add($"limit={Limit}");
         }
         return string.Join("&", query);
     }

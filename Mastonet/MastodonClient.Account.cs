@@ -163,7 +163,7 @@ partial class MastodonClient
         var url = $"/api/v1/accounts/{accountId}/followers";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Account>(url);
     }
@@ -179,7 +179,7 @@ partial class MastodonClient
         var url = $"/api/v1/accounts/{accountId}/following";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Account>(url);
     }
@@ -252,7 +252,7 @@ partial class MastodonClient
             queryParams += options.ToQueryString();
         }
 
-        return GetMastodonList<Status>(url + queryParams);
+        return GetMastodonList<Status>($"{url}{queryParams}");
     }
 
 
@@ -268,7 +268,7 @@ partial class MastodonClient
         var url = "/api/v1/follow_requests";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return this.GetMastodonList<Account>(url);
     }
@@ -325,7 +325,7 @@ partial class MastodonClient
         var url = "/api/v1/favourites";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Status>(url);
     }
@@ -345,7 +345,7 @@ partial class MastodonClient
         var url = "/api/v1/bookmarks";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Status>(url);
     }
@@ -395,7 +395,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task UnfeatureTag(string id)
     {
-        return Delete("/api/v1/featured_tags/" + id);
+        return Delete($"/api/v1/featured_tags/{id}");
     }
 
     /// <summary>

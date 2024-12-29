@@ -19,22 +19,22 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
 
     public override async Task Start()
     {
-        string url = "https://" + instance;
+        string url = $"https://{instance}";
         url += streamingType switch
         {
             StreamingType.User => "/api/v1/streaming/user",
             StreamingType.Public => "/api/v1/streaming/public",
             StreamingType.PublicLocal => "/api/v1/streaming/public/local",
-            StreamingType.Hashtag => "/api/v1/streaming/hashtag?tag=" + param,
-            StreamingType.HashtagLocal => "/api/v1/streaming/hashtag/local?tag=" + param,
-            StreamingType.List => "/api/v1/streaming/list?list=" + param,
+            StreamingType.Hashtag => $"/api/v1/streaming/hashtag?tag={param}",
+            StreamingType.HashtagLocal => $"/api/v1/streaming/hashtag/local?tag={param}",
+            StreamingType.List => $"/api/v1/streaming/list?list={param}",
             StreamingType.Direct => "/api/v1/streaming/direct",
             _ => throw new NotImplementedException(),
         };
         using (var request = new HttpRequestMessage(HttpMethod.Get, url))
         using (cts = new CancellationTokenSource())
         {
-            request.Headers.Add("Authorization", "Bearer " + accessToken);
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             var stream = await response.Content.ReadAsStreamAsync();
             using var reader = new StreamReader(stream);

@@ -54,7 +54,7 @@ partial class MastodonClient
         var url = $"/api/v1/statuses/{statusId}/reblogged_by";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Account>(url);
@@ -71,7 +71,7 @@ partial class MastodonClient
         var url = $"/api/v1/statuses/{statusId}/favourited_by";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Account>(url);
@@ -296,7 +296,7 @@ partial class MastodonClient
             }
         }
 
-        return Put<Status>("/api/v1/statuses/" + statusId, data);
+        return Put<Status>($"/api/v1/statuses/{statusId}", data);
     }
 
     /// <summary>
@@ -356,7 +356,7 @@ partial class MastodonClient
             }
         }
 
-        return Put<Status>("/api/v1/statuses/" + statusId, data);
+        return Put<Status>($"/api/v1/statuses/{statusId}", data);
     }
 
 
@@ -385,7 +385,7 @@ partial class MastodonClient
     /// <returns>Returns ScheduledStatus</returns>
     public Task<ScheduledStatus> GetScheduledStatus(string scheduledStatusId)
     {
-        return Get<ScheduledStatus>("/api/v1/scheduled_statuses/" + scheduledStatusId);
+        return Get<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}");
     }
 
     /// <summary>
@@ -402,7 +402,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("scheduled_at", $"{scheduledAt.Value}"));
         }
 
-        return Put<ScheduledStatus>("/api/v1/scheduled_statuses/" + scheduledStatusId, data);
+        return Put<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}", data);
     }
 
     /// <summary>
@@ -411,7 +411,7 @@ partial class MastodonClient
     /// <param name="scheduledStatusId"></param>
     public Task DeleteScheduledStatus(string scheduledStatusId)
     {
-        return Delete("/api/v1/scheduled_statuses/" + scheduledStatusId);
+        return Delete($"/api/v1/scheduled_statuses/{scheduledStatusId}");
     }
 
     /// <summary>

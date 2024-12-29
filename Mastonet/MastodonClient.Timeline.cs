@@ -21,7 +21,7 @@ partial class MastodonClient
         string url = "/api/v1/timelines/home";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Status>(url);
     }
@@ -36,7 +36,7 @@ partial class MastodonClient
         string url = "/api/v1/conversations";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
         return GetMastodonList<Conversation>(url);
     }
@@ -48,7 +48,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task DeleteConversation(string id)
     {
-        return Delete("/api/v1/conversations/" + id);
+        return Delete($"/api/v1/conversations/{id}");
     }
 
     /// <summary>
@@ -79,14 +79,14 @@ partial class MastodonClient
         }
         if (onlyMedia)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "only_media=true";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}only_media=true";
         }
         if (options != null)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + options.ToQueryString();
+            queryParams += $"{(queryParams != "" ? "&" : "?")}{options.ToQueryString()}";
         }
 
-        return GetMastodonList<Status>(url + queryParams);
+        return GetMastodonList<Status>($"{url}{queryParams}");
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Statuses, most recent ones first</returns>
     public Task<MastodonList<Status>> GetTagTimeline(string hashtag, ArrayOptions? options = null, bool local = false, bool onlyMedia = false)
     {
-        string url = "/api/v1/timelines/tag/" + hashtag;
+        string url = $"/api/v1/timelines/tag/{hashtag}";
 
         var queryParams = "";
         if (local)
@@ -108,14 +108,14 @@ partial class MastodonClient
         }
         if (onlyMedia)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "only_media=true";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}only_media=true";
         }
         if (options != null)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + options.ToQueryString();
+            queryParams += $"{(queryParams != "" ? "&" : "?")}{options.ToQueryString()}";
         }
 
-        return GetMastodonList<Status>(url + queryParams);
+        return GetMastodonList<Status>($"{url}{ queryParams}");
     }
 
     /// <summary>
@@ -126,11 +126,11 @@ partial class MastodonClient
     /// <returns>Returns an array of Statuses, most recent ones first</returns>
     public Task<MastodonList<Status>> GetListTimeline(string listId, ArrayOptions? options = null)
     {
-        string url = "/api/v1/timelines/list/" + listId;
+        string url = $"/api/v1/timelines/list/{listId}";
 
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Status>(url);

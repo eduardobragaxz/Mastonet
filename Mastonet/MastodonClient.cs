@@ -96,14 +96,14 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (offset.HasValue)
         {
-            queryParams = "?offset=" + offset.Value;
+            queryParams = $"?offset={offset.Value}";
         }
         if (limit.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "limit=" + limit.Value;
+            queryParams += $"{(queryParams != "" ? "&" : "?")}limit={limit.Value}";
         }
 
-        return GetMastodonList<Status>("/api/v1/trends/statuses" + queryParams);
+        return GetMastodonList<Status>($"/api/v1/trends/statuses{queryParams}");
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (offset.HasValue)
         {
-            queryParams = "?offset=" + offset.Value;
+            queryParams = $"?offset={offset.Value}";
         }
         if (limit.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "limit=" + limit.Value;
+            queryParams += $"{(queryParams != "" ? "&" : "?")}limit={limit.Value}";
         }
 
-        return GetMastodonList<Card>("/api/v1/trends/links" + queryParams);
+        return GetMastodonList<Card>($"/api/v1/trends/links{queryParams}");
     }
 
     /// <summary>
@@ -140,25 +140,25 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         if (offset.HasValue)
         {
-            queryParams = "?offset=" + offset.Value;
+            queryParams = $"?offset={offset.Value}";
         }
 
         if (limit.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "limit=" + limit.Value;
+            queryParams += $"{(queryParams != "" ? "&" : "?")}limit={limit.Value}";
         }
 
         if (order.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "order=" + $"{order.Value}".ToLowerInvariant();
+            queryParams += $"{(queryParams != "" ? "&" : "?")}order=" + $"{order.Value}".ToLowerInvariant();
         }
 
         if (local.HasValue)
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "local=" + local.Value;
+            queryParams += $"{(queryParams != "" ? "&" : "?")}local={local.Value}";
         }
 
-        return Get<IEnumerable<Account>>("/api/v1/directory" + queryParams);
+        return Get<IEnumerable<Account>>($"/api/v1/directory{queryParams}");
     }
 
 
@@ -235,7 +235,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         var url = $"/api/v1/lists/{listId}/accounts";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Account>(url);
@@ -248,7 +248,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns List</returns>
     public Task<List> GetList(string listId)
     {
-        return this.Get<List>("/api/v1/lists/" + listId);
+        return this.Get<List>($"/api/v1/lists/{listId}");
     }
 
     /// <summary>
@@ -292,7 +292,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             new("replies_policy", replies_policy)
         };
 
-        return this.Put<List>("/api/v1/lists/" + listId, data);
+        return this.Put<List>($"/api/v1/lists/{listId}", data);
     }
 
     /// <summary>
@@ -301,7 +301,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="listId"></param>
     public Task DeleteList(string listId)
     {
-        return this.Delete("/api/v1/lists/" + listId);
+        return this.Delete($"/api/v1/lists/{listId}");
     }
 
     /// <summary>
@@ -432,7 +432,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             data.Add("focus", $"{focus.X},{focus.Y}");
         }
 
-        return Put<Attachment>("/api/v1/media/" + mediaId, data);
+        return Put<Attachment>($"/api/v1/media/{mediaId}", data);
     }
 
     #endregion
@@ -465,40 +465,40 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         var queryParams = "";
         if (options != null)
         {
-            queryParams += "?" + options.ToQueryString();
+            queryParams += $"?{options.ToQueryString()}";
         }
 
         if (excludeTypes.HasFlag(NotificationType.Follow))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=follow";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow";
         }
 
         if (excludeTypes.HasFlag(NotificationType.Favourite))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=favourite";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=favourite";
         }
 
         if (excludeTypes.HasFlag(NotificationType.Reblog))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=reblog";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=reblog";
         }
 
         if (excludeTypes.HasFlag(NotificationType.Mention))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=mention";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=mention";
         }
 
         if (excludeTypes.HasFlag(NotificationType.Poll))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=poll";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=poll";
         }
 
         if (excludeTypes.HasFlag(NotificationType.FollowRequest))
         {
-            queryParams += (queryParams != "" ? "&" : "?") + "exclude_types[]=follow_request";
+            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request";
         }
 
-        return GetMastodonList<Notification>(url + queryParams);
+        return GetMastodonList<Notification>($"{url}{queryParams}");
     }
 
     /// <summary>
@@ -544,7 +544,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         var url = "/api/v1/reports";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Report>(url);
@@ -603,7 +603,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             return Task.FromResult(new SearchResults());
         }
 
-        string url = "/api/v2/search?q=" + Uri.EscapeDataString(q);
+        string url = $"/api/v2/search?q={Uri.EscapeDataString(q)}";
         if (resolveNonLocalAccouns)
         {
             url += "&resolve=true";
@@ -628,10 +628,10 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             return Task.FromResult(new List<Account>());
         }
 
-        string url = "/api/v1/accounts/search?q=" + Uri.EscapeDataString(q);
+        string url = $"/api/v1/accounts/search?q={Uri.EscapeDataString(q)}";
         if (limit.HasValue)
         {
-            url += "&limit=" + limit.Value;
+            url += $"&limit={limit.Value}";
         }
 
         if (resolveNonLocalAccouns)
@@ -797,7 +797,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns Poll</returns>
     public Task<Poll> GetPoll(string id)
     {
-        return Get<Poll>("/api/v1/polls/" + $"{id}");
+        return Get<Poll>($"/api/v1/polls/{id}");
     }
 
     /// <summary>
@@ -811,7 +811,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         var data = choices
             .Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))
             .ToArray();
-        return Post<Poll>("/api/v1/polls/" + $"{id}" + "/votes", data);
+        return Post<Poll>($"/api/v1/polls/{id}/votes", data);
     }
 
     #endregion

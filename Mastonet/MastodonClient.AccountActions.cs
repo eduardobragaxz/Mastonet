@@ -87,7 +87,7 @@ partial class MastodonClient
         var url = "/api/v1/blocks";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Account>(url);
@@ -129,7 +129,7 @@ partial class MastodonClient
         var url = "/api/v1/mutes";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<Account>(url);
@@ -228,7 +228,7 @@ partial class MastodonClient
         var url = "/api/v1/domain_blocks";
         if (options != null)
         {
-            url += "?" + options.ToQueryString();
+            url += $"?{options.ToQueryString()}";
         }
 
         return GetMastodonList<string>(url);
@@ -240,7 +240,7 @@ partial class MastodonClient
     /// <param name="domain">Domain to block</param>
     public Task BlockDomain(string domain)
     {
-        var url = "/api/v1/domain_blocks?domain=" + Uri.EscapeDataString(domain);
+        var url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
         return Post(url);
     }
 
@@ -250,7 +250,7 @@ partial class MastodonClient
     /// <param name="domain">Domain to block</param>
     public Task UnblockDomain(string domain)
     {
-        var url = "/api/v1/domain_blocks?domain=" + Uri.EscapeDataString(domain);
+        var url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
         return Delete(url);
     }
 
@@ -265,7 +265,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<Tag> GetTagInfo(string tag)
     {
-        return Get<Tag>("/api/v1/tags/" + tag);
+        return Get<Tag>($"/api/v1/tags/{tag}");
     }
 
     /// <summary>
@@ -299,10 +299,10 @@ partial class MastodonClient
         var queryParams = "";
         if (options != null)
         {
-            queryParams = "?" + options.ToQueryString();
+            queryParams = $"?{options.ToQueryString()}";
         }
 
-        return GetMastodonList<Tag>(url + queryParams);
+        return GetMastodonList<Tag>($"{url}{queryParams}");
     }
 
     #endregion

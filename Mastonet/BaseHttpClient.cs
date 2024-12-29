@@ -73,23 +73,22 @@ public abstract partial class BaseHttpClient
     {
         if (!string.IsNullOrEmpty(AccessToken))
         {
-            request.Headers.Add("Authorization", "Bearer " + AccessToken);
+            request.Headers.Add("Authorization", $"Bearer {AccessToken}");
         }
     }
 
     protected async Task<string> Delete(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
         if (data != null)
         {
-            var querystring = "?" + String.Join("&", data.Select(kvp => kvp.Key + "=" + kvp.Value));
+            var querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        using var request = new HttpRequestMessage(HttpMethod.Delete, url);
         AddHttpHeader(request);
-        using var response = await Client.SendAsync(request);
-        request.Dispose();
+        var response = await Client.SendAsync(request);
         OnResponseReceived(response);
         return await response.Content.ReadAsStringAsync();
     }
@@ -97,17 +96,16 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
         if (data != null)
         {
-            var querystring = "?" + String.Join("&", data.Select(kvp => kvp.Key + "=" + kvp.Value));
+            var querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
         AddHttpHeader(request);
         var response = await Client.SendAsync(request);
-        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -125,10 +123,10 @@ public abstract partial class BaseHttpClient
 
     protected async Task<MastodonList<T>> GetMastodonList<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
         if (data != null)
         {
-            var querystring = "?" + String.Join("&", data.Select(kvp => kvp.Key + "=" + kvp.Value));
+            var querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -168,13 +166,12 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Post(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url);
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
         var response = await Client.SendAsync(request);
-        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -188,9 +185,9 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> PostMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url);
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         AddHttpHeader(request);
         
@@ -214,21 +211,19 @@ public abstract partial class BaseHttpClient
         request.Content = content;
 
         var response = await Client.SendAsync(request);
-        request.Dispose();
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
 
     protected async Task<Stream> Put(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
 
-        var request = new HttpRequestMessage(HttpMethod.Put, url);
+        using var request = new HttpRequestMessage(HttpMethod.Put, url);
         AddHttpHeader(request);
 
         request.Content = new FormUrlEncodedContent(data ?? []);
-        using var response = await Client.SendAsync(request);
-        request.Dispose();
+        var response = await Client.SendAsync(request);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -240,13 +235,12 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Patch(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
 
-        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
-        using var response = await Client.SendAsync(request);
-        request.Dispose();
+        var response = await Client.SendAsync(request);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
@@ -260,9 +254,9 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> PatchMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
-        string url = "https://" + this.Instance + route;
+        string url = $"https://{this.Instance}{route}";
 
-        var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+        using var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
 
         AddHttpHeader(request);
 
@@ -285,8 +279,7 @@ public abstract partial class BaseHttpClient
         }
 
         request.Content = content;
-        using var response = await Client.SendAsync(request);
-        request.Dispose();
+        var response = await Client.SendAsync(request);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync();
     }
