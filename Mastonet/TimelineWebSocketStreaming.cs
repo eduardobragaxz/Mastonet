@@ -60,9 +60,9 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
 
             if (result.EndOfMessage)
             {
-                var messageStr = Encoding.UTF8.GetString(ms.ToArray());
+                //var messageStr = Encoding.UTF8.GetString(ms.ToArray());
 
-                var message = JsonSerializer.Deserialize(messageStr, TimelineMessageContext.Default.TimelineMessage);
+                var message = JsonSerializer.Deserialize(ms, TimelineMessageContext.Default.TimelineMessage);
 
                 if (message != null)
                 {
