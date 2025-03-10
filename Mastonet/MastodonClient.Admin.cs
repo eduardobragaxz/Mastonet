@@ -35,7 +35,7 @@ public partial class MastodonClient
         queryParams = AddQueryStringParam(queryParams, "by_domain", byDomain);
         queryParams = AddQueryStringParam(queryParams, "email", email);
         queryParams = AddQueryStringParam(queryParams, "ip", userIp);
-        if (options != null)
+        if (options is not null)
         {
             var concatChar = GetQueryStringConcatChar(queryParams);
             queryParams += $"{concatChar}{options.ToQueryString()}";

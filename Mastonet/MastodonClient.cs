@@ -233,7 +233,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<MastodonList<Account>> GetListAccounts(string listId, ArrayOptions? options = null)
     {
         var url = $"/api/v1/lists/{listId}/accounts";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -399,12 +399,12 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         media.ParamName = "file";
         var list = new List<MediaDefinition>() { media };
         var data = new Dictionary<string, string>();
-        if (description != null)
+        if (description is not null)
         {
             data.Add("description", description);
         }
 
-        if (focus != null)
+        if (focus is not null)
         {
             data.Add("focus", $"{focus.X},{focus.Y}");
         }
@@ -422,12 +422,12 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<Attachment> UpdateMedia(string mediaId, string? description = null, AttachmentFocusData? focus = null)
     {
         var data = new Dictionary<string, string>();
-        if (description != null)
+        if (description is not null)
         {
             data.Add("description", description);
         }
 
-        if (focus != null)
+        if (focus is not null)
         {
             data.Add("focus", $"{focus.X},{focus.Y}");
         }
@@ -463,7 +463,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     {
         var url = "/api/v1/notifications";
         var queryParams = "";
-        if (options != null)
+        if (options is not null)
         {
             queryParams += $"?{options.ToQueryString()}";
         }
@@ -542,7 +542,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<MastodonList<Report>> GetReports(ArrayOptions? options = null)
     {
         var url = "/api/v1/reports";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -565,7 +565,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         {
             new("account_id", accountId),
         };
-        if (statusIds != null)
+        if (statusIds is not null)
         {
             foreach (var statusId in statusIds)
             {
@@ -573,7 +573,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             }
         }
 
-        if (comment != null)
+        if (comment is not null)
         {
             data.Add(new KeyValuePair<string, string>("comment", comment));
         }
@@ -739,7 +739,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         }
 
         var data = new List<KeyValuePair<string, string>>();
-        if (phrase != null)
+        if (phrase is not null)
         {
             data.Add(new KeyValuePair<string, string>("phrase", phrase));
         }
@@ -822,7 +822,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     private void UpdateRateLimits(HttpResponseMessage response)
     {
-        if (RateLimitsUpdated != null)
+        if (RateLimitsUpdated is not null)
         {
             // Get ratelimit info
             // https://docs.joinmastodon.org/api/rate-limits/

@@ -52,7 +52,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetRebloggedBy(string statusId, ArrayOptions? options = null)
     {
         var url = $"/api/v1/statuses/{statusId}/reblogged_by";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -69,7 +69,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetFavouritedBy(string statusId, ArrayOptions? options = null)
     {
         var url = $"/api/v1/statuses/{statusId}/favourited_by";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -109,7 +109,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("in_reply_to_id", replyStatusId!));
         }
 
-        if (mediaIds != null)
+        if (mediaIds is not null)
         {
             foreach (var mediaId in mediaIds)
             {
@@ -122,7 +122,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("sensitive", "true"));
         }
 
-        if (spoilerText != null)
+        if (spoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", spoilerText));
         }
@@ -137,12 +137,12 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("scheduled_at", scheduledAt.Value.ToString("o")));
         }
 
-        if (language != null)
+        if (language is not null)
         {
             data.Add(new KeyValuePair<string, string>("language", language));
         }
 
-        if (pollParameters != null)
+        if (pollParameters is not null)
         {
             data.AddRange(pollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
             data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{pollParameters.ExpiresIn.TotalSeconds}"));
@@ -183,7 +183,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("in_reply_to_id", statusParameters.ReplyStatusId!));
         }
 
-        if (statusParameters.MediaIds != null)
+        if (statusParameters.MediaIds is not null)
         {
             foreach (var mediaId in statusParameters.MediaIds)
             {
@@ -196,7 +196,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("sensitive", "true"));
         }
 
-        if (statusParameters.SpoilerText != null)
+        if (statusParameters.SpoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
         }
@@ -211,12 +211,12 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("scheduled_at", statusParameters.ScheduledAt.Value.ToString("o")));
         }
 
-        if (statusParameters.Language != null)
+        if (statusParameters.Language is not null)
         {
             data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
         }
 
-        if (statusParameters.PollParameters != null)
+        if (statusParameters.PollParameters is not null)
         {
             data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
             data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));
@@ -258,7 +258,7 @@ partial class MastodonClient
             new("status", status),
         };
 
-        if (mediaIds != null)
+        if (mediaIds is not null)
         {
             foreach (var mediaId in mediaIds)
             {
@@ -271,17 +271,17 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("sensitive", "true"));
         }
 
-        if (spoilerText != null)
+        if (spoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", spoilerText));
         }
 
-        if (language != null)
+        if (language is not null)
         {
             data.Add(new KeyValuePair<string, string>("language", language));
         }
 
-        if (poll != null)
+        if (poll is not null)
         {
             data.AddRange(poll.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
             data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{poll.ExpiresIn.TotalSeconds}"));
@@ -318,7 +318,7 @@ partial class MastodonClient
             new("status", statusParameters.Status!),
         };
 
-        if (statusParameters.MediaIds != null)
+        if (statusParameters.MediaIds is not null)
         {
             foreach (var mediaId in statusParameters.MediaIds)
             {
@@ -331,17 +331,17 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("sensitive", "true"));
         }
 
-        if (statusParameters.SpoilerText != null)
+        if (statusParameters.SpoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
         }
 
-        if (statusParameters.Language != null)
+        if (statusParameters.Language is not null)
         {
             data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
         }
 
-        if (statusParameters.PollParameters != null)
+        if (statusParameters.PollParameters is not null)
         {
             data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
             data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));

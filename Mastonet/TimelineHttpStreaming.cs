@@ -58,7 +58,7 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
                 else if (line.StartsWith("data: "))
                 {
                     data = line["data: ".Length..];
-                    if (eventName != null)
+                    if (eventName is not null)
                     {
                         SendEvent(eventName, data);
                     }
@@ -69,7 +69,7 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
 
     public override void Stop()
     {
-        if (cts != null)
+        if (cts is not null)
         {
             cts.Cancel();
             cts = null;

@@ -28,7 +28,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
             case "update":
                 var status = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Status);
 
-                if (status != null)
+                if (status is not null)
                 {
                     OnUpdate?.Invoke(this, new StreamUpdateEventArgs(status));
                 }
@@ -37,7 +37,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
 
                 var notification = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Notification);
 
-                if (notification != null)
+                if (notification is not null)
                 {
                     OnNotification?.Invoke(this, new StreamNotificationEventArgs(notification));
                 }
@@ -54,7 +54,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
             case "conversation":
                 var conversation = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Conversation);
 
-                if (conversation != null)
+                if (conversation is not null)
                 {
                     OnConversation?.Invoke(this, new StreamConversationEvenTargs(conversation));
                 }

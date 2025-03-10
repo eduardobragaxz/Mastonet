@@ -70,31 +70,31 @@ partial class MastodonClient
         var data = new List<KeyValuePair<string, string>>();
         var media = new List<MediaDefinition>();
 
-        if (discoverable != null)
+        if (discoverable is not null)
         {
             data.Add(new KeyValuePair<string, string>("discoverable", $"{discoverable.Value}"));
         }
 
-        if (bot != null)
+        if (bot is not null)
         {
             data.Add(new KeyValuePair<string, string>("bot", $"{bot.Value}"));
         }
 
-        if (display_name != null)
+        if (display_name is not null)
         {
             data.Add(new KeyValuePair<string, string>("display_name", display_name));
         }
-        if (note != null)
+        if (note is not null)
         {
             data.Add(new KeyValuePair<string, string>("note", note));
         }
 
-        if (avatar != null)
+        if (avatar is not null)
         {
             avatar.ParamName = "avatar";
             media.Add(avatar);
         }
-        if (header != null)
+        if (header is not null)
         {
             header.ParamName = "header";
             media.Add(header);
@@ -111,11 +111,11 @@ partial class MastodonClient
         {
             data.Add(new KeyValuePair<string, string>("source[sensitive]", $"{source_sensitive.Value}".ToLowerInvariant()));
         }
-        if (source_language != null)
+        if (source_language is not null)
         {
             data.Add(new KeyValuePair<string, string>("source[language]", source_language));
         }
-        if (fields_attributes != null)
+        if (fields_attributes is not null)
         {
             foreach (var item in fields_attributes.Select((f, i) => new { f, i }))
             {
@@ -161,7 +161,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetAccountFollowers(string accountId, ArrayOptions? options = null)
     {
         var url = $"/api/v1/accounts/{accountId}/followers";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -177,7 +177,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetAccountFollowing(string accountId, ArrayOptions? options = null)
     {
         var url = $"/api/v1/accounts/{accountId}/following";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -239,7 +239,7 @@ partial class MastodonClient
             }
             queryParams += "exclude_reblogs=true";
         }
-        if (options != null)
+        if (options is not null)
         {
             if (queryParams != "")
             {
@@ -266,7 +266,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetFollowRequests(ArrayOptions? options = null)
     {
         var url = "/api/v1/follow_requests";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -323,7 +323,7 @@ partial class MastodonClient
     public Task<MastodonList<Status>> GetFavourites(ArrayOptions? options = null)
     {
         var url = "/api/v1/favourites";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -343,7 +343,7 @@ partial class MastodonClient
     public Task<MastodonList<Status>> GetBookmarks(ArrayOptions? options = null)
     {
         var url = "/api/v1/bookmarks";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }

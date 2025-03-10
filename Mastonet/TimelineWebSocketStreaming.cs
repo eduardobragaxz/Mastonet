@@ -52,7 +52,7 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
 
         byte[] buffer = new byte[receiveChunkSize];
         MemoryStream ms = new();
-        while (socket != null)
+        while (socket is not null)
         {
             var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
@@ -64,7 +64,7 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
 
                 var message = JsonSerializer.Deserialize(ms, TimelineMessageContext.Default.TimelineMessage);
 
-                if (message != null)
+                if (message is not null)
                 {
                     SendEvent(message.Event, message.Payload);
                 }
@@ -89,7 +89,7 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
 
     public override void Stop()
     {
-        if (socket != null)
+        if (socket is not null)
         {
             socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
             socket.Dispose();

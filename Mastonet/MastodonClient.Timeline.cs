@@ -19,7 +19,7 @@ partial class MastodonClient
     public Task<MastodonList<Status>> GetHomeTimeline(ArrayOptions? options = null)
     {
         string url = "/api/v1/timelines/home";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -34,7 +34,7 @@ partial class MastodonClient
     public Task<MastodonList<Conversation>> GetConversations(ArrayOptions? options = null)
     {
         string url = "/api/v1/conversations";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -81,7 +81,7 @@ partial class MastodonClient
         {
             queryParams += $"{(queryParams != "" ? "&" : "?")}only_media=true";
         }
-        if (options != null)
+        if (options is not null)
         {
             queryParams += $"{(queryParams != "" ? "&" : "?")}{options.ToQueryString()}";
         }
@@ -110,7 +110,7 @@ partial class MastodonClient
         {
             queryParams += $"{(queryParams != "" ? "&" : "?")}only_media=true";
         }
-        if (options != null)
+        if (options is not null)
         {
             queryParams += $"{(queryParams != "" ? "&" : "?")}{options.ToQueryString()}";
         }
@@ -128,7 +128,7 @@ partial class MastodonClient
     {
         string url = $"/api/v1/timelines/list/{listId}";
 
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }

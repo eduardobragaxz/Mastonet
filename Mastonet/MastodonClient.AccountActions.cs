@@ -85,7 +85,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetBlocks(ArrayOptions? options = null)
     {
         var url = "/api/v1/blocks";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -127,7 +127,7 @@ partial class MastodonClient
     public Task<MastodonList<Account>> GetMutes(ArrayOptions? options = null)
     {
         var url = "/api/v1/mutes";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -226,7 +226,7 @@ partial class MastodonClient
     public Task<MastodonList<string>> GetDomainBlocks(ArrayOptions? options = null)
     {
         var url = "/api/v1/domain_blocks";
-        if (options != null)
+        if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
         }
@@ -297,7 +297,7 @@ partial class MastodonClient
         string url = "/api/v1/followed_tags";
 
         var queryParams = "";
-        if (options != null)
+        if (options is not null)
         {
             queryParams = $"?{options.ToQueryString()}";
         }

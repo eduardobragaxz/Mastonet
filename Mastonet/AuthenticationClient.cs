@@ -45,7 +45,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             new("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
         };
 
-        if (website != null)
+        if (website is not null)
         {
             data.Add(new KeyValuePair<string, string>("website", website));
         }
@@ -109,7 +109,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        if (redirectUri != null)
+        if (redirectUri is not null)
         {
             redirectUri = WebUtility.UrlEncode(WebUtility.UrlDecode(redirectUri));
         }
