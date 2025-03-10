@@ -77,7 +77,7 @@ public abstract partial class BaseHttpClient
         }
     }
 
-    protected async Task<string> Delete(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Delete(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
@@ -90,11 +90,11 @@ public abstract partial class BaseHttpClient
         AddHttpHeader(request);
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
 
-    protected async Task<string> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
@@ -107,7 +107,7 @@ public abstract partial class BaseHttpClient
         AddHttpHeader(request);
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
     protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
@@ -134,7 +134,7 @@ public abstract partial class BaseHttpClient
         AddHttpHeader(request);
         using var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStreamAsync();
         var result = TryDeserialize<MastodonList<T>>(content);
         // Read `Link` header
         if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
@@ -164,7 +164,7 @@ public abstract partial class BaseHttpClient
         return result;
     }
 
-    protected async Task<string> Post(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Post(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -173,7 +173,7 @@ public abstract partial class BaseHttpClient
         request.Content = new FormUrlEncodedContent(data ?? []);
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
     protected async Task<T> Post<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
@@ -183,7 +183,7 @@ public abstract partial class BaseHttpClient
         return TryDeserialize<T>(content);
     }
 
-    protected async Task<string> PostMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<Stream> PostMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -212,10 +212,10 @@ public abstract partial class BaseHttpClient
 
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
-    protected async Task<string> Put(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Put(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -225,7 +225,7 @@ public abstract partial class BaseHttpClient
         request.Content = new FormUrlEncodedContent(data ?? []);
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
     protected async Task<T> Put<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
@@ -233,7 +233,7 @@ public abstract partial class BaseHttpClient
         return TryDeserialize<T>(await Put(route, data));
     }
 
-    protected async Task<string> Patch(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Patch(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -242,7 +242,7 @@ public abstract partial class BaseHttpClient
         request.Content = new FormUrlEncodedContent(data ?? []);
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
     protected async Task<T> Patch<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
@@ -252,7 +252,7 @@ public abstract partial class BaseHttpClient
         return TryDeserialize<T>(content);
     }
 
-    protected async Task<string> PatchMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<Stream> PatchMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -281,20 +281,24 @@ public abstract partial class BaseHttpClient
         request.Content = content;
         var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadAsStreamAsync();
     }
 
-    private static T TryDeserialize<T>(string json)
+    private static T TryDeserialize<T>(Stream json)
     {
-        if (json.Contains("""{"error":"""))
-        {
-            var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
+        //if (json.Contains("""{"error":"""))
+        //{
+        //    var error = JsonSerializer.Deserialize(json, ErrorContext.Default.Error);
 
-            if (error is not null && !string.IsNullOrEmpty(error.Description))
-            {
-                throw new ServerErrorException(error);
-            }
-        }
+        //    if (error is not null && !string.IsNullOrEmpty(error.Description))
+        //    {
+        //        throw new ServerErrorException(error);
+        //    }
+        //}
+        //else if (json.Contains("<!DOCTYPE html>"))
+        //{
+
+        //}
 
         return (T)JsonSerializer.Deserialize(json, typeof(T), TryDeserializeContext.Default)!;
     }
