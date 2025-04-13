@@ -23,7 +23,7 @@ partial class MastodonClient
     {
         var data = new List<KeyValuePair<string, string>>()
         {
-            new("reblogs", $"{reblogs}"),
+            new("reblogs", $"{reblogs}".ToLowerInvariant()),
             new("notify", $"{notify}".ToLowerInvariant())
         };
         return this.Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
