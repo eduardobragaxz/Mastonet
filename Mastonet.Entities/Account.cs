@@ -157,6 +157,12 @@ public class Account
     public bool Suspended { get; set; }
 
     /// <summary>
+    /// An extra attribute returned only when an account is silenced. If true, indicates that the account should be hidden behind a warning screen.
+    /// </summary>
+    [JsonPropertyName("limited")]
+    public bool Limited { get; set; }
+
+    /// <summary>
     /// When a timed mute will expire, if applicable.
     /// </summary>
     [JsonPropertyName("mute_expires_at")]
