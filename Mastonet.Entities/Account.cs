@@ -151,6 +151,12 @@ public class Account
     public Source? Source { get; set; }
 
     /// <summary>
+    /// An extra attribute returned only when an account is silenced. If true, indicates that the account should be hidden behind a warning screen.
+    /// </summary>
+    [JsonPropertyName("limited")]
+    public bool Limited { get; set; }
+
+    /// <summary>
     /// An extra entity returned when an account is suspended.
     /// </summary>
     [JsonPropertyName("suspended")]
