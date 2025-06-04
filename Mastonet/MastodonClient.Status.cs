@@ -18,7 +18,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Status</returns>
-    public Task<Status> GetStatus(string statusId)
+    public ValueTask<Status> GetStatus(string statusId)
     {
         return Get<Status>($"/api/v1/statuses/{statusId}");
     }
@@ -28,7 +28,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Context</returns>
-    public Task<Context> GetStatusContext(string statusId)
+    public ValueTask<Context> GetStatusContext(string statusId)
     {
         return Get<Context>($"/api/v1/statuses/{statusId}/context");
     }
@@ -38,7 +38,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Card</returns>
-    public Task<Card> GetStatusCard(string statusId)
+    public ValueTask<Card> GetStatusCard(string statusId)
     {
         return Get<Card>($"/api/v1/statuses/{statusId}/card");
     }
@@ -373,7 +373,7 @@ partial class MastodonClient
     /// Get scheduled statuses.
     /// </summary>
     /// <returns>Returns array of ScheduledStatus</returns>
-    public Task<IEnumerable<ScheduledStatus>> GetScheduledStatuses()
+    public ValueTask<IEnumerable<ScheduledStatus>> GetScheduledStatuses()
     {
         return Get<IEnumerable<ScheduledStatus>>("/api/v1/scheduled_statuses");
     }
@@ -383,7 +383,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="scheduledStatusId"></param>
     /// <returns>Returns ScheduledStatus</returns>
-    public Task<ScheduledStatus> GetScheduledStatus(string scheduledStatusId)
+    public ValueTask<ScheduledStatus> GetScheduledStatus(string scheduledStatusId)
     {
         return Get<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}");
     }

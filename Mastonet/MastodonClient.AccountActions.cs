@@ -174,7 +174,7 @@ partial class MastodonClient
     /// <param name="home"></param>
     /// <param name="notifications"></param>
     /// <returns></returns>
-    public Task<Marker> GetMarkers(bool home = false, bool notifications = false)
+    public ValueTask<Marker> GetMarkers(bool home = false, bool notifications = false)
     {
         var data = new List<KeyValuePair<string, string>>();
 
@@ -263,7 +263,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="tag">The name of the hashtag</param>
     /// <returns></returns>
-    public Task<Tag> GetTagInfo(string tag)
+    public ValueTask<Tag> GetTagInfo(string tag)
     {
         return Get<Tag>($"/api/v1/tags/{tag}");
     }

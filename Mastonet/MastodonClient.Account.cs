@@ -15,7 +15,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns an Account</returns>
-    public Task<Account> GetAccount(string accountId)
+    public ValueTask<Account> GetAccount(string accountId)
     {
         return Get<Account>($"/api/v1/accounts/{accountId}");
     }
@@ -24,7 +24,7 @@ partial class MastodonClient
     /// Get the user's own Account with Source
     /// </summary>
     /// <returns>Returns the user's own Account with Source</returns>
-    public Task<Account> GetCurrentUser()
+    public ValueTask<Account> GetCurrentUser()
     {
         return Get<Account>($"/api/v1/accounts/verify_credentials");
     }
@@ -132,7 +132,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">Account ID</param>
     /// <returns>Returns an array of Relationships of the current user to a given account</returns>
-    public Task<IEnumerable<Relationship>> GetAccountRelationships(string id)
+    public ValueTask<IEnumerable<Relationship>> GetAccountRelationships(string id)
     {
         return GetAccountRelationships([id]);
     }
@@ -142,7 +142,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    public Task<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
+    public ValueTask<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
     {
         var data = new List<KeyValuePair<string, string>>();
         foreach (var id in ids)
@@ -298,7 +298,7 @@ partial class MastodonClient
     /// Listing accounts the user had past positive interactions with, but is not following yet
     /// </summary>
     /// <returns>Returns array of Account</returns>
-    public Task<IEnumerable<Account>> GetFollowSuggestions()
+    public ValueTask<IEnumerable<Account>> GetFollowSuggestions()
     {
         return Get<IEnumerable<Account>>("/api/v1/suggestions");
     }
@@ -358,7 +358,7 @@ partial class MastodonClient
     /// View your featured tags
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<FeaturedTag>> GetFeaturedTags()
+    public ValueTask<IEnumerable<FeaturedTag>> GetFeaturedTags()
     {
         return Get<IEnumerable<FeaturedTag>>("/api/v1/featured_tags");
     }
@@ -368,7 +368,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">The ID of the Account in the database</param>
     /// <returns></returns>
-    public Task<IEnumerable<FeaturedTag>> GetAccountFeaturedTags(string id)
+    public ValueTask<IEnumerable<FeaturedTag>> GetAccountFeaturedTags(string id)
     {
         return Get<IEnumerable<FeaturedTag>>($"/api/v1/accounts/{id}/featured_tags");
     }
@@ -402,7 +402,7 @@ partial class MastodonClient
     /// Shows your 10 most-used tags, with usage history for the past week.
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Tag>> GetFeaturedTagsSuggestions()
+    public ValueTask<IEnumerable<Tag>> GetFeaturedTagsSuggestions()
     {
         return Get<IEnumerable<Tag>>("/api/v1/featured_tags/suggestions");
     }

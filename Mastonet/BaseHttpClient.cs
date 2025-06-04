@@ -94,7 +94,7 @@ public abstract partial class BaseHttpClient
     }
 
 
-    protected async Task<Stream> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async ValueTask<Stream> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
@@ -110,7 +110,7 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync();
     }
 
-    protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async ValueTask<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
         where T : class
     {
         using var content = await Get(route, data);

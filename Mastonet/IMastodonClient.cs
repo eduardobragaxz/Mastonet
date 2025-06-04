@@ -19,31 +19,31 @@ public interface IMastodonClient
     /// </summary>
     /// <returns>Returns the current Instance. Does not require authentication</returns>
     [Obsolete("This method is deprecated on Mastodon v4. Use GetInstanceV2() instead.")]
-    Task<Instance> GetInstance();
+    ValueTask<Instance> GetInstance();
 
     /// <summary>
     /// Getting instance information
     /// </summary>
     /// <returns>Returns the current Instance. Does not require authentication</returns>
-    Task<InstanceV2> GetInstanceV2();
+    ValueTask<InstanceV2> GetInstanceV2();
 
     /// <summary>
     /// List of connected domains
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<string>> GetInstancePeers();
+    ValueTask<IEnumerable<string>> GetInstancePeers();
 
     /// <summary>
     /// Weekly activity
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Activity>> GetInstanceActivity();
+    ValueTask<IEnumerable<Activity>> GetInstanceActivity();
 
     /// <summary>
     /// Tags that are being used more frequently within the past week.
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Tag>> GetTrendingTags();
+    ValueTask<IEnumerable<Tag>> GetTrendingTags();
 
     /// <summary>
     /// A directory of profiles that your website is aware of.
@@ -53,14 +53,14 @@ public interface IMastodonClient
     /// <param name="order"></param>
     /// <param name="local"></param>
     /// <returns></returns>
-    Task<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local);
+    ValueTask<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local);
 
     /// <summary>
     /// Get all announcements set by administration
     /// </summary>
     /// <param name="withDismissed">If true, response will include announcements dismissed by the user</param>
     /// <returns></returns>
-    Task<IEnumerable<Announcement>> GetAnnouncements(bool withDismissed = false);
+    ValueTask<IEnumerable<Announcement>> GetAnnouncements(bool withDismissed = false);
 
     /// <summary>
     /// Allows a user to mark the announcement as read
@@ -87,14 +87,14 @@ public interface IMastodonClient
     /// User’s lists.
     /// </summary>
     /// <returns>Returns array of List</returns>
-    Task<IEnumerable<List>> GetLists();
+    ValueTask<IEnumerable<List>> GetLists();
 
     /// <summary>
     /// User’s lists that a given account is part of.
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns array of List</returns>
-    Task<IEnumerable<List>> GetListsContainingAccount(string accountId);
+    ValueTask<IEnumerable<List>> GetListsContainingAccount(string accountId);
 
     /// <summary>
     /// Accounts that are in a given list.
@@ -109,7 +109,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="listId"></param>
     /// <returns>Returns List</returns>
-    Task<List> GetList(string listId);
+    ValueTask<List> GetList(string listId);
 
     /// <summary>
     /// Create a new list.
@@ -202,7 +202,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="notificationId"></param>
     /// <returns>Returns the Notification</returns>
-    Task<Notification> GetNotification(string notificationId);
+    ValueTask<Notification> GetNotification(string notificationId);
 
     /// <summary>
     /// Deletes all notifications from the Mastodon server for the authenticated user
@@ -241,7 +241,7 @@ public interface IMastodonClient
     /// <param name="q">The search query</param>
     /// <param name="resolve">Whether to resolve non-local accounts</param>
     /// <returns>Returns ResultsV2. If q is a URL, Mastodon will attempt to fetch the provided account or status. Otherwise, it will do a local account and hashtag search</returns>
-    Task<SearchResults> Search(string q, bool resolveNonLocalAccouns = false);
+    ValueTask<SearchResults> Search(string q, bool resolveNonLocalAccouns = false);
 
     /// <summary>
     /// Searching for accounts
@@ -251,13 +251,13 @@ public interface IMastodonClient
     /// <param name="resolve">Attempt WebFinger look-up (default: false)</param>
     /// <param name="following">Only who the user is following (default: false)</param>
     /// <returns>Returns an array of matching Accounts. Will lookup an account remotely if the search term is in the username@domain format and not yet in the database.</returns>
-    Task<List<Account>> SearchAccounts(string q, int? limit = null, bool resolveNonLocalAccouns = false, bool onlyFollowing = false);
+    ValueTask<List<Account>> SearchAccounts(string q, int? limit = null, bool resolveNonLocalAccouns = false, bool onlyFollowing = false);
 
     /// <summary>
     /// Listing all text filters the user has configured that potentially must be applied client-side
     /// </summary>
     /// <returns>Returns an array of filters</returns>
-    Task<IEnumerable<Filter>> GetFilters();
+    ValueTask<IEnumerable<Filter>> GetFilters();
 
     /// <summary>
     /// Creating a new filter
@@ -275,7 +275,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="filterId">Filter ID</param>
     /// <returns>Returns a filter</returns>
-    Task<Filter> GetFilter(string filterId);
+    ValueTask<Filter> GetFilter(string filterId);
 
     /// <summary>
     /// Updating a text filter
@@ -300,7 +300,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="id">The ID of the poll</param>
     /// <returns>Returns Poll</returns>
-    Task<Poll> GetPoll(string id);
+    ValueTask<Poll> GetPoll(string id);
 
     /// <summary>
     /// Vote on a poll.
@@ -319,13 +319,13 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns an Account</returns>
-    Task<Account> GetAccount(string accountId);
+    ValueTask<Account> GetAccount(string accountId);
 
     /// <summary>
     /// Get the user's own Account with Source
     /// </summary>
     /// <returns>Returns the user's own Account with Source</returns>
-    Task<Account> GetCurrentUser();
+    ValueTask<Account> GetCurrentUser();
 
 
 
@@ -361,14 +361,14 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="id">Account ID</param>
     /// <returns>Returns an array of Relationships of the current user to a given account</returns>
-    Task<IEnumerable<Relationship>> GetAccountRelationships(string id);
+    ValueTask<IEnumerable<Relationship>> GetAccountRelationships(string id);
 
     /// <summary>
     /// Getting an account's relationships
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    Task<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids);
+    ValueTask<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids);
 
     /// <summary>
     /// Getting an account's followers
@@ -421,7 +421,7 @@ public interface IMastodonClient
     /// Listing accounts the user had past positive interactions with, but is not following yet
     /// </summary>
     /// <returns>Returns array of Account</returns>
-    Task<IEnumerable<Account>> GetFollowSuggestions();
+    ValueTask<IEnumerable<Account>> GetFollowSuggestions();
 
     /// <summary>
     /// Removing account from suggestions
@@ -447,7 +447,7 @@ public interface IMastodonClient
     /// View your featured tags
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<FeaturedTag>> GetFeaturedTags();
+    ValueTask<IEnumerable<FeaturedTag>> GetFeaturedTags();
 
     /// <summary>
     /// Feature a tag
@@ -467,7 +467,7 @@ public interface IMastodonClient
     /// Shows your 10 most-used tags, with usage history for the past week.
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Tag>> GetFeaturedTagsSuggestions();
+    ValueTask<IEnumerable<Tag>> GetFeaturedTagsSuggestions();
 
     #endregion
 
@@ -583,7 +583,7 @@ public interface IMastodonClient
     /// <param name="home"></param>
     /// <param name="notifications"></param>
     /// <returns></returns>
-    Task<Marker> GetMarkers(bool home = false, bool notifications = false);
+    ValueTask<Marker> GetMarkers(bool home = false, bool notifications = false);
 
     /// <summary>
     /// Save position in timeline
@@ -598,7 +598,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="tag">The name of the hashtag</param>
     /// <returns></returns>
-    Task<Tag> GetTagInfo(string tag);
+    ValueTask<Tag> GetTagInfo(string tag);
 
     /// <summary>
     /// Follow a hashtag
@@ -629,21 +629,21 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Status</returns>
-    Task<Status> GetStatus(string statusId);
+    ValueTask<Status> GetStatus(string statusId);
 
     /// <summary>
     /// Getting status context
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Context</returns>
-    Task<Context> GetStatusContext(string statusId);
+    ValueTask<Context> GetStatusContext(string statusId);
 
     /// <summary>
     /// Getting a card associated with a status
     /// </summary>
     /// <param name="statusId"></param>
     /// <returns>Returns a Card</returns>
-    Task<Card> GetStatusCard(string statusId);
+    ValueTask<Card> GetStatusCard(string statusId);
 
     /// <summary>
     /// Getting who reblogged a status
@@ -699,14 +699,14 @@ public interface IMastodonClient
     /// Get scheduled statuses.
     /// </summary>
     /// <returns>Returns array of ScheduledStatus</returns>
-    Task<IEnumerable<ScheduledStatus>> GetScheduledStatuses();
+    ValueTask<IEnumerable<ScheduledStatus>> GetScheduledStatuses();
 
     /// <summary>
     /// Get scheduled status.
     /// </summary>
     /// <param name="scheduledStatusId"></param>
     /// <returns>Returns ScheduledStatus</returns>
-    Task<ScheduledStatus> GetScheduledStatus(string scheduledStatusId);
+    ValueTask<ScheduledStatus> GetScheduledStatus(string scheduledStatusId);
 
     /// <summary>
     /// Update Scheduled status. Only scheduled_at can be changed. To change the content, delete it and post a new status.

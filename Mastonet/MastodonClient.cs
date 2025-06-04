@@ -17,7 +17,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     public MastodonClient() : base()
     {
-        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
+        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2().AsTask());
     }
     public MastodonClient(string instance, string accessToken)
         : this(instance, accessToken, DefaultHttpClient.Instance)
@@ -31,7 +31,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         this.Instance = instance;
         this.AccessToken = accessToken;
 
-        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
+        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2().AsTask());
     }
 
     #endregion
@@ -43,7 +43,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <returns>Returns the current Instance. Does not require authentication</returns>
     [Obsolete("This method is deprecated on Mastodon v4. Use GetInstanceV2() instead.")]
-    public Task<Instance> GetInstance()
+    public ValueTask<Instance> GetInstance()
     {
         return this.Get<Instance>("/api/v1/instance");
     }
@@ -52,7 +52,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Getting instance information
     /// </summary>
     /// <returns>Returns the current Instance. Does not require authentication</returns>
-    public Task<InstanceV2> GetInstanceV2()
+    public ValueTask<InstanceV2> GetInstanceV2()
     {
         return this.Get<InstanceV2>("/api/v2/instance");
     }
@@ -61,7 +61,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// List of connected domains
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<string>> GetInstancePeers()
+    public ValueTask<IEnumerable<string>> GetInstancePeers()
     {
         return Get<IEnumerable<string>>("/api/v1/instance/peers");
     }
@@ -70,7 +70,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Weekly activity
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Activity>> GetInstanceActivity()
+    public ValueTask<IEnumerable<Activity>> GetInstanceActivity()
     {
         return Get<IEnumerable<Activity>>("/api/v1/instance/activity");
     }
@@ -79,7 +79,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Tags that are being used more frequently within the past week.
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Tag>> GetTrendingTags()
+    public ValueTask<IEnumerable<Tag>> GetTrendingTags()
     {
         return Get<IEnumerable<Tag>>("/api/v1/trends/tags");
     }
@@ -134,7 +134,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="order"></param>
     /// <param name="local"></param>
     /// <returns></returns>
-    public Task<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local)
+    public ValueTask<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local)
     {
         var queryParams = "";
 
@@ -166,7 +166,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="withDismissed">If true, response will include announcements dismissed by the user</param>
     /// <returns></returns>
-    public Task<IEnumerable<Announcement>> GetAnnouncements(bool withDismissed = false)
+    public ValueTask<IEnumerable<Announcement>> GetAnnouncements(bool withDismissed = false)
     {
         return Get<IEnumerable<Announcement>>("/api/v1/announcements");
     }
@@ -209,7 +209,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// User’s lists.
     /// </summary>
     /// <returns>Returns array of List</returns>
-    public Task<IEnumerable<List>> GetLists()
+    public ValueTask<IEnumerable<List>> GetLists()
     {
         return this.Get<IEnumerable<List>>("/api/v1/lists");
     }
@@ -219,7 +219,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns array of List</returns>
-    public Task<IEnumerable<List>> GetListsContainingAccount(string accountId)
+    public ValueTask<IEnumerable<List>> GetListsContainingAccount(string accountId)
     {
         return this.Get<IEnumerable<List>>($"/api/v1/accounts/{accountId}/lists");
     }
@@ -246,7 +246,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="listId"></param>
     /// <returns>Returns List</returns>
-    public Task<List> GetList(string listId)
+    public ValueTask<List> GetList(string listId)
     {
         return this.Get<List>($"/api/v1/lists/{listId}");
     }
@@ -368,7 +368,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="attachmentId">The ID of the MediaAttachment in the database</param>
     /// <returns></returns>
-    public Task<Attachment> GetMediaAttachment(string attachmentId)
+    public ValueTask<Attachment> GetMediaAttachment(string attachmentId)
     {
         return Get<Attachment>($"/api/v1/media/{attachmentId}");
     }
@@ -443,7 +443,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Custom emojis that are available on the server.
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Emoji>> GetCustomEmojis()
+    public ValueTask<IEnumerable<Emoji>> GetCustomEmojis()
     {
         return this.Get<IEnumerable<Emoji>>("/api/v1/custom_emojis");
     }
@@ -506,7 +506,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="notificationId"></param>
     /// <returns>Returns the Notification</returns>
-    public Task<Notification> GetNotification(string notificationId)
+    public ValueTask<Notification> GetNotification(string notificationId)
     {
         return Get<Notification>($"/api/v1/notifications/{notificationId}");
     }
@@ -596,11 +596,11 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="q">The search query</param>
     /// <param name="resolve">Whether to resolve non-local accounts</param>
     /// <returns>Returns ResultsV2. If q is a URL, Mastodon will attempt to fetch the provided account or status. Otherwise, it will do a local account and hashtag search</returns>
-    public Task<SearchResults> Search(string q, bool resolveNonLocalAccouns = false)
+    public ValueTask<SearchResults> Search(string q, bool resolveNonLocalAccouns = false)
     {
         if (string.IsNullOrEmpty(q))
         {
-            return Task.FromResult(new SearchResults());
+            return ValueTask.FromResult(new SearchResults());
         }
 
         string url = $"/api/v2/search?q={Uri.EscapeDataString(q)}";
@@ -620,12 +620,12 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="resolve">Attempt WebFinger look-up (default: false)</param>
     /// <param name="following">Only who the user is following (default: false)</param>
     /// <returns>Returns an array of matching Accounts. Will lookup an account remotely if the search term is in the username@domain format and not yet in the database.</returns>
-    public Task<List<Account>> SearchAccounts(string q, int? limit = null, bool resolveNonLocalAccouns = false,
+    public ValueTask<List<Account>> SearchAccounts(string q, int? limit = null, bool resolveNonLocalAccouns = false,
         bool onlyFollowing = false)
     {
         if (string.IsNullOrEmpty(q))
         {
-            return Task.FromResult(new List<Account>());
+            return ValueTask.FromResult(new List<Account>());
         }
 
         string url = $"/api/v1/accounts/search?q={Uri.EscapeDataString(q)}";
@@ -655,7 +655,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Listing all text filters the user has configured that potentially must be applied client-side
     /// </summary>
     /// <returns>Returns an array of filters</returns>
-    public Task<IEnumerable<Filter>> GetFilters()
+    public ValueTask<IEnumerable<Filter>> GetFilters()
     {
         return Get<IEnumerable<Filter>>("/api/v1/filters");
     }
@@ -715,7 +715,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="filterId">Filter ID</param>
     /// <returns>Returns a filter</returns>
-    public Task<Filter> GetFilter(string filterId)
+    public ValueTask<Filter> GetFilter(string filterId)
     {
         return Get<Filter>($"/api/v1/filters/{filterId}");
     }
@@ -795,7 +795,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="id">The ID of the poll</param>
     /// <returns>Returns Poll</returns>
-    public Task<Poll> GetPoll(string id)
+    public ValueTask<Poll> GetPoll(string id)
     {
         return Get<Poll>($"/api/v1/polls/{id}");
     }
