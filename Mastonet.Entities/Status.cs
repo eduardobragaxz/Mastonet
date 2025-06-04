@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mastonet.Entities.Enums;
+using System.Collections.Immutable;
 
 namespace Mastonet.Entities;
 
 /// <summary>
 /// Represents a status posted by an account.
 /// </summary>
-public class Status
+public record class Status
 {
     // Base attributes
 
@@ -18,62 +19,62 @@ public class Status
     /// ID of the status in the database.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; init; } = string.Empty;
 
     /// <summary>
     /// URI of the status used for federation.
     /// </summary>
     [JsonPropertyName("uri")]
-    public string Uri { get; set; } = string.Empty;
+    public string Uri { get; init; } = string.Empty;
 
     /// <summary>
     /// The date when this status was created.
     /// </summary>
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
     /// <summary>
     /// The account that authored this status.
     /// </summary>
     [JsonPropertyName("account")]
-    public Account Account { get; set; } = new Account();
+    public Account Account { get; init; } = new Account();
 
     /// <summary>
     /// HTML-encoded status content.
     /// </summary>
     [JsonPropertyName("content")]
-    public string Content { get; set; } = string.Empty;
+    public string Content { get; init; } = string.Empty;
 
     /// <summary>
     /// Visibility of this status.
     /// </summary>
     [JsonPropertyName("visibility")]
     [JsonConverter(typeof(VisibilityConverter))]
-    public Visibility Visibility { get; set; }
+    public Visibility Visibility { get; init; }
 
     /// <summary>
     /// Is this status marked as sensitive content?
     /// </summary>
     [JsonPropertyName("sensitive")]
-    public bool? Sensitive { get; set; }
+    public bool? Sensitive { get; init; }
 
     /// <summary>
     /// Subject or summary line, below which status content is collapsed until expanded.
     /// </summary>
     [JsonPropertyName("spoiler_text")]
-    public string SpoilerText { get; set; } = string.Empty;
+    public string SpoilerText { get; init; } = string.Empty;
 
     /// <summary>
     /// Media that is attached to this status.
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public IEnumerable<Attachment> MediaAttachments { get; set; } = [];
+    public ImmutableArray<Attachment> MediaAttachments { get; init; } = [];
 
     /// <summary>
     /// The application used to post this status.
     /// </summary>
     [JsonPropertyName("application")]
-    public Application Application { get; set; } = new Application();
+    public Application Application { get; init; } = new Application();
 
     // Rendering attributes
 
@@ -81,19 +82,19 @@ public class Status
     /// Mentions of users within the status content.
     /// </summary>
     [JsonPropertyName("mentions")]
-    public IEnumerable<Mention> Mentions { get; set; } = [];
+    public IEnumerable<Mention> Mentions { get; init; } = [];
 
     /// <summary>
     /// Hashtags used within the status content.
     /// </summary>
     [JsonPropertyName("tags")]
-    public IEnumerable<Tag> Tags { get; set; } = [];
+    public IEnumerable<Tag> Tags { get; init; } = [];
 
     /// <summary>
     /// Custom emoji to be used when rendering status content.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; } = [];
+    public IEnumerable<Emoji> Emojis { get; init; } = [];
 
 
     // Informational attributes
@@ -102,19 +103,19 @@ public class Status
     /// How many boosts this status has received.
     /// </summary>
     [JsonPropertyName("reblogs_count")]
-    public long ReblogCount { get; set; }
+    public long ReblogCount { get; init; }
 
     /// <summary>
     /// How many favourites this status has received.
     /// </summary>
     [JsonPropertyName("favourites_count")]
-    public long FavouritesCount { get; set; }
+    public long FavouritesCount { get; init; }
 
     /// <summary>
     /// How many replies this status has received.
     /// </summary>
     [JsonPropertyName("replies_count")]
-    public long RepliesCount { get; set; }
+    public long RepliesCount { get; init; }
 
 
     // Nullable attributes
@@ -123,43 +124,43 @@ public class Status
     /// A link to the status's HTML representation.
     /// </summary>
     [JsonPropertyName("url")]
-    public string? Url { get; set; }
+    public string? Url { get; init; }
 
     /// <summary>
     /// ID of the status being replied.
     /// </summary>
     [JsonPropertyName("in_reply_to_id")]
-    public string? InReplyToId { get; set; }
+    public string? InReplyToId { get; init; }
 
     /// <summary>
     /// ID of the account being replied to.
     /// </summary>
     [JsonPropertyName("in_reply_to_account_id")]
-    public string? InReplyToAccountId { get; set; }
+    public string? InReplyToAccountId { get; init; }
 
     /// <summary>
     /// The status being reblogged.
     /// </summary>
     [JsonPropertyName("reblog")]
-    public Status? Reblog { get; set; }
+    public Status? Reblog { get; init; }
 
     /// <summary>
     /// The poll attached to the status.
     /// </summary>
     [JsonPropertyName("poll")]
-    public Poll? Poll { get; set; }
+    public Poll? Poll { get; init; }
 
     /// <summary>
     /// Preview card for links included within status content.
     /// </summary>
     [JsonPropertyName("card")]
-    public Card? Card { get; set; }
+    public Card? Card { get; init; }
 
     /// <summary>
     /// Primary language of this status.
     /// </summary>
     [JsonPropertyName("language")]
-    public string? Language { get; set; }
+    public string? Language { get; init; }
 
     /// <summary>
     /// Plain-text source of a status. 
@@ -167,7 +168,7 @@ public class Status
     /// without the client having to reverse-engineer the original text from the HTML content.
     /// </summary>
     [JsonPropertyName("text")]
-    public string? Text { get; set; }
+    public string? Text { get; init; }
 
 
     // Authorized user attributes
@@ -188,7 +189,7 @@ public class Status
     /// Have you muted notifications for this status's conversation?
     /// </summary>
     [JsonPropertyName("muted")]
-    public bool? Muted { get; set; }
+    public bool? Muted { get; init; }
 
     [JsonPropertyName("bookmarked")]
     public bool? Bookmarked { get; set; }
@@ -197,7 +198,7 @@ public class Status
     /// Whether the status is pinned
     /// </summary>
     [JsonPropertyName("pinned")]
-    public bool? Pinned { get; set; }
+    public bool? Pinned { get; init; }
 }
 
 public class StatusParameters

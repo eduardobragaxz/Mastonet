@@ -113,7 +113,7 @@ public abstract partial class BaseHttpClient
     protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
         where T : class
     {
-        var content = await Get(route, data);
+        using var content = await Get(route, data);
         return TryDeserialize<T>(content);
     }
 
@@ -134,7 +134,7 @@ public abstract partial class BaseHttpClient
         AddHttpHeader(request);
         using var response = await Client.SendAsync(request);
         OnResponseReceived(response);
-        var content = await response.Content.ReadAsStreamAsync();
+        using var content = await response.Content.ReadAsStreamAsync();
         var result = TryDeserialize<MastodonList<T>>(content);
         // Read `Link` header
         if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
