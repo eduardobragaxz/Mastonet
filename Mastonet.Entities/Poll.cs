@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -58,7 +57,7 @@ public class Poll
     /// Contains an array of index values for options.
     /// </summary>
     [JsonPropertyName("own_votes")]
-    public IEnumerable<int> OwnVotes { get; set; }= [];
+    public IEnumerable<int> OwnVotes { get; set; } = [];
 
     /// <summary>
     /// Possible answers for the poll.
@@ -70,7 +69,7 @@ public class Poll
     /// Custom emoji to be used for rendering poll options.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; }= [];
+    public IEnumerable<Emoji> Emojis { get; set; } = [];
 }
 
 public class PollOption

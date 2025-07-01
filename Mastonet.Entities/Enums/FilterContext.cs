@@ -1,9 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
-using Mastonet.Entities;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities.Enums;
 
@@ -22,9 +20,9 @@ public class FilterContextConverter : JsonConverter<FilterContext>
     public override FilterContext Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         FilterContext context = 0;
-        
+
         var contextStrings = JsonSerializer.Deserialize(ref reader, EntitiesContext.Default.IEnumerableString);
-        
+
         if (contextStrings != null)
         {
             foreach (var contextString in contextStrings)
@@ -57,7 +55,7 @@ public class FilterContextConverter : JsonConverter<FilterContext>
         if ((value & FilterContext.Notifications) == FilterContext.Notifications) contextStrings.Add("notifications");
         if ((value & FilterContext.Public) == FilterContext.Public) contextStrings.Add("public");
         if ((value & FilterContext.Thread) == FilterContext.Thread) contextStrings.Add("thread");
-        
+
         JsonSerializer.Serialize(writer, contextStrings, EntitiesContext.Default.ListString);
 
     }

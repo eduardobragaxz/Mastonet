@@ -1,10 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mastonet.Entities.Enums;
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -82,19 +80,19 @@ public record class Status
     /// Mentions of users within the status content.
     /// </summary>
     [JsonPropertyName("mentions")]
-    public IEnumerable<Mention> Mentions { get; init; } = [];
+    public ImmutableArray<Mention> Mentions { get; init; } = [];
 
     /// <summary>
     /// Hashtags used within the status content.
     /// </summary>
     [JsonPropertyName("tags")]
-    public IEnumerable<Tag> Tags { get; init; } = [];
+    public ImmutableArray<Tag> Tags { get; init; } = [];
 
     /// <summary>
     /// Custom emoji to be used when rendering status content.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; init; } = [];
+    public ImmutableArray<Emoji> Emojis { get; init; } = [];
 
 
     // Informational attributes

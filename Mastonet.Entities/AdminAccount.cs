@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -27,7 +26,7 @@ public class AdminAccount
     ///  The domain of the account, if it is remote.
     /// </summary>
     [JsonPropertyName("domain")]
-    public string? Domain { get; set; } 
+    public string? Domain { get; set; }
 
     /// <summary>
     /// When the account was first discovered.
@@ -99,7 +98,7 @@ public class AdminAccount
     /// The reason given when requesting an invite (for instances that require manual approval of registrations)
     /// </summary>
     [JsonPropertyName("invite_request")]
-    public string? InviteRequest { get; set; } 
+    public string? InviteRequest { get; set; }
 
     /// <summary>
     /// All known IP addresses associated with this account.
@@ -117,11 +116,11 @@ public class AdminAccount
     /// The ID of the Application that created this account, if applicable.
     /// </summary>
     [JsonPropertyName("created_by_application_id")]
-    public string? CreatedByApplicationId { get; set; } 
-    
+    public string? CreatedByApplicationId { get; set; }
+
     /// <summary>
     /// The ID of the Account that invited this user, if applicable.
     /// </summary>
     [JsonPropertyName("invited_by_account_id")]
-    public string? InvitedByAccountId { get; set; } 
+    public string? InvitedByAccountId { get; set; }
 }

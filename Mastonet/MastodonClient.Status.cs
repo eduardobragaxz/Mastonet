@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mastonet.Entities;
-using System.Net.Http;
-using System.Collections;
+﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using Mastonet.Entities.Enums;
+using System.Threading.Tasks;
 
 
 namespace Mastonet;
@@ -469,7 +466,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="statusId">The ID of the Status in the database</param>
     /// <returns>Returns the target Status</returns>
-    public  Task<Status> Unbookmark(string statusId)
+    public Task<Status> Unbookmark(string statusId)
     {
         return Post<Status>($"/api/v1/statuses/{statusId}/unbookmark");
     }

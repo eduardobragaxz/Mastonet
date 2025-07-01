@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -34,7 +32,7 @@ public class Instance
     /// A shorter description defined by the admin.
     /// </summary>
     [JsonPropertyName("short_description")]
-    public string ShortDescription { get; set; }=string.Empty;
+    public string ShortDescription { get; set; } = string.Empty;
 
     /// <summary>
     /// An email that may be contacted for any inquiries.
@@ -70,7 +68,7 @@ public class Instance
     /// Whether invites are enabled.
     /// </summary>
     [JsonPropertyName("invites_enabled")]
-    public bool InvitesEnabled { get; set;}
+    public bool InvitesEnabled { get; set; }
 
     /// <summary>
     /// URLs of interest for clients apps.

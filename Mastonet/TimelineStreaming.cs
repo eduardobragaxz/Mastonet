@@ -1,5 +1,4 @@
-﻿using Mastonet.Entities;
-using Mastonet.Entities.Enums;
+﻿using Mastonet.Entities.Enums;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;

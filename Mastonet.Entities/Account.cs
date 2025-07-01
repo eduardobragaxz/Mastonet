@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -84,7 +83,7 @@ public class Account
     /// Custom emoji entities to be used when rendering the profile. If none, an empty array will be returned.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public IEnumerable<Emoji> Emojis { get; set; } = [];
+    public ImmutableArray<Emoji> Emojis { get; set; } = [];
 
     /// <summary>
     /// Whether the account has opted into discovery features such as the profile directory.
@@ -136,7 +135,7 @@ public class Account
     /// Additional metadata attached to a profile as name-value pairs.
     /// </summary>
     [JsonPropertyName("fields")]
-    public IEnumerable<Field>? Fields { get; set; }
+    public ImmutableArray<Field>? Fields { get; set; }
 
     /// <summary>
     /// A presentational flag. Indicates that the account may perform automated actions, may not be monitored, or identifies as a robot.

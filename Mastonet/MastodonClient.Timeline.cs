@@ -1,9 +1,6 @@
 ﻿using Mastonet.Entities;
 using Mastonet.Entities.Enums;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mastonet;
@@ -115,7 +112,7 @@ partial class MastodonClient
             queryParams += $"{(queryParams != "" ? "&" : "?")}{options.ToQueryString()}";
         }
 
-        return GetMastodonList<Status>($"{url}{ queryParams}");
+        return GetMastodonList<Status>($"{url}{queryParams}");
     }
 
     /// <summary>

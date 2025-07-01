@@ -1,8 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -16,17 +13,17 @@ public class SearchResults
     /// Accounts which match the given query
     /// </summary>
     [JsonPropertyName("accounts")]
-    public IEnumerable<Account> Accounts { get; set; } = [];
+    public ImmutableArray<Account> Accounts { get; set; } = [];
 
     /// <summary>
     /// Statuses which match the given query
     /// </summary>
     [JsonPropertyName("statuses")]
-    public IEnumerable<Status> Statuses { get; set; } = [];
+    public ImmutableArray<Status> Statuses { get; set; } = [];
 
     /// <summary>
     /// Hashtags which match the given query
     /// </summary>
     [JsonPropertyName("hashtags")]
-    public IEnumerable<Tag> Hashtags { get; set; } = [];
+    public ImmutableArray<Tag> Hashtags { get; set; } = [];
 }

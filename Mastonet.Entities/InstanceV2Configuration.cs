@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -11,37 +9,37 @@ public class InstanceConfiguration
     /// URLs of interest for clients apps.
     /// </summary>
     [JsonPropertyName("urls")]
-    public InstanceConfigurationUrls Urls { get; set; }= new InstanceConfigurationUrls();
+    public InstanceConfigurationUrls Urls { get; set; } = new InstanceConfigurationUrls();
 
     /// <summary>
     /// Limits related to accounts.
     /// </summary>
     [JsonPropertyName("accounts")]
-    public InstanceConfigurationAccounts Accounts { get; set; }= new InstanceConfigurationAccounts();
+    public InstanceConfigurationAccounts Accounts { get; set; } = new InstanceConfigurationAccounts();
 
     /// <summary>
     /// Limits related to authoring statuses.
     /// </summary>
     [JsonPropertyName("statuses")]
-    public InstanceConfigurationStatuses Statuses { get; set; }= new InstanceConfigurationStatuses();
+    public InstanceConfigurationStatuses Statuses { get; set; } = new InstanceConfigurationStatuses();
 
     /// <summary>
     /// Hints for which attachments will be accepted.
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public InstanceConfigurationMediaAttachments MediaAttachments { get; set; }= new InstanceConfigurationMediaAttachments();
+    public InstanceConfigurationMediaAttachments MediaAttachments { get; set; } = new InstanceConfigurationMediaAttachments();
 
     /// <summary>
     /// Limits related to polls.
     /// </summary>
     [JsonPropertyName("polls")]
-    public InstanceConfigurationPolls Polls { get; set; }= new InstanceConfigurationPolls();
+    public InstanceConfigurationPolls Polls { get; set; } = new InstanceConfigurationPolls();
 
     /// <summary>
     /// Hints related to translation.
     /// </summary>
     [JsonPropertyName("translation")]
-    public InstanceConfigurationTranslation Translation { get; set; }= new InstanceConfigurationTranslation();
+    public InstanceConfigurationTranslation Translation { get; set; } = new InstanceConfigurationTranslation();
 
     /// <summary>
     /// The instances VAPID public key, used for push notifications, the same as WebPushSubscription#server_key.
@@ -56,7 +54,7 @@ public class InstanceConfigurationUrls
     /// The Websockets URL for connecting to the streaming API.
     /// </summary>
     [JsonPropertyName("streaming")]
-    public string Streaming { get; set; }= string.Empty;
+    public string Streaming { get; set; } = string.Empty;
 }
 
 public class InstanceConfigurationAccounts
@@ -92,7 +90,7 @@ public class InstanceConfigurationStatuses
     /// Contains MIME types that can be used (available on some non-Mastodon instances)
     /// </summary>
     [JsonPropertyName("supported_mime_types")]
-    public IEnumerable<string>? SupportedMimeTypes { get; set; } 
+    public IEnumerable<string>? SupportedMimeTypes { get; set; }
 }
 
 public class InstanceConfigurationMediaAttachments
@@ -101,7 +99,7 @@ public class InstanceConfigurationMediaAttachments
     /// Contains MIME types that can be uploaded.
     /// </summary>
     [JsonPropertyName("supported_mime_types")]
-    public IEnumerable<string> SupportedMimeTypes { get; set; }= [];
+    public IEnumerable<string> SupportedMimeTypes { get; set; } = [];
 
     /// <summary>
     /// The maximum size of any uploaded image, in bytes.

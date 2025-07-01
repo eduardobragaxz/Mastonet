@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -45,13 +43,13 @@ public class InstanceV2
     /// Usage data for this instance.
     /// </summary>
     [JsonPropertyName("usage")]
-    public InstanceUsage Usage { get; set; }= new InstanceUsage();
+    public InstanceUsage Usage { get; set; } = new InstanceUsage();
 
     /// <summary>
     /// An image used to represent this instance.
     /// </summary>
     [JsonPropertyName("thumbnail")]
-    public InstanceThumbnail Thumbnail { get; set; }= new InstanceThumbnail();
+    public InstanceThumbnail Thumbnail { get; set; } = new InstanceThumbnail();
 
     /// <summary>
     /// The list of available size variants for this instance configured icon.
@@ -69,13 +67,13 @@ public class InstanceV2
     /// Configured values and limits for this website.
     /// </summary>
     [JsonPropertyName("configuration")]
-    public InstanceConfiguration Configuration { get; set; }= new InstanceConfiguration();
+    public InstanceConfiguration Configuration { get; set; } = new InstanceConfiguration();
 
     /// <summary>
     /// Information about registering for this website.
     /// </summary>
     [JsonPropertyName("registrations")]
-    public InstanceRegistrations Registrations { get; set; }= new InstanceRegistrations();
+    public InstanceRegistrations Registrations { get; set; } = new InstanceRegistrations();
 
     /// <summary>
     /// Information about which version of the API is implemented by this server. It contains at least a mastodon attribute, and other implementations may have their own additional attributes.
@@ -87,13 +85,13 @@ public class InstanceV2
     /// Hints related to contacting a representative of the website.
     /// </summary>
     [JsonPropertyName("contact")]
-    public InstanceContact Contact { get; set; }=   new InstanceContact();
+    public InstanceContact Contact { get; set; } = new InstanceContact();
 
     /// <summary>
     /// An itemized list of rules for this website.
     /// </summary>
     [JsonPropertyName("rules")]
-    public IEnumerable<InstanceRule> Rules { get; set; }= [];
+    public IEnumerable<InstanceRule> Rules { get; set; } = [];
 }
 
 public class InstanceUsage

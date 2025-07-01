@@ -1,7 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -33,8 +31,8 @@ public class IdentityProof
     /// A link to a statement of identity proof, hosted by the identity provider.
     /// </summary>
     [JsonPropertyName("proof_url")]
-    public string ProofUrl { get; set; }= string.Empty;
+    public string ProofUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; set;}
+    public DateTime UpdatedAt { get; set; }
 }

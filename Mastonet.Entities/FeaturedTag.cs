@@ -1,7 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -26,7 +24,7 @@ public class FeaturedTag
     /// A link to all statuses by a user that contain this hashtag.
     /// </summary>
     [JsonPropertyName("url")]
-    public string Url { get; set; }= string.Empty;
+    public string Url { get; set; } = string.Empty;
 
     /// <summary>
     /// The number of authored statuses containing this hashtag.

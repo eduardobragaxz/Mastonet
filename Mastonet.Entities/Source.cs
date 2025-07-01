@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using Mastonet.Entities.Enums;
 using System.Collections.Generic;
-using System.Linq;
-using Mastonet.Entities.Enums;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -10,7 +9,7 @@ namespace Mastonet.Entities;
 /// Returned as an additional entity when verifying and updated credentials, as an attribute of Account.
 /// </summary>
 public class Source
-{        
+{
     /// <summary>
     /// Profile bio.
     /// </summary>

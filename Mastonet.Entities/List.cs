@@ -1,7 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mastonet.Entities;
 
@@ -29,5 +26,5 @@ public class List
     /// none = Show replies to no one
     /// </summary>
     [JsonPropertyName("replies_policy")]
-    public string RepliesPolicy { get; set; }= string.Empty;
+    public string RepliesPolicy { get; set; } = string.Empty;
 }
