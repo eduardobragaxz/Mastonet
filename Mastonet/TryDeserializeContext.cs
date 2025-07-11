@@ -1,12 +1,14 @@
 ﻿using Mastonet.Entities;
+using Mastonet.Entities.Enums;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Mastonet;
 
-
 [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata)]
 [JsonSerializable(typeof(Status))]
+[JsonSerializable(typeof(Quote))]
+[JsonSerializable(typeof(QuoteState))]
 [JsonSerializable(typeof(Account))]
 [JsonSerializable(typeof(Attachment))]
 [JsonSerializable(typeof(Card))]
@@ -26,6 +28,7 @@ namespace Mastonet;
 [JsonSerializable(typeof(List<Account>))]
 [JsonSerializable(typeof(Marker))]
 [JsonSerializable(typeof(Notification))]
+[JsonSerializable(typeof(NotificationType))]
 [JsonSerializable(typeof(ScheduledStatus))]
 [JsonSerializable(typeof(SearchResults))]
 [JsonSerializable(typeof(AppRegistration))]

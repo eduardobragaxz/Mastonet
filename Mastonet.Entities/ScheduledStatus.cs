@@ -71,7 +71,7 @@ public class StatusParams
     /// Visibility of the scheduled status
     /// </summary>
     [JsonPropertyName("visibility")]
-    [JsonConverter(typeof(VisibilityConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<Visibility>))]
     public Visibility Visibility { get; set; }
 
     /// <summary>

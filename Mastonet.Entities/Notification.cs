@@ -1,4 +1,5 @@
 ﻿using System;
+using Mastonet.Entities.Enums;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -30,7 +31,8 @@ public class Notification
     /// moderation_warning = A moderator has taken action against your account or has sent you a warning
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
+    [JsonConverter(typeof(JsonStringEnumConverter<NotificationType>))]
+    public NotificationType Type { get; set; }
 
     [JsonPropertyName("group_key")]
     public string GroupKey { get; set; } = string.Empty;

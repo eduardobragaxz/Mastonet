@@ -47,7 +47,7 @@ public record class Status
     /// Visibility of this status.
     /// </summary>
     [JsonPropertyName("visibility")]
-    [JsonConverter(typeof(VisibilityConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<Visibility>))]
     public Visibility Visibility { get; init; }
 
     /// <summary>
@@ -167,6 +167,12 @@ public record class Status
     /// </summary>
     [JsonPropertyName("text")]
     public string? Text { get; init; }
+
+    /// <summary>
+    /// Information about the status being quoted, if any
+    /// </summary>
+    [JsonPropertyName("quote")]
+    public Quote? Quote { get; set; }
 
 
     // Authorized user attributes

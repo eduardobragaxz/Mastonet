@@ -492,7 +492,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=poll";
         }
 
-        if (excludeTypes.HasFlag(NotificationType.FollowRequest))
+        if (excludeTypes.HasFlag(NotificationType.Follow_request))
         {
             queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request";
         }
