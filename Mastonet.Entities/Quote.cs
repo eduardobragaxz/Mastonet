@@ -17,7 +17,7 @@ public record class Quote
     /// </summary>
     [JsonPropertyName("state")]
     [JsonConverter(typeof(JsonStringEnumConverter<QuoteState>))]
-    public QuoteState QuoteState { get; set; }
+    public QuoteState State { get; set; }
     /// <summary>
     /// The status being quoted, if the quote has been accepted. This will be null, unless the state attribute is accepted.
     /// </summary>
