@@ -2,6 +2,7 @@
 using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -78,9 +79,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Tags that are being used more frequently within the past week.
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Tag>> GetTrendingTags()
+    public Task<ImmutableArray<Tag>> GetTrendingTags()
     {
-        return Get<IEnumerable<Tag>>("/api/v1/trends/tags");
+        return GetValue<ImmutableArray<Tag>>("/api/v1/trends/tags");
     }
 
     /// <summary>
@@ -654,9 +655,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// Listing all text filters the user has configured that potentially must be applied client-side
     /// </summary>
     /// <returns>Returns an array of filters</returns>
-    public Task<IEnumerable<Filter>> GetFilters()
+    public Task<ImmutableArray<Filter>> GetFilters()
     {
-        return Get<IEnumerable<Filter>>("/api/v1/filters");
+        return GetValue<ImmutableArray<Filter>>("/api/v1/filters");
     }
 
     /// <summary>

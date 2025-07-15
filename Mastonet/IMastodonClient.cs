@@ -2,6 +2,7 @@
 using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ public interface IMastodonClient
     /// Tags that are being used more frequently within the past week.
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Tag>> GetTrendingTags();
+    Task<ImmutableArray<Tag>> GetTrendingTags();
 
     /// <summary>
     /// A directory of profiles that your website is aware of.
@@ -256,7 +257,7 @@ public interface IMastodonClient
     /// Listing all text filters the user has configured that potentially must be applied client-side
     /// </summary>
     /// <returns>Returns an array of filters</returns>
-    Task<IEnumerable<Filter>> GetFilters();
+    Task<ImmutableArray<Filter>> GetFilters();
 
     /// <summary>
     /// Creating a new filter

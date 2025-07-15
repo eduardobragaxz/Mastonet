@@ -115,6 +115,13 @@ public abstract partial class BaseHttpClient
         return TryDeserialize<T>(content);
     }
 
+    protected async Task<T> GetValue<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+        where T : struct
+    {
+        using var content = await Get(route, data);
+        return TryDeserialize<T>(content);
+    }
+
     //private const string ID_FINDER_PATTERN = "_id=([0-9]+)";
     [GeneratedRegex("_id=([0-9]+)", RegexOptions.None, 100)]
     private static partial Regex IdFinder();

@@ -1,6 +1,7 @@
 ﻿using Mastonet.Entities;
 using Mastonet.Entities.Enums;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet;
@@ -51,6 +52,7 @@ namespace Mastonet;
 [JsonSerializable(typeof(IEnumerable<Filter>))]
 [JsonSerializable(typeof(IEnumerable<ScheduledStatus>))]
 [JsonSerializable(typeof(IEnumerable<string>))]
+[JsonSerializable(typeof(ImmutableArray<Filter>))]
 internal partial class TryDeserializeContext : JsonSerializerContext
 {
 }
