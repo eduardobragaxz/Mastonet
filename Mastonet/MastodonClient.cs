@@ -209,9 +209,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// User’s lists.
     /// </summary>
     /// <returns>Returns array of List</returns>
-    public Task<IEnumerable<List>> GetLists()
+    public Task<ImmutableArray<List>> GetLists()
     {
-        return this.Get<IEnumerable<List>>("/api/v1/lists");
+        return this.GetValue<ImmutableArray<List>>("/api/v1/lists");
     }
 
     /// <summary>
@@ -219,9 +219,9 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns array of List</returns>
-    public Task<IEnumerable<List>> GetListsContainingAccount(string accountId)
+    public Task<ImmutableArray<List>> GetListsContainingAccount(string accountId)
     {
-        return this.Get<IEnumerable<List>>($"/api/v1/accounts/{accountId}/lists");
+        return this.GetValue<ImmutableArray<List>>($"/api/v1/accounts/{accountId}/lists");
     }
 
     /// <summary>

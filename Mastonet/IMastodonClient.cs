@@ -87,14 +87,14 @@ public interface IMastodonClient
     /// User’s lists.
     /// </summary>
     /// <returns>Returns array of List</returns>
-    Task<IEnumerable<List>> GetLists();
+    Task<ImmutableArray<List>> GetLists();
 
     /// <summary>
     /// User’s lists that a given account is part of.
     /// </summary>
     /// <param name="accountId"></param>
     /// <returns>Returns array of List</returns>
-    Task<IEnumerable<List>> GetListsContainingAccount(string accountId);
+    Task<ImmutableArray<List>> GetListsContainingAccount(string accountId);
 
     /// <summary>
     /// Accounts that are in a given list.
@@ -361,14 +361,14 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="id">Account ID</param>
     /// <returns>Returns an array of Relationships of the current user to a given account</returns>
-    Task<IEnumerable<Relationship>> GetAccountRelationships(string id);
+    Task<ImmutableArray<Relationship>> GetAccountRelationships(string id);
 
     /// <summary>
     /// Getting an account's relationships
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    Task<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids);
+    Task<ImmutableArray<Relationship>> GetAccountRelationships(IEnumerable<string> ids);
 
     /// <summary>
     /// Getting an account's followers

@@ -2,6 +2,7 @@
 using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -131,7 +132,7 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">Account ID</param>
     /// <returns>Returns an array of Relationships of the current user to a given account</returns>
-    public Task<IEnumerable<Relationship>> GetAccountRelationships(string id)
+    public Task<ImmutableArray<Relationship>> GetAccountRelationships(string id)
     {
         return GetAccountRelationships([id]);
     }
@@ -141,14 +142,14 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    public Task<IEnumerable<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
+    public Task<ImmutableArray<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
     {
         var data = new List<KeyValuePair<string, string>>();
         foreach (var id in ids)
         {
             data.Add(new KeyValuePair<string, string>("id[]", $"{id}"));
         }
-        return Get<IEnumerable<Relationship>>("/api/v1/accounts/relationships", data);
+        return GetValue<ImmutableArray<Relationship>>("/api/v1/accounts/relationships", data);
     }
 
     /// <summary>
@@ -367,9 +368,9 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">The ID of the Account in the database</param>
     /// <returns></returns>
-    public Task<IEnumerable<FeaturedTag>> GetAccountFeaturedTags(string id)
+    public Task<ImmutableArray<FeaturedTag>> GetAccountFeaturedTags(string id)
     {
-        return Get<IEnumerable<FeaturedTag>>($"/api/v1/accounts/{id}/featured_tags");
+        return GetValue<ImmutableArray<FeaturedTag>>($"/api/v1/accounts/{id}/featured_tags");
     }
 
     /// <summary>

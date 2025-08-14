@@ -172,7 +172,7 @@ public record class Status
     /// Information about the status being quoted, if any
     /// </summary>
     [JsonPropertyName("quote")]
-    public Quote? Quote { get; set; }
+    public Quote? Quote { get; init; }
 
 
     // Authorized user attributes
