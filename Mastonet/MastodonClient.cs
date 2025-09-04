@@ -26,10 +26,10 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     [JsonConstructor]
     public MastodonClient(string instance, string accessToken, HttpClient client)
-        : base(client)
+        : base(client, accessToken)
     {
         this.Instance = instance;
-        this.AccessToken = accessToken;
+        //this.AccessToken = accessToken;
 
         this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
     }

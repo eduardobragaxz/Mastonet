@@ -16,12 +16,12 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
     public AuthenticationClient(string instance) : this(instance, DefaultHttpClient.Instance) { }
     public AuthenticationClient(AppRegistration app) : this(app, DefaultHttpClient.Instance) { }
 
-    public AuthenticationClient(string instance, HttpClient client) : base(client)
+    public AuthenticationClient(string instance, HttpClient client) : base(client, "")
     {
         this.Instance = instance;
     }
 
-    public AuthenticationClient(AppRegistration app, HttpClient client) : base(client)
+    public AuthenticationClient(AppRegistration app, HttpClient client) : base(client, "")
     {
         this.Instance = app.Instance;
         this.AppRegistration = app;
