@@ -60,8 +60,12 @@ public abstract partial class BaseHttpClient
     }
     protected BaseHttpClient(HttpClient client, string accessToken)
     {
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-        AccessToken = accessToken;
+        if (accessToken != "")
+        {
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+            AccessToken = accessToken;
+        }
+        
         this.Client = client;
     }
 
