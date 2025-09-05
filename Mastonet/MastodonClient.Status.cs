@@ -48,7 +48,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts</returns>
     public Task<MastodonList<Account>> GetRebloggedBy(string statusId, ArrayOptions? options = null)
     {
-        var url = $"/api/v1/statuses/{statusId}/reblogged_by";
+        string url = $"/api/v1/statuses/{statusId}/reblogged_by";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -65,7 +65,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts</returns>
     public Task<MastodonList<Account>> GetFavouritedBy(string statusId, ArrayOptions? options = null)
     {
-        var url = $"/api/v1/statuses/{statusId}/favourited_by";
+        string url = $"/api/v1/statuses/{statusId}/favourited_by";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -96,7 +96,7 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
+        List<KeyValuePair<string, string>> data = new()
         {
             new("status", status),
         };
@@ -108,7 +108,7 @@ partial class MastodonClient
 
         if (mediaIds is not null)
         {
-            foreach (var mediaId in mediaIds)
+            foreach (string mediaId in mediaIds)
             {
                 data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId));
             }
@@ -170,7 +170,7 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
+        List<KeyValuePair<string, string>> data = new()
         {
             new("status", statusParameters.Status!),
         };
@@ -182,7 +182,7 @@ partial class MastodonClient
 
         if (statusParameters.MediaIds is not null)
         {
-            foreach (var mediaId in statusParameters.MediaIds)
+            foreach (string mediaId in statusParameters.MediaIds)
             {
                 data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId));
             }
@@ -250,14 +250,14 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("status", status),
-        };
+        ];
 
         if (mediaIds is not null)
         {
-            foreach (var mediaId in mediaIds)
+            foreach (string mediaId in mediaIds)
             {
                 data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
             }
@@ -310,14 +310,14 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("status", statusParameters.Status!),
-        };
+        ];
 
         if (statusParameters.MediaIds is not null)
         {
-            foreach (var mediaId in statusParameters.MediaIds)
+            foreach (string mediaId in statusParameters.MediaIds)
             {
                 data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
             }
@@ -393,7 +393,7 @@ partial class MastodonClient
     /// <returns>Returns ScheduledStatus</returns>
     public Task<ScheduledStatus> UpdateScheduledStatus(string scheduledStatusId, DateTime? scheduledAt)
     {
-        var data = new List<KeyValuePair<string, string>>();
+        List<KeyValuePair<string, string>> data = [];
         if (scheduledAt.HasValue)
         {
             data.Add(new KeyValuePair<string, string>("scheduled_at", $"{scheduledAt.Value}"));

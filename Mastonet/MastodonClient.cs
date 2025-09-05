@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -92,7 +93,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns></returns>
     public Task<MastodonList<Status>> GetTrendingStatuses(int? offset = null, int? limit = null)
     {
-        var queryParams = "";
+        string queryParams = "";
 
         if (offset.HasValue)
         {
@@ -112,7 +113,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns></returns>
     public Task<MastodonList<Card>> GetTrendingLinks(int? offset = null, int? limit = null)
     {
-        var queryParams = "";
+        string queryParams = "";
 
         if (offset.HasValue)
         {
@@ -136,7 +137,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns></returns>
     public Task<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local)
     {
-        var queryParams = "";
+        string queryParams = "";
 
         if (offset.HasValue)
         {
@@ -232,7 +233,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns array of Account</returns>
     public Task<MastodonList<Account>> GetListAccounts(string listId, ArrayOptions? options = null)
     {
-        var url = $"/api/v1/lists/{listId}/accounts";
+        string url = $"/api/v1/lists/{listId}/accounts";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -263,10 +264,10 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("The title is required", nameof(title));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("title", title),
-        };
+        ];
 
         return this.Post<List>("/api/v1/lists", data);
     }
@@ -285,12 +286,12 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("The title is required", nameof(newTitle));
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("title", newTitle),
             new("exclusive", $"{exclusive}"),
             new("replies_policy", replies_policy)
-        };
+        ];
 
         return this.Put<List>($"/api/v1/lists/{listId}", data);
     }
@@ -317,7 +318,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        var data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id));
+        IEnumerable<KeyValuePair<string,string>> data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id));
 
         return this.Post($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -345,7 +346,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        var data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id));
+        IEnumerable<KeyValuePair<string, string>> data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id));
 
         return this.Delete($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -397,8 +398,8 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         AttachmentFocusData? focus = null)
     {
         media.ParamName = "file";
-        var list = new List<MediaDefinition>() { media };
-        var data = new Dictionary<string, string>();
+        List<MediaDefinition> list = [media];
+        Dictionary<string, string> data = [];
         if (description is not null)
         {
             data.Add("description", description);
@@ -421,7 +422,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns an Attachment that can be used when creating a status</returns>
     public Task<Attachment> UpdateMedia(string mediaId, string? description = null, AttachmentFocusData? focus = null)
     {
-        var data = new Dictionary<string, string>();
+        Dictionary<string, string> data = [];
         if (description is not null)
         {
             data.Add("description", description);
@@ -461,8 +462,8 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<MastodonList<Notification>> GetNotifications(ArrayOptions? options = null,
         NotificationType excludeTypes = NotificationType.None)
     {
-        var url = "/api/v1/notifications";
-        var queryParams = "";
+        string url = "/api/v1/notifications";
+        string queryParams = "";
         if (options is not null)
         {
             queryParams += $"?{options.ToQueryString()}";
@@ -541,7 +542,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns a list of Reports made by the authenticated user</returns>
     public Task<MastodonList<Report>> GetReports(ArrayOptions? options = null)
     {
-        var url = "/api/v1/reports";
+        string url = "/api/v1/reports";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -561,13 +562,13 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<Report> Report(string accountId, IEnumerable<string>? statusIds = null, string? comment = null,
         bool? forward = null)
     {
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("account_id", accountId),
-        };
+        ];
         if (statusIds is not null)
         {
-            foreach (var statusId in statusIds)
+            foreach (string statusId in statusIds)
             {
                 data.Add(new KeyValuePair<string, string>("status_ids[]", statusId));
             }
@@ -682,7 +683,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context must be specified", nameof(context));
         }
 
-        var data = new List<KeyValuePair<string, string>>() { new("phrase", phrase) };
+        List<KeyValuePair<string, string>> data = new() { new("phrase", phrase) };
         foreach (FilterContext checkFlag in new[]
                      { FilterContext.Home, FilterContext.Notifications, FilterContext.Public, FilterContext.Thread })
         {
@@ -738,7 +739,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context to filter must be specified", nameof(context));
         }
 
-        var data = new List<KeyValuePair<string, string>>();
+        List<KeyValuePair<string, string>> data = [];
         if (phrase is not null)
         {
             data.Add(new KeyValuePair<string, string>("phrase", phrase));
@@ -808,9 +809,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns Poll</returns>
     public Task<Poll> Vote(string id, IEnumerable<int> choices)
     {
-        var data = choices
-            .Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))
-            .ToArray();
+        KeyValuePair<string, string>[] data = [.. choices.Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))];
         return Post<Poll>($"/api/v1/polls/{id}/votes", data);
     }
 
@@ -827,10 +826,10 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             // Get ratelimit info
             // https://docs.joinmastodon.org/api/rate-limits/
 
-            var category = ApiCallCategory.Global;
+            ApiCallCategory category = ApiCallCategory.Global;
 
-            var requestMethod = response.RequestMessage?.Method;
-            var requestPath = response.RequestMessage?.RequestUri?.AbsolutePath ?? "";
+            HttpMethod? requestMethod = response.RequestMessage?.Method;
+            string requestPath = response.RequestMessage?.RequestUri?.AbsolutePath ?? "";
             if (requestMethod == HttpMethod.Post && requestPath == "/api/v1/media")
             {
                 category = ApiCallCategory.MediaUpload;
@@ -842,16 +841,16 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             }
 
 
-            var headers = response.Headers;
-            var limit = headers.GetValues("X-RateLimit-Limit").FirstOrDefault();
-            var remaining = headers.GetValues("X-RateLimit-Remaining").FirstOrDefault();
-            var reset = headers.GetValues("X-RateLimit-Reset").FirstOrDefault();
+            HttpResponseHeaders headers = response.Headers;
+            string? limit = headers.GetValues("X-RateLimit-Limit").FirstOrDefault();
+            string? remaining = headers.GetValues("X-RateLimit-Remaining").FirstOrDefault();
+            string? reset = headers.GetValues("X-RateLimit-Reset").FirstOrDefault();
 
             if (!string.IsNullOrEmpty(limit) && int.TryParse(limit, out int intLimit) &&
                 !string.IsNullOrEmpty(remaining) && int.TryParse(remaining, out int intRemaining) &&
                 !string.IsNullOrEmpty(reset) && DateTime.TryParse(reset, out DateTime dateReset))
             {
-                var rateLimitEventArgs = new RateLimitEventArgs
+                RateLimitEventArgs rateLimitEventArgs = new()
                 {
                     RateLimitCategory = category,
                     Limit = intLimit,

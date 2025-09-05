@@ -37,19 +37,19 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public async Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, IEnumerable<GranularScope>? scope = null)
     {
-        var scopeString = GetScopeParam(scope);
-        var data = new List<KeyValuePair<string, string>>() {
+        string scopeString = GetScopeParam(scope);
+        List<KeyValuePair<string, string>> data = [
             new("client_name", appName),
             new("scopes", scopeString),
             new("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
-        };
+        ];
 
         if (website is not null)
         {
             data.Add(new KeyValuePair<string, string>("website", website));
         }
 
-        var appRegistration = await Post<AppRegistration>("/api/v1/apps", data);
+        AppRegistration appRegistration = await Post<AppRegistration>("/api/v1/apps", data).ConfigureAwait(false);
 
         appRegistration.Instance = Instance;
         appRegistration.Scope = scopeString;
@@ -69,15 +69,15 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("client_id", AppRegistration.ClientId),
             new("client_secret", AppRegistration.ClientSecret),
             new("grant_type", "password"),
             new("username", email),
             new("password", password),
             new("scope", AppRegistration.Scope),
-        };
+        ];
 
         return Post<Auth>("/oauth/token", data);
     }
@@ -89,14 +89,14 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("client_id", AppRegistration.ClientId),
             new("client_secret", AppRegistration.ClientSecret),
             new("grant_type", "authorization_code"),
             new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
             new("code", code),
-        };
+        ];
 
         return Post<Auth>("/oauth/token", data);
     }
@@ -132,12 +132,12 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("You need to revoke a token with the app CclientId and ClientSecret used to obtain the Token");
         }
 
-        var data = new List<KeyValuePair<string, string>>()
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("client_id", AppRegistration.ClientId),
             new("client_secret", AppRegistration.ClientSecret),
             new("token", token),
-        };
+        ];
 
         return Post<Auth>("/oauth/revoke", data);
     }

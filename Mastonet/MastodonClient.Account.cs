@@ -67,8 +67,8 @@ partial class MastodonClient
             throw new ArgumentException("Number of fields must be 4 or fewer.", nameof(fields_attributes));
         }
 
-        var data = new List<KeyValuePair<string, string>>();
-        var media = new List<MediaDefinition>();
+        List<KeyValuePair<string, string>> data = [];
+        List<MediaDefinition> media = [];
 
         if (discoverable is not null)
         {
@@ -144,8 +144,8 @@ partial class MastodonClient
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
     public Task<ImmutableArray<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
     {
-        var data = new List<KeyValuePair<string, string>>();
-        foreach (var id in ids)
+        List<KeyValuePair<string, string>> data = [];
+        foreach (string id in ids)
         {
             data.Add(new KeyValuePair<string, string>("id[]", $"{id}"));
         }
@@ -160,7 +160,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts</returns>
     public Task<MastodonList<Account>> GetAccountFollowers(string accountId, ArrayOptions? options = null)
     {
-        var url = $"/api/v1/accounts/{accountId}/followers";
+        string url = $"/api/v1/accounts/{accountId}/followers";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -176,7 +176,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts</returns>
     public Task<MastodonList<Account>> GetAccountFollowing(string accountId, ArrayOptions? options = null)
     {
-        var url = $"/api/v1/accounts/{accountId}/following";
+        string url = $"/api/v1/accounts/{accountId}/following";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -196,7 +196,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Statuses</returns>
     public Task<MastodonList<Status>> GetAccountStatuses(string accountId, ArrayOptions? options = null, bool onlyMedia = false, bool excludeReplies = false, bool pinned = false, bool excludeReblogs = false)
     {
-        var url = $"/api/v1/accounts/{accountId}/statuses";
+        string url = $"/api/v1/accounts/{accountId}/statuses";
 
         string queryParams = "";
         if (onlyMedia)
@@ -265,7 +265,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts which have requested to follow the authenticated user</returns>
     public Task<MastodonList<Account>> GetFollowRequests(ArrayOptions? options = null)
     {
-        var url = "/api/v1/follow_requests";
+        string url = "/api/v1/follow_requests";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -322,7 +322,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Statuses favourited by the authenticated user</returns>
     public Task<MastodonList<Status>> GetFavourites(ArrayOptions? options = null)
     {
-        var url = "/api/v1/favourites";
+        string url = "/api/v1/favourites";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -342,7 +342,7 @@ partial class MastodonClient
     /// <returns>Statuses the user has bookmarked</returns>
     public Task<MastodonList<Status>> GetBookmarks(ArrayOptions? options = null)
     {
-        var url = "/api/v1/bookmarks";
+        string url = "/api/v1/bookmarks";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -380,10 +380,10 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<FeaturedTag> FeatureTag(string name)
     {
-        var data = new List<KeyValuePair<string, string>>
-        {
+        List<KeyValuePair<string, string>> data =
+        [
             new("name",name)
-        };
+        ];
 
         return Post<FeaturedTag>("/api/v1/featured_tags", data);
     }

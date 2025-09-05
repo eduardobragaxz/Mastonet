@@ -28,19 +28,19 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
             StreamingType.Direct => "/api/v1/streaming/direct",
             _ => throw new NotImplementedException(),
         };
-        using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+        using (HttpRequestMessage request = new(HttpMethod.Get, url))
         using (cts = new CancellationTokenSource())
         {
             request.Headers.Add("Authorization", $"Bearer {accessToken}");
-            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-            var stream = await response.Content.ReadAsStreamAsync();
-            using var reader = new StreamReader(stream);
+            using HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
+            Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            using StreamReader reader = new(stream);
             string? eventName = null;
             string? data = null;
 
             while (true)
             {
-                var line = await reader.ReadLineAsync();
+                string? line = await reader.ReadLineAsync().ConfigureAwait(false);
 
                 if (string.IsNullOrEmpty(line) || line.StartsWith(':'))
                 {

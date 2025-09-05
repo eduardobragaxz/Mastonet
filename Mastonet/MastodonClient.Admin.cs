@@ -25,7 +25,7 @@ public partial class MastodonClient
         string? displayName = null, string? byDomain = null, string? email = null, string? userIp = null)
     {
         const string url = "/api/v2/admin/accounts";
-        var queryParams = "";
+        string queryParams = "";
         queryParams = AddQueryStringParam(queryParams, "origin", $"{origin}".ToLowerInvariant());
         queryParams = AddQueryStringParam(queryParams, "status", $"{status}".ToLowerInvariant());
         queryParams = AddQueryStringParam(queryParams, "permissions", permissions);
@@ -37,7 +37,7 @@ public partial class MastodonClient
         queryParams = AddQueryStringParam(queryParams, "ip", userIp);
         if (options is not null)
         {
-            var concatChar = GetQueryStringConcatChar(queryParams);
+            string concatChar = GetQueryStringConcatChar(queryParams);
             queryParams += $"{concatChar}{options.ToQueryString()}";
         }
 

@@ -25,7 +25,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
         switch (eventName)
         {
             case "update":
-                var status = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Status);
+                Entities.Status? status = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Status);
 
                 if (status is not null)
                 {
@@ -34,7 +34,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
                 break;
             case "notification":
 
-                var notification = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Notification);
+                Entities.Notification? notification = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Notification);
 
                 if (notification is not null)
                 {
@@ -51,7 +51,7 @@ public abstract class TimelineStreaming(StreamingType type, string? param, strin
                 OnFiltersChanged?.Invoke(this, new StreamFiltersChangedEventArgs());
                 break;
             case "conversation":
-                var conversation = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Conversation);
+                Entities.Conversation? conversation = JsonSerializer.Deserialize(data, TryDeserializeContext.Default.Conversation);
 
                 if (conversation is not null)
                 {

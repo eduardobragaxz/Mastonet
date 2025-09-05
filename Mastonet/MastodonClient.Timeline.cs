@@ -69,7 +69,7 @@ partial class MastodonClient
     {
         string url = "/api/v1/timelines/public";
 
-        var queryParams = "";
+        string queryParams = "";
         if (local)
         {
             queryParams += "?local=true";
@@ -98,7 +98,7 @@ partial class MastodonClient
     {
         string url = $"/api/v1/timelines/tag/{hashtag}";
 
-        var queryParams = "";
+        string queryParams = "";
         if (local)
         {
             queryParams += "?local=true";

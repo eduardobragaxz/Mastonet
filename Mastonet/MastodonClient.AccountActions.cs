@@ -17,7 +17,7 @@ partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Follow(string accountId, bool reblogs = true, bool notify = false)
     {
-        var data = new List<KeyValuePair<string, string>>()
+        List<KeyValuePair<string, string>> data = new()
         {
             new("reblogs", $"{reblogs}".ToLowerInvariant()),
             new("notify", $"{notify}".ToLowerInvariant())
@@ -42,7 +42,7 @@ partial class MastodonClient
     /// <returns>Returns the local representation of the followed account, as an Account</returns>
     public Task<Account> Follow(string uri)
     {
-        var data = new List<KeyValuePair<string, string>>()
+        List<KeyValuePair<string, string>> data = new()
         {
             new("uri", uri)
         };
@@ -80,7 +80,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts blocked by the authenticated user</returns>
     public Task<MastodonList<Account>> GetBlocks(ArrayOptions? options = null)
     {
-        var url = "/api/v1/blocks";
+        string url = "/api/v1/blocks";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -101,7 +101,7 @@ partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Mute(string accountId, bool notifications = true)
     {
-        var data = notifications ? null : new[] { new KeyValuePair<string, string>("notifications", "false") };
+        KeyValuePair<string, string>[]? data = notifications ? null : [new KeyValuePair<string, string>("notifications", "false")];
         return Post<Relationship>($"/api/v1/accounts/{accountId}/mute", data);
     }
 
@@ -122,7 +122,7 @@ partial class MastodonClient
     /// <returns>Returns an array of Accounts muted by the authenticated user</returns>
     public Task<MastodonList<Account>> GetMutes(ArrayOptions? options = null)
     {
-        var url = "/api/v1/mutes";
+        string url = "/api/v1/mutes";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -172,7 +172,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> GetMarkers(bool home = false, bool notifications = false)
     {
-        var data = new List<KeyValuePair<string, string>>();
+        List<KeyValuePair<string, string>> data = new();
 
         if (home)
         {
@@ -195,7 +195,7 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> SetMarkers(string? homeLastReadId = null, string? notificationLastReadId = null)
     {
-        var data = new List<KeyValuePair<string, string>>();
+        List<KeyValuePair<string, string>> data = [];
 
         if (!string.IsNullOrEmpty(homeLastReadId))
         {
@@ -221,7 +221,7 @@ partial class MastodonClient
     /// <returns>Returns an array of strings</returns>
     public Task<MastodonList<string>> GetDomainBlocks(ArrayOptions? options = null)
     {
-        var url = "/api/v1/domain_blocks";
+        string url = "/api/v1/domain_blocks";
         if (options is not null)
         {
             url += $"?{options.ToQueryString()}";
@@ -236,7 +236,7 @@ partial class MastodonClient
     /// <param name="domain">Domain to block</param>
     public Task BlockDomain(string domain)
     {
-        var url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
+        string url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
         return Post(url);
     }
 
@@ -246,7 +246,7 @@ partial class MastodonClient
     /// <param name="domain">Domain to block</param>
     public Task UnblockDomain(string domain)
     {
-        var url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
+        string url = $"/api/v1/domain_blocks?domain={Uri.EscapeDataString(domain)}";
         return Delete(url);
     }
 
@@ -292,7 +292,7 @@ partial class MastodonClient
     {
         string url = "/api/v1/followed_tags";
 
-        var queryParams = "";
+        string queryParams = "";
         if (options is not null)
         {
             queryParams = $"?{options.ToQueryString()}";

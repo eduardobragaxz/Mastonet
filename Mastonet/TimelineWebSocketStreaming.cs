@@ -22,13 +22,13 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
 
     public override async Task Start()
     {
-        var instance = await instanceGetter;
-        var url = instance?.Configuration?.Urls?.Streaming;
+        InstanceV2 instance = await instanceGetter.ConfigureAwait(false);
+        string? url = instance?.Configuration?.Urls?.Streaming;
 
-        if (url == null)
+        if (url is null)
         {
             // websocket disabled, fallback to http streaming
-            await base.Start();
+            await base.Start().ConfigureAwait(false);
             return;
         }
 
@@ -46,13 +46,13 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
             _ => throw new NotImplementedException(),
         };
         socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri(url), CancellationToken.None);
+        await socket.ConnectAsync(new Uri(url), CancellationToken.None).ConfigureAwait(false);
 
         byte[] buffer = new byte[receiveChunkSize];
         MemoryStream ms = new();
         while (socket is not null)
         {
-            var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None).ConfigureAwait(false);
 
             ms.Write(buffer, 0, result.Count);
 
@@ -60,7 +60,7 @@ public class TimelineWebSocketStreaming(StreamingType type, string? param, strin
             {
                 //var messageStr = Encoding.UTF8.GetString(ms.ToArray());
 
-                var message = JsonSerializer.Deserialize(ms, TimelineMessageContext.Default.TimelineMessage);
+                TimelineMessage? message = JsonSerializer.Deserialize(ms, TimelineMessageContext.Default.TimelineMessage);
 
                 if (message is not null)
                 {

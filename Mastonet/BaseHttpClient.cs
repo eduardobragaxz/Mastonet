@@ -82,9 +82,9 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        HttpResponseMessage response = await Client.DeleteAsync(url);
+        HttpResponseMessage response = await Client.DeleteAsync(url).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
 
@@ -97,22 +97,22 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        HttpResponseMessage response = await Client.GetAsync(url);
+        HttpResponseMessage response = await Client.GetAsync(url).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
         where T : class
     {
-        using Stream content = await Get(route, data);
+        using Stream content = await Get(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
     protected async Task<T> GetValue<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
         where T : struct
     {
-        using Stream content = await Get(route, data);
+        using Stream content = await Get(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
@@ -129,9 +129,9 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using HttpResponseMessage response = await Client.GetAsync(url);
+        using HttpResponseMessage response = await Client.GetAsync(url).ConfigureAwait(false);
         OnResponseReceived(response);
-        using Stream content = await response.Content.ReadAsStreamAsync();
+        using Stream content = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         MastodonList<T> result = TryDeserialize<MastodonList<T>>(content);
         // Read `Link` header
         if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
@@ -165,15 +165,15 @@ public abstract partial class BaseHttpClient
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PostAsync(url, new FormUrlEncodedContent(data ?? []));
+        HttpResponseMessage response = await Client.PostAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     protected async Task<T> Post<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
         where T : class
     {
-        Stream content = media is not null && media.Any() ? await PostMedia(route, data, media) : await Post(route, data);
+        Stream content = media is not null && media.Any() ? await PostMedia(route, data, media).ConfigureAwait(false) : await Post(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
@@ -199,38 +199,38 @@ public abstract partial class BaseHttpClient
             }
         }
 
-        HttpResponseMessage response = await Client.PostAsync(url, content);
+        HttpResponseMessage response = await Client.PostAsync(url, content).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     protected async Task<Stream> Put(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PutAsync(url, new FormUrlEncodedContent(data ?? []));
+        HttpResponseMessage response = await Client.PutAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     protected async Task<T> Put<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
-        return TryDeserialize<T>(await Put(route, data));
+        return TryDeserialize<T>(await Put(route, data).ConfigureAwait(false));
     }
 
     protected async Task<Stream> Patch(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PatchAsync(url, new FormUrlEncodedContent(data ?? []));
+        HttpResponseMessage response = await Client.PatchAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     protected async Task<T> Patch<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
         where T : class
     {
-        Stream content = media is not null && media.Any() ? await PatchMedia(route, data, media) : await Patch(route, data);
+        Stream content = media is not null && media.Any() ? await PatchMedia(route, data, media).ConfigureAwait(false) : await Patch(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
@@ -256,9 +256,9 @@ public abstract partial class BaseHttpClient
             }
         }
 
-        HttpResponseMessage response = await Client.PatchAsync(url, content);
+        HttpResponseMessage response = await Client.PatchAsync(url, content).ConfigureAwait(false);
         OnResponseReceived(response);
-        return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
     private static T TryDeserialize<T>(Stream json)
