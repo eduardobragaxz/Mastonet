@@ -20,17 +20,13 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     {
         this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
     }
-    public MastodonClient(string instance, string accessToken)
-        : this(instance, accessToken, DefaultHttpClient.Instance)
-    {
-    }
 
     [JsonConstructor]
     public MastodonClient(string instance, string accessToken, HttpClient client)
-        : base(client, accessToken)
+        : base(client)
     {
         this.Instance = instance;
-        //this.AccessToken = accessToken;
+        this.AccessToken = accessToken;
 
         this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
     }
@@ -683,7 +679,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context must be specified", nameof(context));
         }
 
-        List<KeyValuePair<string, string>> data = new() { new("phrase", phrase) };
+        List<KeyValuePair<string, string>> data = [new("phrase", phrase)];
         foreach (FilterContext checkFlag in new[]
                      { FilterContext.Home, FilterContext.Notifications, FilterContext.Public, FilterContext.Thread })
         {

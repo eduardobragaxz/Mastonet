@@ -56,22 +56,23 @@ public abstract partial class BaseHttpClient
 
     protected BaseHttpClient()
     {
-        this.Client = DefaultHttpClient.Instance!;
+        this.Client = DefaultHttpClient.Instance;
     }
-    protected BaseHttpClient(HttpClient client, string accessToken)
+    protected BaseHttpClient(HttpClient client)
     {
-        if (accessToken != "")
-        {
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-            AccessToken = accessToken;
-        }
-
-        this.Client ??= client;
+        this.Client = client;
     }
 
     #region Http helpers
 
     protected abstract void OnResponseReceived(HttpResponseMessage response);
+    private void AddHttpHeader(HttpRequestMessage request)
+    {
+        if (!string.IsNullOrEmpty(AccessToken))
+        {
+            request.Headers.Add("Authorization", "Bearer " + AccessToken);
+        }
+    }
 
     protected async Task<Stream> Delete(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
     {
@@ -82,7 +83,9 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        HttpResponseMessage response = await Client.DeleteAsync(url).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Delete, url);
+        AddHttpHeader(request);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -97,7 +100,9 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        HttpResponseMessage response = await Client.GetAsync(url).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Get, url);
+        AddHttpHeader(request);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -129,9 +134,12 @@ public abstract partial class BaseHttpClient
             url += querystring;
         }
 
-        using HttpResponseMessage response = await Client.GetAsync(url).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Get, url);
+        AddHttpHeader(request);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
-        using Stream content = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        Stream content = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
         MastodonList<T> result = TryDeserialize<MastodonList<T>>(content);
         // Read `Link` header
         if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
@@ -165,7 +173,10 @@ public abstract partial class BaseHttpClient
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PostAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Post, url);
+        AddHttpHeader(request);
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -180,6 +191,8 @@ public abstract partial class BaseHttpClient
     protected async Task<Stream> PostMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
+        using HttpRequestMessage request = new(HttpMethod.Post, url);
+        AddHttpHeader(request);
 
         MultipartFormDataContent content = [];
 
@@ -198,8 +211,9 @@ public abstract partial class BaseHttpClient
                 content.Add(new StringContent(pair.Value), pair.Key);
             }
         }
+        request.Content = content;
 
-        HttpResponseMessage response = await Client.PostAsync(url, content).ConfigureAwait(false);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -208,7 +222,10 @@ public abstract partial class BaseHttpClient
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PutAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Put, url);
+        AddHttpHeader(request);
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -222,7 +239,10 @@ public abstract partial class BaseHttpClient
     {
         string url = $"https://{this.Instance}{route}";
 
-        HttpResponseMessage response = await Client.PatchAsync(url, new FormUrlEncodedContent(data ?? [])).ConfigureAwait(false);
+        using HttpRequestMessage request = new(HttpMethod.Patch, url);
+        AddHttpHeader(request);
+        request.Content = new FormUrlEncodedContent(data ?? []);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
@@ -237,6 +257,7 @@ public abstract partial class BaseHttpClient
     protected async Task<Stream> PatchMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
+        using HttpRequestMessage request = new(HttpMethod.Patch, url);
 
         MultipartFormDataContent content = [];
 
@@ -255,8 +276,9 @@ public abstract partial class BaseHttpClient
                 content.Add(new StringContent(pair.Value), pair.Key);
             }
         }
+        request.Content = content;
 
-        HttpResponseMessage response = await Client.PatchAsync(url, content).ConfigureAwait(false);
+        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
