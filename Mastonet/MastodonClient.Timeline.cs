@@ -191,7 +191,7 @@ partial class MastodonClient
 
     public TimelineStreaming GetListStreaming(List list)
     {
-        if (list == null)
+        if (list is null)
         {
             throw new ArgumentException("You must specify a list", nameof(list));
         }

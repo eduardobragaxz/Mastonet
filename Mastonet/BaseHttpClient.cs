@@ -56,7 +56,7 @@ public abstract partial class BaseHttpClient
 
     protected BaseHttpClient()
     {
-        this.Client = DefaultHttpClient.Instance;
+        this.Client = DefaultHttpClient.Instance!;
     }
     protected BaseHttpClient(HttpClient client, string accessToken)
     {
@@ -66,7 +66,7 @@ public abstract partial class BaseHttpClient
             AccessToken = accessToken;
         }
 
-        this.Client = client;
+        this.Client ??= client;
     }
 
     #region Http helpers

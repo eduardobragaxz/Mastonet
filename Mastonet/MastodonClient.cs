@@ -313,7 +313,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="accountIds">Array of account IDs</param>
     public Task AddAccountsToList(string listId, IEnumerable<string> accountIds)
     {
-        if (accountIds == null || !accountIds.Any())
+        if (accountIds is null || !accountIds.Any())
         {
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
@@ -341,7 +341,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="accountIds">Array of Account IDs</param>
     public Task RemoveAccountsFromList(string listId, IEnumerable<string> accountIds)
     {
-        if (accountIds == null || !accountIds.Any())
+        if (accountIds is null || !accountIds.Any())
         {
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }

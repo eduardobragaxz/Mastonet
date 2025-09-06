@@ -91,7 +91,7 @@ partial class MastodonClient
         IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
         DateTime? scheduledAt = null, string? language = null, PollParameters? pollParameters = null)
     {
-        if (string.IsNullOrEmpty(status) && (mediaIds == null || !mediaIds.Any()))
+        if (string.IsNullOrEmpty(status) && (mediaIds is null || !mediaIds.Any()))
         {
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
@@ -164,7 +164,7 @@ partial class MastodonClient
     /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(StatusParameters statusParameters)
     {
-        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
+        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds is null || !statusParameters.MediaIds.Any()))
         {
             //testing. should be nameof(statusParameters.Status)
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
@@ -245,7 +245,7 @@ partial class MastodonClient
     public Task<Status> EditStatus(string statusId, string status, IEnumerable<string>? mediaIds = null,
         bool sensitive = false, string? spoilerText = null, string? language = null, PollParameters? poll = null)
     {
-        if (string.IsNullOrEmpty(status) && (mediaIds == null || !mediaIds.Any()))
+        if (string.IsNullOrEmpty(status) && (mediaIds is null || !mediaIds.Any()))
         {
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
@@ -304,7 +304,7 @@ partial class MastodonClient
     /// <returns>Returns Status</returns>
     public Task<Status> EditStatus(string statusId, StatusParameters statusParameters)
     {
-        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds == null || !statusParameters.MediaIds.Any()))
+        if (string.IsNullOrEmpty(statusParameters.Status) && (statusParameters.MediaIds is null || !statusParameters.MediaIds.Any()))
         {
             //testing. should be nameof(statusParameters.Status)
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));

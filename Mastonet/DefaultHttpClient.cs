@@ -11,5 +11,5 @@ internal static class DefaultHttpClient
     /// <summary>
     /// The only <see cref="System.Net.Http.HttpClient"/> instance.
     /// </summary>
-    internal static HttpClient Instance { get; } = new HttpClient();
+    internal static HttpClient? Instance { get; private set; } = null;
 }

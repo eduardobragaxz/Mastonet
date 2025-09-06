@@ -13,8 +13,8 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 {
     public AppRegistration? AppRegistration { get; set; }
 
-    public AuthenticationClient(string instance) : this(instance, DefaultHttpClient.Instance) { }
-    public AuthenticationClient(AppRegistration app) : this(app, DefaultHttpClient.Instance) { }
+    public AuthenticationClient(string instance) : this(instance, DefaultHttpClient.Instance!) { }
+    public AuthenticationClient(AppRegistration app) : this(app, DefaultHttpClient.Instance!) { }
 
     public AuthenticationClient(string instance, HttpClient client) : base(client, "")
     {
@@ -64,7 +64,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public Task<Auth> ConnectWithPassword(string email, string password)
     {
-        if (AppRegistration == null)
+        if (AppRegistration is null)
         {
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
@@ -84,7 +84,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public Task<Auth> ConnectWithCode(string code, string? redirect_uri = null)
     {
-        if (AppRegistration == null)
+        if (AppRegistration is null)
         {
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
@@ -103,7 +103,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public string OAuthUrl(string? redirectUri = null)
     {
-        if (AppRegistration == null)
+        if (AppRegistration is null)
         {
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
@@ -127,7 +127,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
     /// <exception cref="InvalidOperationException"></exception>
     public Task Revoke(string token)
     {
-        if (AppRegistration == null)
+        if (AppRegistration is null)
         {
             throw new InvalidOperationException("You need to revoke a token with the app CclientId and ClientSecret used to obtain the Token");
         }
@@ -144,7 +144,7 @@ public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     private static string GetScopeParam(IEnumerable<GranularScope>? scopes)
     {
-        if (scopes == null)
+        if (scopes is null)
         {
             return "";
         }
