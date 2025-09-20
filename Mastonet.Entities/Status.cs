@@ -29,7 +29,7 @@ public record class Status
     /// The date when this status was created.
     /// </summary>
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
 
     /// <summary>
     /// The account that authored this status.

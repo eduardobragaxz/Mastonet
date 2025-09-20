@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -40,7 +41,7 @@ public class Card
     /// Fediverse account of the authors of the original resource.
     /// </summary>
     [JsonPropertyName("authors")]
-    public IEnumerable<CardAuthor> Authors { get; set; } = [];
+    public ImmutableArray<CardAuthor> Authors { get; set; } = [];
 
     /// <summary>
     /// The author of the original resource.
