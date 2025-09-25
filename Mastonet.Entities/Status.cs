@@ -216,6 +216,14 @@ public class StatusParameters
     /// Either "direct", "private", "unlisted" or "public"
     /// </summary>
     public Visibility? Visibility { get; set; }
+    /// <summary>
+    /// ID of the status being quoted, if any
+    /// </summary>
+    public string? QuotedStatusId { get; set; }
+    /// <summary>
+    /// Sets who is allowed to quote the status
+    /// </summary>
+    public QuoteApprovalPolicy? QuoteApprovalPolicy { get; set; }
 
     /// <summary>
     /// Local ID of the status you want to reply to

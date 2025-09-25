@@ -88,6 +88,7 @@ partial class MastodonClient
     /// <param name="poll">Nested parameters to attach a poll to the status</param>
     /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null,
+        string? quotedStatusId = null, QuoteApprovalPolicy? quoteApprovalPolicy = null,
         IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
         DateTime? scheduledAt = null, string? language = null, PollParameters? pollParameters = null)
     {
@@ -100,6 +101,11 @@ partial class MastodonClient
         {
             new("status", status),
         };
+
+        if (!string.IsNullOrEmpty(quotedStatusId))
+        {
+            data.Add(new KeyValuePair<string, string>("quoted_status_id", quotedStatusId!));
+        }
 
         if (!string.IsNullOrEmpty(replyStatusId))
         {
@@ -122,6 +128,11 @@ partial class MastodonClient
         if (spoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", spoilerText));
+        }
+
+        if (quoteApprovalPolicy.HasValue)
+        {
+            data.Add(new KeyValuePair<string, string>("quote_approval_policy", $"{quoteApprovalPolicy.Value}".ToLowerInvariant()));
         }
 
         if (visibility.HasValue)
@@ -175,9 +186,14 @@ partial class MastodonClient
             new("status", statusParameters.Status!),
         };
 
+        if (!string.IsNullOrEmpty(statusParameters.QuotedStatusId))
+        {
+            data.Add(new KeyValuePair<string, string>("quoted_status_id", statusParameters.QuotedStatusId));
+        }
+
         if (!string.IsNullOrEmpty(statusParameters.ReplyStatusId))
         {
-            data.Add(new KeyValuePair<string, string>("in_reply_to_id", statusParameters.ReplyStatusId!));
+            data.Add(new KeyValuePair<string, string>("in_reply_to_id", statusParameters.ReplyStatusId));
         }
 
         if (statusParameters.MediaIds is not null)
@@ -196,6 +212,11 @@ partial class MastodonClient
         if (statusParameters.SpoilerText is not null)
         {
             data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
+        }
+
+        if (statusParameters.QuoteApprovalPolicy.HasValue)
+        {
+            data.Add(new KeyValuePair<string, string>("quote_approval_policy", $"{statusParameters.QuoteApprovalPolicy.Value}".ToLowerInvariant()));
         }
 
         if (statusParameters.Visibility.HasValue)

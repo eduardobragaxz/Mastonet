@@ -23,7 +23,7 @@ public class FilterContextConverter : JsonConverter<FilterContext>
 
         var contextStrings = JsonSerializer.Deserialize(ref reader, EntitiesContext.Default.IEnumerableString);
 
-        if (contextStrings != null)
+        if (contextStrings is not null)
         {
             foreach (var contextString in contextStrings)
             {

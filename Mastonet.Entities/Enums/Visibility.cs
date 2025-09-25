@@ -31,6 +31,13 @@ public enum Visibility
     Direct,
 }
 
+public enum QuoteApprovalPolicy
+{
+    Public,
+    Followers,
+    Nobody
+}
+
 //public class VisibilityConverter : JsonConverter<Visibility>
 //{
 //    public override Visibility Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
