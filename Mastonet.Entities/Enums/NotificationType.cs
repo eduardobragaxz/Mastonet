@@ -16,4 +16,6 @@ public enum NotificationType
     Favourite,
     Poll,
     Update,
+    Quote,
+    Quoted_update
 }
