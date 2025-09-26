@@ -9,7 +9,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a status posted by an account.
 /// </summary>
-public record class Status
+public record Status
 {
     // Base attributes
 
@@ -173,7 +173,11 @@ public record class Status
     /// </summary>
     [JsonPropertyName("quote")]
     public Quote? Quote { get; init; }
-
+    /// <summary>
+    /// Summary of the post quote’s approval policy and how it applies to the user making the request, that is, whether the user can be expected to be allowed to quote that post
+    /// </summary>
+    [JsonPropertyName("quote_approval")]
+    public QuoteApproval? QuoteApproval { get; init; }
 
     // Authorized user attributes
 
