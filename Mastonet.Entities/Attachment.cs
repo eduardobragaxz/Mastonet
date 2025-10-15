@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mastonet.Entities.Enums;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -20,7 +21,8 @@ public class Attachment
     /// One of: "unknown", "image", "gifv", "video", "audio"
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
+    [JsonConverter(typeof(JsonStringEnumConverter<AttachmentType>))]
+    public AttachmentType Type { get; set; }
 
     /// <summary>
     /// The location of the original full-size attachment.
@@ -116,7 +118,14 @@ public class AttachmentFocusData
     [JsonConverter(typeof(NullToDoubleConverter))]
     public double Y { get; set; }
 }
-
+public enum AttachmentType
+{
+    Image,
+    Gifv,
+    Video,
+    Audio,
+    Unknown
+}
 public class NullToDoubleConverter : JsonConverter<double>
 {
     public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
