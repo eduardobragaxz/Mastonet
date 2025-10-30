@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a notification of an event relevant to the user.
 /// </summary>
-public class Notification
+public sealed record Notification
 {
     /// <summary>
     /// The id of the notification in the database.

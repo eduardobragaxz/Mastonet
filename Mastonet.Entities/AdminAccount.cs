@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// Represents a mastodon account retrieved with Admin permissions
 /// using the /admin/accounts endpoint
 /// </summary>
-public class AdminAccount
+public sealed record AdminAccount
 {
     /// <summary>
     /// The account id.

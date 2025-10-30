@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// Represents a proof from an external identity provider.
 /// </summary>
 [Obsolete("Identity proofs have been deprecated in Mastodon v3.5.0 and newer. Previously, the only proof provider was Keybase, but development on Keybase has stalled entirely since it was acquired by Zoom.")]
-public class IdentityProof
+public sealed record IdentityProof
 {
     /// <summary>
     /// The name of the identity provider.

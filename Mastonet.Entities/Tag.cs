@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a hashtag used within the content of a status.
 /// </summary>
-public class Tag
+public sealed record Tag
 {
     /// <summary>
     /// The value of the hashtag after the # sign.

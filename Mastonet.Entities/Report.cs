@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Reports filed against users and/or statuses, to be taken action on by moderators.
 /// </summary>
-public class Report
+public sealed record Report
 {
     /// <summary>
     /// The ID of the report

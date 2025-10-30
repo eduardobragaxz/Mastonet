@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a weekly bucket of instance activity.
 /// </summary>
-public class Activity
+public sealed record Activity
 {
     /// <summary>
     /// Midnight at the first day of the week.

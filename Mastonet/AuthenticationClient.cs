@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public class AuthenticationClient : BaseHttpClient, IAuthenticationClient
+public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 {
     public AppRegistration? AppRegistration { get; set; }
 

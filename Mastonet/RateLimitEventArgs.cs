@@ -2,7 +2,7 @@
 
 namespace Mastonet;
 
-public class RateLimitEventArgs : EventArgs
+public sealed class RateLimitEventArgs : EventArgs
 {
     public ApiCallCategory RateLimitCategory { get; internal set; }
     public int Limit { get; internal set; }

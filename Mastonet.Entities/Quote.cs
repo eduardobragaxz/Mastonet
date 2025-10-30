@@ -10,7 +10,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a quote or a quote placeholder, with the current authorization status.
 /// </summary>
-public record class Quote
+public sealed record Quote
 {
     /// <summary>
     /// The state of the quote.

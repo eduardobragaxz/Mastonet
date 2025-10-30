@@ -2,7 +2,7 @@
 
 namespace Mastonet;
 
-public class ArrayOptions
+public sealed class ArrayOptions
 {
     public string? MaxId { get; set; }
 

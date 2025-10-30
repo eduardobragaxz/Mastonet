@@ -9,7 +9,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a status posted by an account.
 /// </summary>
-public record Status
+public sealed record Status
 {
     // Base attributes
 

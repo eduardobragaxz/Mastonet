@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a custom emoji.
 /// </summary>
-public class Emoji
+public sealed record Emoji
 {
     /// <summary>
     /// The name of the custom emoji.

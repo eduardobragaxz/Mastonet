@@ -15,7 +15,7 @@ public enum FilterContext
     Thread = 8
 }
 
-public class FilterContextConverter : JsonConverter<FilterContext>
+public sealed class FilterContextConverter : JsonConverter<FilterContext>
 {
     public override FilterContext Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

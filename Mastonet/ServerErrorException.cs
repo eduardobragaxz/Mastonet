@@ -3,6 +3,6 @@ using System;
 
 namespace Mastonet;
 
-public class ServerErrorException(Error error) : Exception(error.Description)
+public sealed class ServerErrorException(Error error) : Exception(error.Description)
 {
 }

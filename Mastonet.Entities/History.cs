@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents daily usage history of a hashtag.
 /// </summary>
-public class History
+public sealed record History
 {
     /// <summary>
     /// UNIX timestamp on midnight of the given day.

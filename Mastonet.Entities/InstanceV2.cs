@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents the software instance of Mastodon running on this domain.
 /// </summary>
-public class InstanceV2
+public sealed record InstanceV2
 {
     /// <summary>
     /// The domain name of the instance.

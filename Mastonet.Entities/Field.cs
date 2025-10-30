@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a profile field as a name-value pair with optional verification.
 /// </summary>
-public class Field
+public sealed record Field
 {
     /// <summary>
     /// The key of a given field's key-value pair.

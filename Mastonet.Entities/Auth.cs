@@ -2,7 +2,7 @@
 
 namespace Mastonet.Entities;
 
-public class Auth
+public sealed record Auth
 {
     [JsonPropertyName("access_token")]
     public string AccessToken { get; set; } = string.Empty;

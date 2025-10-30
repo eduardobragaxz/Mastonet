@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents the results of a search.
 /// </summary>
-public class SearchResults
+public sealed record SearchResults
 {
     /// <summary>
     /// Accounts which match the given query

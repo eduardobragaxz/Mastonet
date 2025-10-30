@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents an application that interfaces with the REST API to access accounts or post statuses.
 /// </summary>
-public class Application
+public sealed record Application
 {
     /// <summary>
     /// The name of your application.

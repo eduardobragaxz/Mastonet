@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a mention of a user within the content of a status.
 /// </summary>
-public class Mention
+public sealed record Mention
 {
     /// <summary>
     /// The account id of the mentioned user.

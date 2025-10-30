@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a user of Mastodon and their associated profile
 /// </summary>
-public record class Account
+public sealed record Account
 {
     // Base Attributes
 

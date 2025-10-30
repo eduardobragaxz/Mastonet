@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a conversation with "direct message" visibility.
 /// </summary>
-public class Conversation
+public sealed record Conversation
 {
     /// <summary>
     /// Local database ID of the conversation.

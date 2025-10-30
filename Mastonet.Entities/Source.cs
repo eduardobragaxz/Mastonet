@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// Represents display or publishing preferences of user's own account. 
 /// Returned as an additional entity when verifying and updated credentials, as an attribute of Account.
 /// </summary>
-public class Source
+public sealed record Source
 {
     /// <summary>
     /// Profile bio.

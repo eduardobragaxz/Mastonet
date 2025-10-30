@@ -2,7 +2,7 @@
 
 namespace Mastonet.Entities;
 
-public class MastodonList<T> : List<T>
+public sealed class MastodonList<T> : List<T>
 {
     public string? NextPageMaxId { get; set; }
     public string? PreviousPageSinceId { get; set; }

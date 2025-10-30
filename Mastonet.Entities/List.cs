@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a list of some users that the authenticated user follows.
 /// </summary>
-public class List
+public sealed record List
 {
     /// <summary>
     /// The internal database ID of the list.

@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a rich preview card that is generated using OpenGraph tags from a URL.
 /// </summary>
-public class Card
+public sealed record Card
 {
     /// <summary>
     /// Location of linked resource.

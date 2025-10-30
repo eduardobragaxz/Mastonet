@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// Represents the software instance of Mastodon running on this domain.
 /// </summary>
 [Obsolete("This entity was deprecated in Mastodon v4")]
-public class Instance
+public sealed record Instance
 {
     /// <summary>
     /// The domain name of the instance.

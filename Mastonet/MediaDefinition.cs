@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Mastonet;
 
-public class MediaDefinition(Stream media, string fileName)
+public sealed class MediaDefinition(Stream media, string fileName)
 {
     public Stream Media { get; set; } = media ?? throw new ArgumentException("All the params must be defined", nameof(media));
 

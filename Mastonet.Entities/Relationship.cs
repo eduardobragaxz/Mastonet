@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents the relationship between accounts, such as following / blocking / muting / etc.
 /// </summary>
-public class Relationship
+public sealed record Relationship
 {
     /// <summary>
     /// The account id.

@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a user-defined filter for determining which statuses should not be shown to the user.
 /// </summary>
-public class Filter
+public sealed record Filter
 {
     /// <summary>
     /// The ID of the filter in the database.

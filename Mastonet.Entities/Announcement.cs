@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents an announcement set by an administrator.
 /// </summary>
-public class Announcement
+public sealed record Announcement
 {
     // Base attributes 
 

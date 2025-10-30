@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
-public class InstanceConfiguration
+public sealed record InstanceConfiguration
 {
     /// <summary>
     /// URLs of interest for clients apps.

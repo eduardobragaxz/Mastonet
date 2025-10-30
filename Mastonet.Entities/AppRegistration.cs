@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
-public class AppRegistration
+
+public sealed record AppRegistration
 {
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;

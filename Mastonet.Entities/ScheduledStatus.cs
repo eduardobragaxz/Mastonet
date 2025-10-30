@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a status that will be published at a future scheduled date.
 /// </summary>
-public class ScheduledStatus
+public sealed record ScheduledStatus
 {
     /// <summary>
     /// ID of the scheduled status in the database.

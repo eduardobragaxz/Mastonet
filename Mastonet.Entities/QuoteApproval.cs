@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
-public sealed class QuoteApproval
+public sealed record QuoteApproval
 {
     /// <summary>
     /// Describes who is expected to be able to quote that status and have the quote automatically authorized

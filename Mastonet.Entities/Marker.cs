@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents the last read position within a user's timelines.
 /// </summary>
-public class Marker
+public sealed record Marker
 {
     /// <summary>
     /// Information about the user's position in the home timeline.

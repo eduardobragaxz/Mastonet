@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a custom user role that grants permissions.
 /// </summary>
-public class Role
+public sealed record Role
 {
     /// <summary>
     /// The ID of the Role in the database.

@@ -12,7 +12,7 @@ using static Mastonet.TimelineWebSocketStreaming;
 
 namespace Mastonet;
 
-public class TimelineWebSocketStreaming(StreamingType type, string? param, string instance, Task<InstanceV2> instanceGetter, string? accessToken, HttpClient client) : TimelineHttpStreaming(type, param, instance, accessToken, client)
+public sealed class TimelineWebSocketStreaming(StreamingType type, string? param, string instance, Task<InstanceV2> instanceGetter, string? accessToken, HttpClient client) : TimelineHttpStreaming(type, param, instance, accessToken, client)
 {
     private ClientWebSocket? socket;
     private const int receiveChunkSize = 512;

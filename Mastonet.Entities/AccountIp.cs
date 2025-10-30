@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents an IP address associated with a user.
 /// </summary>
-public class AccountIp
+public sealed record AccountIp
 {
     /// <summary>
     /// The IP address.

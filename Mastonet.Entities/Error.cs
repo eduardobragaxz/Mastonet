@@ -5,7 +5,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents an error message.
 /// </summary>
-public class Error
+public sealed record Error
 {
     /// <summary>
     /// The error message.

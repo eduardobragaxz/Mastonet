@@ -7,7 +7,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a poll attached to a status.
 /// </summary>
-public class Poll
+public sealed record Poll
 {
     /// <summary>
     /// The ID of the poll in the database.

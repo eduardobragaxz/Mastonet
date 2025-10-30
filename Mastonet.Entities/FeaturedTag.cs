@@ -6,7 +6,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a hashtag that is featured on a profile.
 /// </summary>
-public class FeaturedTag
+public sealed record FeaturedTag
 {
     /// <summary>
     /// The internal ID of the featured tag in the database.

@@ -8,7 +8,7 @@ namespace Mastonet.Entities;
 /// <summary>
 /// Represents a file or media attachment that can be added to a status.
 /// </summary>
-public class Attachment
+public sealed record Attachment
 {
     /// <summary>
     /// The ID of the attachment in the database.
