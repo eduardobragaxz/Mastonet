@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public class TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken, HttpClient client) : TimelineStreaming(type, param, accessToken)
+public sealed class TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken, HttpClient client) : TimelineStreaming(type, param, accessToken)
 {
     private CancellationTokenSource? cts;
 
