@@ -2,6 +2,7 @@
 using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,24 +33,29 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, params GranularScope[] scope)
     {
-        return CreateApp(appName, website, redirectUri, scope.AsEnumerable());
+        return CreateApp(appName, website, redirectUri, scope);
     }
 
-    public async Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, IEnumerable<GranularScope>? scope = null)
+    public async Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, ImmutableArray<GranularScope>? scope = null)
     {
         string scopeString = GetScopeParam(scope);
-        List<KeyValuePair<string, string>> data = [
-            new("client_name", appName),
-            new("scopes", scopeString),
-            new("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
-        ];
+        ImmutableArray<KeyValuePair<string,string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        builder.Add(new("client_name", appName));
+        builder.Add(new("scopes", scopeString));
+        builder.Add(new("redirect_uris", redirectUri ?? "urn:ietf:wg:oauth:2.0:oob"));
+        //List<KeyValuePair<string, string>> data = [
+        //    new("client_name", appName),
+        //    new("scopes", scopeString),
+        //    new("redirect_uris", redirectUri?? "urn:ietf:wg:oauth:2.0:oob")
+        //];
 
         if (website is not null)
         {
-            data.Add(new KeyValuePair<string, string>("website", website));
+            builder.Add(new KeyValuePair<string, string>("website", website));
         }
 
-        AppRegistration appRegistration = await Post<AppRegistration>("/api/v1/apps", data).ConfigureAwait(false);
+        ImmutableArray<KeyValuePair<string, string>>? array = builder.ToImmutable();
+        AppRegistration appRegistration = await Post<AppRegistration>("/api/v1/apps", array).ConfigureAwait(false);
 
         appRegistration.Instance = Instance;
         appRegistration.Scope = scopeString;
@@ -68,18 +74,25 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
         {
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
+        ImmutableArray<KeyValuePair<string, string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        builder.Add(new("client_id", AppRegistration.ClientId));
+        builder.Add(new("client_secret", AppRegistration.ClientSecret));
+        builder.Add(new("grant_type", "password"));
+        builder.Add(new("username", email));
+        builder.Add(new("password", password));
+        builder.Add(new("scope", AppRegistration.Scope));
 
-        List<KeyValuePair<string, string>> data =
-        [
-            new("client_id", AppRegistration.ClientId),
-            new("client_secret", AppRegistration.ClientSecret),
-            new("grant_type", "password"),
-            new("username", email),
-            new("password", password),
-            new("scope", AppRegistration.Scope),
-        ];
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("client_id", AppRegistration.ClientId),
+        //    new("client_secret", AppRegistration.ClientSecret),
+        //    new("grant_type", "password"),
+        //    new("username", email),
+        //    new("password", password),
+        //    new("scope", AppRegistration.Scope),
+        //];
 
-        return Post<Auth>("/oauth/token", data);
+        return Post<Auth>("/oauth/token", builder.ToImmutable());
     }
 
     public Task<Auth> ConnectWithCode(string code, string? redirect_uri = null)
@@ -89,16 +102,22 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        List<KeyValuePair<string, string>> data =
-        [
-            new("client_id", AppRegistration.ClientId),
-            new("client_secret", AppRegistration.ClientSecret),
-            new("grant_type", "authorization_code"),
-            new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
-            new("code", code),
-        ];
+        ImmutableArray<KeyValuePair<string, string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        builder.Add(new("client_id", AppRegistration.ClientId));
+        builder.Add(new("client_secret", AppRegistration.ClientSecret));
+        builder.Add(new("grant_type", "authorization_code"));
+        builder.Add(new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"));
+        builder.Add(new("code", code));
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("client_id", AppRegistration.ClientId),
+        //    new("client_secret", AppRegistration.ClientSecret),
+        //    new("grant_type", "authorization_code"),
+        //    new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
+        //    new("code", code),
+        //];
 
-        return Post<Auth>("/oauth/token", data);
+        return Post<Auth>("/oauth/token", builder.ToImmutable());
     }
 
     public string OAuthUrl(string? redirectUri = null)
@@ -132,24 +151,28 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("You need to revoke a token with the app CclientId and ClientSecret used to obtain the Token");
         }
 
-        List<KeyValuePair<string, string>> data =
-        [
-            new("client_id", AppRegistration.ClientId),
-            new("client_secret", AppRegistration.ClientSecret),
-            new("token", token),
-        ];
+        ImmutableArray<KeyValuePair<string, string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        builder.Add(new("client_id", AppRegistration.ClientId));
+        builder.Add(new("client_secret", AppRegistration.ClientSecret));
+        builder.Add(new("token", token));
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("client_id", AppRegistration.ClientId),
+        //    new("client_secret", AppRegistration.ClientSecret),
+        //    new("token", token),
+        //];
 
-        return Post<Auth>("/oauth/revoke", data);
+        return Post<Auth>("/oauth/revoke", builder.ToImmutable());
     }
 
-    private static string GetScopeParam(IEnumerable<GranularScope>? scopes)
+    private static string GetScopeParam(ImmutableArray<GranularScope>? scopes)
     {
         if (scopes is null)
         {
             return "";
         }
 
-        return String.Join(" ", scopes.Select(s => $"{s}".ToLowerInvariant().Replace("__", ":")));
+        return String.Join(" ", scopes.Value.Select(s => $"{s}".ToLowerInvariant().Replace("__", ":")));
     }
 
     #endregion

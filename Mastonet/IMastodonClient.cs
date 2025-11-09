@@ -31,13 +31,13 @@ public interface IMastodonClient
     /// List of connected domains
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<string>> GetInstancePeers();
+    Task<ImmutableArray<string>> GetInstancePeers();
 
     /// <summary>
     /// Weekly activity
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Activity>> GetInstanceActivity();
+    Task<ImmutableArray<Activity>> GetInstanceActivity();
 
     /// <summary>
     /// Tags that are being used more frequently within the past week.
@@ -53,14 +53,14 @@ public interface IMastodonClient
     /// <param name="order"></param>
     /// <param name="local"></param>
     /// <returns></returns>
-    Task<IEnumerable<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local);
+    Task<ImmutableArray<Account>> GetDirectory(int? offset, int? limit, DirectoryOrder? order, bool? local);
 
     /// <summary>
     /// Get all announcements set by administration
     /// </summary>
     /// <param name="withDismissed">If true, response will include announcements dismissed by the user</param>
     /// <returns></returns>
-    Task<IEnumerable<Announcement>> GetAnnouncements(bool withDismissed = false);
+    Task<ImmutableArray<Announcement>> GetAnnouncements(bool withDismissed = false);
 
     /// <summary>
     /// Allows a user to mark the announcement as read
@@ -137,7 +137,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="listId">List ID</param>
     /// <param name="accountIds">Array of account IDs</param>
-    Task AddAccountsToList(string listId, IEnumerable<string> accountIds);
+    Task AddAccountsToList(string listId, ImmutableArray<string> accountIds);
 
     /// <summary>
     /// Add accounts to a list.
@@ -145,21 +145,21 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="listId">List ID</param>
     /// <param name="accounts">Array of Accounts</param>
-    Task AddAccountsToList(string listId, IEnumerable<Account> accounts);
+    Task AddAccountsToList(string listId, ImmutableArray<Account> accounts);
 
     /// <summary>
     /// Remove accounts from a list.
     /// </summary>
     /// <param name="listId">List Id</param>
     /// <param name="accountIds">Array of Account IDs</param>
-    Task RemoveAccountsFromList(string listId, IEnumerable<string> accountIds);
+    Task RemoveAccountsFromList(string listId, ImmutableArray<string> accountIds);
 
     /// <summary>
     /// Remove accounts from a list.
     /// </summary>
     /// <param name="listId">List Id</param>
     /// <param name="accountIds">Array of Accounts</param>
-    Task RemoveAccountsFromList(string listId, IEnumerable<Account> accounts);
+    Task RemoveAccountsFromList(string listId, ImmutableArray<Account> accounts);
 
     /// <summary>
     /// Uploading a media attachment
@@ -233,7 +233,7 @@ public interface IMastodonClient
     /// <param name="comment">A comment to associate with the report</param>
     /// <param name="forward">Whether to forward to the remote admin (in case of a remote account)</param>
     /// <returns>Returns the finished Report</returns>
-    Task<Report> Report(string accountId, IEnumerable<string>? statusIds = null, string? comment = null, bool? forward = null);
+    Task<Report> Report(string accountId, ImmutableArray<string>? statusIds = null, string? comment = null, bool? forward = null);
 
     /// <summary>
     /// Searching for content
@@ -308,7 +308,7 @@ public interface IMastodonClient
     /// <param name="id">The ID of the poll</param>
     /// <param name="choices">Array of choice indices</param>
     /// <returns>Returns Poll</returns>
-    Task<Poll> Vote(string id, IEnumerable<int> choices);
+    Task<Poll> Vote(string id, ImmutableArray<int> choices);
 
     #endregion
 
@@ -354,7 +354,7 @@ public interface IMastodonClient
                                     Visibility? source_privacy = null,
                                     bool? source_sensitive = null,
                                     string? source_language = null,
-                                    IEnumerable<Field>? fields_attributes = null);
+                                    ImmutableArray<Field>? fields_attributes = null);
 
     /// <summary>
     /// Getting an account's relationships
@@ -368,7 +368,7 @@ public interface IMastodonClient
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    Task<ImmutableArray<Relationship>> GetAccountRelationships(IEnumerable<string> ids);
+    Task<ImmutableArray<Relationship>> GetAccountRelationships(ImmutableArray<string> ids);
 
     /// <summary>
     /// Getting an account's followers
@@ -421,7 +421,7 @@ public interface IMastodonClient
     /// Listing accounts the user had past positive interactions with, but is not following yet
     /// </summary>
     /// <returns>Returns array of Account</returns>
-    Task<IEnumerable<Account>> GetFollowSuggestions();
+    Task<ImmutableArray<Account>> GetFollowSuggestions();
 
     /// <summary>
     /// Removing account from suggestions
@@ -447,7 +447,7 @@ public interface IMastodonClient
     /// View your featured tags
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<FeaturedTag>> GetFeaturedTags();
+    Task<ImmutableArray<FeaturedTag>> GetFeaturedTags();
 
     /// <summary>
     /// Feature a tag
@@ -467,7 +467,7 @@ public interface IMastodonClient
     /// Shows your 10 most-used tags, with usage history for the past week.
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Tag>> GetFeaturedTagsSuggestions();
+    Task<ImmutableArray<Tag>> GetFeaturedTagsSuggestions();
 
     #endregion
 
@@ -674,7 +674,7 @@ public interface IMastodonClient
     /// <param name="language">Override language code of the toot (ISO 639-2)</param>
     /// <param name="poll">Nested parameters to attach a poll to the status</param>
     /// <returns>Returns Status</returns>
-    Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null, string? quotedStatusId = null, QuoteApprovalPolicy? quoteApprovalPolicy = null, IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null, DateTime? scheduledAt = null, string? language = null, PollParameters? poll = null);
+    Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null, string? quotedStatusId = null, QuoteApprovalPolicy? quoteApprovalPolicy = null, ImmutableArray<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null, DateTime? scheduledAt = null, string? language = null, PollParameters? poll = null);
 
     /// <summary>
     /// Edit a given status to change its text, sensitivity, media attachments, or poll. Note that editing a poll’s options will reset the votes.
@@ -687,7 +687,7 @@ public interface IMastodonClient
     /// <param name="language">ISO 639 language code for the status.</param>
     /// <param name="poll">Nested parameters to attach a poll to the status</param>
     /// <returns></returns>
-    Task<Status> EditStatus(string statusId, string status, IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null, string? language = null, PollParameters? poll = null);
+    Task<Status> EditStatus(string statusId, string status, ImmutableArray<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null, string? language = null, PollParameters? poll = null);
 
     /// <summary>
     /// Deleting a status
@@ -699,7 +699,7 @@ public interface IMastodonClient
     /// Get scheduled statuses.
     /// </summary>
     /// <returns>Returns array of ScheduledStatus</returns>
-    Task<IEnumerable<ScheduledStatus>> GetScheduledStatuses();
+    Task<ImmutableArray<ScheduledStatus>> GetScheduledStatuses();
 
     /// <summary>
     /// Get scheduled status.

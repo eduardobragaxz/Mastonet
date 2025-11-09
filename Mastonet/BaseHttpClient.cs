@@ -1,6 +1,7 @@
 ﻿using Mastonet.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -74,12 +75,12 @@ public abstract partial class BaseHttpClient
         }
     }
 
-    protected async Task<Stream> Delete(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Delete(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -91,12 +92,12 @@ public abstract partial class BaseHttpClient
     }
 
 
-    protected async Task<Stream> Get(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Get(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -107,14 +108,14 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
-    protected async Task<T> Get<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<T> Get<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
         where T : class
     {
         Stream content = await Get(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
-    protected async Task<T> GetValue<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<T> GetValue<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
         where T : struct
     {
         using Stream content = await Get(route, data).ConfigureAwait(false);
@@ -125,12 +126,12 @@ public abstract partial class BaseHttpClient
     [GeneratedRegex("_id=([0-9]+)", RegexOptions.None, 100)]
     private static partial Regex IdFinder();
 
-    protected async Task<MastodonList<T>> GetMastodonList<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<MastodonList<T>> GetMastodonList<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -169,7 +170,7 @@ public abstract partial class BaseHttpClient
         return result;
     }
 
-    protected async Task<Stream> Post(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Post(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -181,14 +182,14 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
-    protected async Task<T> Post<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<T> Post<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
         where T : class
     {
-        Stream content = media is not null && media.Any() ? await PostMedia(route, data, media).ConfigureAwait(false) : await Post(route, data).ConfigureAwait(false);
+        Stream content = media is not null && media.Value.Length != 0 ? await PostMedia(route, data, media).ConfigureAwait(false) : await Post(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
-    protected async Task<Stream> PostMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<Stream> PostMedia(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
         using HttpRequestMessage request = new(HttpMethod.Post, url);
@@ -218,7 +219,7 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
-    protected async Task<Stream> Put(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Put(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -230,12 +231,12 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
-    protected async Task<T> Put<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<T> Put<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         return TryDeserialize<T>(await Put(route, data).ConfigureAwait(false));
     }
 
-    protected async Task<Stream> Patch(string route, IEnumerable<KeyValuePair<string, string>>? data = null)
+    protected async Task<Stream> Patch(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
         string url = $"https://{this.Instance}{route}";
 
@@ -247,14 +248,14 @@ public abstract partial class BaseHttpClient
         return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
     }
 
-    protected async Task<T> Patch<T>(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<T> Patch<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
         where T : class
     {
-        Stream content = media is not null && media.Any() ? await PatchMedia(route, data, media).ConfigureAwait(false) : await Patch(route, data).ConfigureAwait(false);
+        Stream content = media is not null && media.Value.Length != 0 ? await PatchMedia(route, data, media).ConfigureAwait(false) : await Patch(route, data).ConfigureAwait(false);
         return TryDeserialize<T>(content);
     }
 
-    protected async Task<Stream> PatchMedia(string route, IEnumerable<KeyValuePair<string, string>>? data = null, IEnumerable<MediaDefinition>? media = null)
+    protected async Task<Stream> PatchMedia(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
     {
         string url = $"https://{this.Instance}{route}";
         using HttpRequestMessage request = new(HttpMethod.Patch, url);

@@ -2,6 +2,7 @@
 using Mastonet.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -89,18 +90,21 @@ partial class MastodonClient
     /// <returns>Returns Status</returns>
     public Task<Status> PublishStatus(string status, Visibility? visibility = null, string? replyStatusId = null,
         string? quotedStatusId = null, QuoteApprovalPolicy? quoteApprovalPolicy = null,
-        IEnumerable<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
+        ImmutableArray<string>? mediaIds = null, bool sensitive = false, string? spoilerText = null,
         DateTime? scheduledAt = null, string? language = null, PollParameters? pollParameters = null)
     {
-        if (string.IsNullOrEmpty(status) && (mediaIds is null || !mediaIds.Any()))
+        if (string.IsNullOrEmpty(status) && (mediaIds is null || mediaIds.Value.Length == 0))
         {
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        List<KeyValuePair<string, string>> data = new()
-        {
-            new("status", status),
-        };
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        data.Add(new("status", status));
+
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("status", status),
+        //];
 
         if (!string.IsNullOrEmpty(quotedStatusId))
         {
@@ -165,7 +169,7 @@ partial class MastodonClient
             }
         }
 
-        return Post<Status>("/api/v1/statuses", data);
+        return Post<Status>("/api/v1/statuses", data.ToImmutable());
     }
 
     /// <summary>
@@ -181,10 +185,12 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        List<KeyValuePair<string, string>> data = new()
-        {
-            new("status", statusParameters.Status!),
-        };
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        data.Add(new("status", statusParameters.Status!));
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("status", statusParameters.Status!),
+        //];
 
         if (!string.IsNullOrEmpty(statusParameters.QuotedStatusId))
         {
@@ -249,7 +255,7 @@ partial class MastodonClient
             }
         }
 
-        return Post<Status>("/api/v1/statuses", data);
+        return Post<Status>("/api/v1/statuses", data.ToImmutable());
     }
 
     /// <summary>
@@ -263,18 +269,20 @@ partial class MastodonClient
     /// <param name="language">Override language code of the toot (ISO 639-2)</param>
     /// <param name="poll">Nested parameters to attach a poll to the status</param>
     /// <returns>Returns Status</returns>
-    public Task<Status> EditStatus(string statusId, string status, IEnumerable<string>? mediaIds = null,
+    public Task<Status> EditStatus(string statusId, string status, ImmutableArray<string>? mediaIds = null,
         bool sensitive = false, string? spoilerText = null, string? language = null, PollParameters? poll = null)
     {
-        if (string.IsNullOrEmpty(status) && (mediaIds is null || !mediaIds.Any()))
+        if (string.IsNullOrEmpty(status) && (mediaIds is null || mediaIds.Value.Length == 0))
         {
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        List<KeyValuePair<string, string>> data =
-        [
-            new("status", status),
-        ];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        data.Add(new("status", status));
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("status", status),
+        //];
 
         if (mediaIds is not null)
         {
@@ -314,7 +322,7 @@ partial class MastodonClient
             }
         }
 
-        return Put<Status>($"/api/v1/statuses/{statusId}", data);
+        return Put<Status>($"/api/v1/statuses/{statusId}", data.ToImmutable());
     }
 
     /// <summary>
@@ -331,10 +339,12 @@ partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        List<KeyValuePair<string, string>> data =
-        [
-            new("status", statusParameters.Status!),
-        ];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        data.Add(new("status", statusParameters.Status!));
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("status", statusParameters.Status!),
+        //];
 
         if (statusParameters.MediaIds is not null)
         {
@@ -374,7 +384,7 @@ partial class MastodonClient
             }
         }
 
-        return Put<Status>($"/api/v1/statuses/{statusId}", data);
+        return Put<Status>($"/api/v1/statuses/{statusId}", data.ToImmutable());
     }
 
 
@@ -391,9 +401,9 @@ partial class MastodonClient
     /// Get scheduled statuses.
     /// </summary>
     /// <returns>Returns array of ScheduledStatus</returns>
-    public Task<IEnumerable<ScheduledStatus>> GetScheduledStatuses()
+    public Task<ImmutableArray<ScheduledStatus>> GetScheduledStatuses()
     {
-        return Get<IEnumerable<ScheduledStatus>>("/api/v1/scheduled_statuses");
+        return GetValue<ImmutableArray<ScheduledStatus>>("/api/v1/scheduled_statuses");
     }
 
     /// <summary>
@@ -414,13 +424,14 @@ partial class MastodonClient
     /// <returns>Returns ScheduledStatus</returns>
     public Task<ScheduledStatus> UpdateScheduledStatus(string scheduledStatusId, DateTime? scheduledAt)
     {
-        List<KeyValuePair<string, string>> data = [];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        //List<KeyValuePair<string, string>> data = [];
         if (scheduledAt.HasValue)
         {
             data.Add(new KeyValuePair<string, string>("scheduled_at", $"{scheduledAt.Value}"));
         }
 
-        return Put<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}", data);
+        return Put<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}", data.ToImmutable());
     }
 
     /// <summary>

@@ -60,15 +60,17 @@ partial class MastodonClient
         Visibility? source_privacy = null,
         bool? source_sensitive = null,
         string? source_language = null,
-        IEnumerable<Field>? fields_attributes = null)
+        ImmutableArray<Field>? fields_attributes = null)
     {
-        if (fields_attributes?.Count() > 4)
+        if (fields_attributes?.Length > 4)
         {
             throw new ArgumentException("Number of fields must be 4 or fewer.", nameof(fields_attributes));
         }
 
-        List<KeyValuePair<string, string>> data = [];
-        List<MediaDefinition> media = [];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        ImmutableArray<MediaDefinition>.Builder media = ImmutableArray.CreateBuilder<MediaDefinition>();
+        //List<KeyValuePair<string, string>> data = [];
+        //List<MediaDefinition> media = [];
 
         if (discoverable is not null)
         {
@@ -117,14 +119,14 @@ partial class MastodonClient
         }
         if (fields_attributes is not null)
         {
-            foreach (var item in fields_attributes.Select((f, i) => new { f, i }))
+            foreach (var item in fields_attributes.Value.Select((f, i) => new { f, i }))
             {
                 data.Add(new KeyValuePair<string, string>($"fields_attributes[{item.i}][name]", item.f.Name));
                 data.Add(new KeyValuePair<string, string>($"fields_attributes[{item.i}][value]", item.f.Value));
             }
         }
 
-        return Patch<Account>($"/api/v1/accounts/update_credentials", data, media);
+        return Patch<Account>($"/api/v1/accounts/update_credentials", data.ToImmutable(), media.ToImmutable());
     }
 
     /// <summary>
@@ -142,14 +144,15 @@ partial class MastodonClient
     /// </summary>
     /// <param name="id">Account IDs</param>
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
-    public Task<ImmutableArray<Relationship>> GetAccountRelationships(IEnumerable<string> ids)
+    public Task<ImmutableArray<Relationship>> GetAccountRelationships(ImmutableArray<string> ids)
     {
-        List<KeyValuePair<string, string>> data = [];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        //List<KeyValuePair<string, string>> data = new(ids.Length);
         foreach (string id in ids)
         {
             data.Add(new KeyValuePair<string, string>("id[]", $"{id}"));
         }
-        return GetValue<ImmutableArray<Relationship>>("/api/v1/accounts/relationships", data);
+        return GetValue<ImmutableArray<Relationship>>("/api/v1/accounts/relationships", data.ToImmutable());
     }
 
     /// <summary>
@@ -298,9 +301,9 @@ partial class MastodonClient
     /// Listing accounts the user had past positive interactions with, but is not following yet
     /// </summary>
     /// <returns>Returns array of Account</returns>
-    public Task<IEnumerable<Account>> GetFollowSuggestions()
+    public Task<ImmutableArray<Account>> GetFollowSuggestions()
     {
-        return Get<IEnumerable<Account>>("/api/v1/suggestions");
+        return GetValue<ImmutableArray<Account>>("/api/v1/suggestions");
     }
 
     /// <summary>
@@ -358,9 +361,9 @@ partial class MastodonClient
     /// View your featured tags
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<FeaturedTag>> GetFeaturedTags()
+    public Task<ImmutableArray<FeaturedTag>> GetFeaturedTags()
     {
-        return Get<IEnumerable<FeaturedTag>>("/api/v1/featured_tags");
+        return GetValue<ImmutableArray<FeaturedTag>>("/api/v1/featured_tags");
     }
 
     /// <summary>
@@ -380,10 +383,11 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<FeaturedTag> FeatureTag(string name)
     {
-        List<KeyValuePair<string, string>> data =
-        [
-            new("name",name)
-        ];
+        ImmutableArray<KeyValuePair<string, string>> data = [new KeyValuePair<string, string>("name", name)];
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("name",name)
+        //];
 
         return Post<FeaturedTag>("/api/v1/featured_tags", data);
     }
@@ -402,9 +406,9 @@ partial class MastodonClient
     /// Shows your 10 most-used tags, with usage history for the past week.
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<Tag>> GetFeaturedTagsSuggestions()
+    public Task<ImmutableArray<Tag>> GetFeaturedTagsSuggestions()
     {
-        return Get<IEnumerable<Tag>>("/api/v1/featured_tags/suggestions");
+        return GetValue<ImmutableArray<Tag>>("/api/v1/featured_tags/suggestions");
     }
 
     #endregion

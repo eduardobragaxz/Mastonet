@@ -14,7 +14,7 @@ public sealed class ArrayOptions
 
     internal string ToQueryString()
     {
-        Collection<string> query = new();
+        Collection<string> query = [];
         if (!string.IsNullOrEmpty(MaxId))
         {
             query.Add($"max_id={MaxId}");

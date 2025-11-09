@@ -1,6 +1,7 @@
 ﻿using Mastonet.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 namespace Mastonet;
@@ -17,11 +18,16 @@ partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Follow(string accountId, bool reblogs = true, bool notify = false)
     {
-        List<KeyValuePair<string, string>> data = new()
-        {
-            new("reblogs", $"{reblogs}".ToLowerInvariant()),
-            new("notify", $"{notify}".ToLowerInvariant())
-        };
+        ImmutableArray<KeyValuePair<string, string>> data =
+            [
+                new("reblogs", $"{reblogs}".ToLowerInvariant()),
+                new("notify", $"{notify}".ToLowerInvariant())
+            ];
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("reblogs", $"{reblogs}".ToLowerInvariant()),
+        //    new("notify", $"{notify}".ToLowerInvariant())
+        //];
         return this.Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
     }
 
@@ -42,10 +48,11 @@ partial class MastodonClient
     /// <returns>Returns the local representation of the followed account, as an Account</returns>
     public Task<Account> Follow(string uri)
     {
-        List<KeyValuePair<string, string>> data = new()
-        {
-            new("uri", uri)
-        };
+        ImmutableArray<KeyValuePair<string, string>> data = [new("uri", uri)];
+        //List<KeyValuePair<string, string>> data =
+        //[
+        //    new("uri", uri)
+        //];
         return this.Post<Account>($"/api/v1/follows", data);
     }
 
@@ -101,7 +108,7 @@ partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Mute(string accountId, bool notifications = true)
     {
-        KeyValuePair<string, string>[]? data = notifications ? null : [new KeyValuePair<string, string>("notifications", "false")];
+        ImmutableArray<KeyValuePair<string, string>>? data = notifications ? null : [new KeyValuePair<string, string>("notifications", "false")];
         return Post<Relationship>($"/api/v1/accounts/{accountId}/mute", data);
     }
 
@@ -172,7 +179,8 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> GetMarkers(bool home = false, bool notifications = false)
     {
-        List<KeyValuePair<string, string>> data = new();
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        //List<KeyValuePair<string, string>> data = [];
 
         if (home)
         {
@@ -184,7 +192,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("timeline[]", "notifications"));
         }
 
-        return Get<Marker>("/api/v1/markers", data);
+        return Get<Marker>("/api/v1/markers", data.ToImmutable());
     }
 
     /// <summary>
@@ -195,7 +203,8 @@ partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> SetMarkers(string? homeLastReadId = null, string? notificationLastReadId = null)
     {
-        List<KeyValuePair<string, string>> data = [];
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        //List<KeyValuePair<string, string>> data = [];
 
         if (!string.IsNullOrEmpty(homeLastReadId))
         {
@@ -207,7 +216,7 @@ partial class MastodonClient
             data.Add(new KeyValuePair<string, string>("notifications[last_read_id]", notificationLastReadId!));
         }
 
-        return Post<Marker>("/api/v1/markers", data);
+        return Post<Marker>("/api/v1/markers", data.ToImmutable());
     }
 
     #endregion
