@@ -1,7 +1,4 @@
-﻿using Mastonet.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;

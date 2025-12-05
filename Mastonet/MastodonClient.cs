@@ -319,7 +319,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        ImmutableArray<KeyValuePair<string,string>> data = [..accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
+        ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
         return this.Post($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -332,7 +332,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="accounts">Array of Accounts</param>
     public Task AddAccountsToList(string listId, ImmutableArray<Account> accounts)
     {
-        return AddAccountsToList(listId, [..accounts.Select(account => account.Id)]);
+        return AddAccountsToList(listId, [.. accounts.Select(account => account.Id)]);
     }
 
     /// <summary>
@@ -347,7 +347,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        ImmutableArray<KeyValuePair<string, string>> data = [..accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
+        ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
         return this.Delete($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -359,7 +359,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="accountIds">Array of Accounts</param>
     public Task RemoveAccountsFromList(string listId, ImmutableArray<Account> accounts)
     {
-        return RemoveAccountsFromList(listId, [..accounts.Select(account => account.Id)]);
+        return RemoveAccountsFromList(listId, [.. accounts.Select(account => account.Id)]);
     }
 
     #endregion
@@ -401,7 +401,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         media.ParamName = "file";
         ImmutableArray<MediaDefinition> list = [media];
         //List<MediaDefinition> list = [media];
-        ImmutableArray<KeyValuePair<string,string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
         //Dictionary<string, string> data = [];
         if (description is not null)
         {

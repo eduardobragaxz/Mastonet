@@ -1,5 +1,5 @@
-﻿using System;
-using Mastonet.Entities.Enums;
+﻿using Mastonet.Entities.Enums;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Buffers;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-namespace Mastonet.Entities.Enums;
+﻿namespace Mastonet.Entities.Enums;
 
 /// <summary>
 /// Represents the visibility of a status
@@ -37,33 +32,3 @@ public enum QuoteApprovalPolicy
     Followers,
     Nobody
 }
-
-//public class VisibilityConverter : JsonConverter<Visibility>
-//{
-//    public override Visibility Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-//    {
-//        var valueLength = reader.HasValueSequence
-//            ? checked((int)reader.ValueSequence.Length)
-//            : reader.ValueSpan.Length;
-
-//        var buffer = ArrayPool<char>.Shared.Rent(valueLength);
-//        var charsRead = reader.CopyString(buffer);
-//        var val = buffer.AsSpan(0, charsRead);
-//        var result = Enum.Parse<Visibility>(val, true);
-//        ArrayPool<char>.Shared.Return(buffer, clearArray: true);
-
-//        return (Visibility)result;
-//    }
-
-//    public override void Write(Utf8JsonWriter writer, Visibility value, JsonSerializerOptions options)
-//    {
-//        switch (value)
-//        {
-//            case Visibility.Public: writer.WriteStringValue(nameof(Visibility.Public)); break;
-//            case Visibility.Unlisted: writer.WriteStringValue(nameof(Visibility.Unlisted)); break;
-//            case Visibility.Private: writer.WriteStringValue(nameof(Visibility.Private)); break;
-//            case Visibility.Direct: writer.WriteStringValue(nameof(Visibility.Direct)); break;
-//            default: writer.WriteStringValue(""); break;
-//        }
-//    }
-//}

@@ -39,7 +39,7 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
     public async Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, ImmutableArray<GranularScope>? scope = null)
     {
         string scopeString = GetScopeParam(scope);
-        ImmutableArray<KeyValuePair<string,string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        ImmutableArray<KeyValuePair<string, string>>.Builder builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
         builder.Add(new("client_name", appName));
         builder.Add(new("scopes", scopeString));
         builder.Add(new("redirect_uris", redirectUri ?? "urn:ietf:wg:oauth:2.0:oob"));
