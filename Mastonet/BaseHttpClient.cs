@@ -259,7 +259,7 @@ public abstract partial class BaseHttpClient
     {
         string url = $"https://{this.Instance}{route}";
         using HttpRequestMessage request = new(HttpMethod.Patch, url);
-
+        AddHttpHeader(request);
         MultipartFormDataContent content = [];
 
         if (media is not null)
