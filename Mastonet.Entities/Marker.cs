@@ -28,7 +28,7 @@ public class MarkerInfo
     /// The ID of the most recently viewed entity.
     /// </summary>
     [JsonPropertyName("last_read_id")]
-    public long LastReadId { get; set; }
+    public string LastReadId { get; set; } = string.Empty;
 
     /// <summary>
     /// Used for locking to prevent write conflicts.
