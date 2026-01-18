@@ -195,7 +195,7 @@ public interface IMastodonClient
     /// <param name="options">Define the first and last items to get</param>
     /// <param name="excludeTypes">Types to exclude</param>
     /// <returns>Returns a list of Notifications for the authenticated user</returns>
-    Task<MastodonList<Notification>> GetNotifications(ArrayOptions? options = null, NotificationType excludeTypes = NotificationType.None);
+    Task<MastodonList<Notification>> GetNotifications(IEnumerable<NotificationType> excludeTypes, ArrayOptions? options = null);
 
     /// <summary>
     /// Getting a single notification

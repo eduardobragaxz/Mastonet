@@ -463,8 +463,8 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="options">Define the first and last items to get</param>
     /// <param name="excludeTypes">Types to exclude</param>
     /// <returns>Returns a list of Notifications for the authenticated user</returns>
-    public Task<MastodonList<Notification>> GetNotifications(ArrayOptions? options = null,
-        NotificationType excludeTypes = NotificationType.None)
+    public Task<MastodonList<Notification>> GetNotifications(IEnumerable<NotificationType>? excludeTypes = null,
+        ArrayOptions? options = null)
     {
         string url = "/api/v1/notifications";
         string queryParams = "";
@@ -473,34 +473,22 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             queryParams += $"?{options.ToQueryString()}";
         }
 
-        if (excludeTypes.HasFlag(NotificationType.Follow))
+        if (excludeTypes is not null && excludeTypes.Any())
         {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow";
-        }
-
-        if (excludeTypes.HasFlag(NotificationType.Favourite))
-        {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=favourite";
-        }
-
-        if (excludeTypes.HasFlag(NotificationType.Reblog))
-        {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=reblog";
-        }
-
-        if (excludeTypes.HasFlag(NotificationType.Mention))
-        {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=mention";
-        }
-
-        if (excludeTypes.HasFlag(NotificationType.Poll))
-        {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=poll";
-        }
-
-        if (excludeTypes.HasFlag(NotificationType.Follow_request))
-        {
-            queryParams += $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request";
+            foreach (NotificationType type in excludeTypes)
+            {
+                queryParams += type switch
+                {
+                    NotificationType.Follow => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow",
+                    NotificationType.Favourite => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=favourite",
+                    NotificationType.Reblog => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=reblog",
+                    NotificationType.Mention => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=mention",
+                    NotificationType.Poll => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=poll",
+                    NotificationType.Follow_request => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request",
+                    NotificationType.Status => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=status",
+                    _ => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=update"
+                };
+            }
         }
 
         return GetMastodonList<Notification>($"{url}{queryParams}");
