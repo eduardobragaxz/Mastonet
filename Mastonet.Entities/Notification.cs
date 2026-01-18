@@ -34,6 +34,9 @@ public sealed record Notification
     [JsonConverter(typeof(JsonStringEnumConverter<NotificationType>))]
     public NotificationType Type { get; set; }
 
+    /// <summary>
+    /// Group key shared by similar notifications, to be used in the grouped notifications feature. Should be considered opaque, but ungrouped notifications can be assumed to have a group_key of the form 
+    /// </summary>
     [JsonPropertyName("group_key")]
     public string GroupKey { get; set; } = string.Empty;
 
