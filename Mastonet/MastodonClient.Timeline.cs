@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-partial class MastodonClient
+public partial class MastodonClient
 {
 
     /// <summary>
@@ -161,22 +161,16 @@ partial class MastodonClient
 
     public TimelineStreaming GetHashtagStreaming(string hashtag)
     {
-        if (string.IsNullOrEmpty(hashtag))
-        {
-            throw new ArgumentException("You must specify a hashtag", nameof(hashtag));
-        }
-
-        return GetStreaming(StreamingType.Hashtag, hashtag);
+        return string.IsNullOrEmpty(hashtag)
+            ? throw new ArgumentException("You must specify a hashtag", nameof(hashtag))
+            : (TimelineStreaming)GetStreaming(StreamingType.Hashtag, hashtag);
     }
 
     public TimelineStreaming GetHashtagLocalStreaming(string hashtag)
     {
-        if (string.IsNullOrEmpty(hashtag))
-        {
-            throw new ArgumentException("You must specify a hashtag", nameof(hashtag));
-        }
-
-        return GetStreaming(StreamingType.HashtagLocal, hashtag);
+        return string.IsNullOrEmpty(hashtag)
+            ? throw new ArgumentException("You must specify a hashtag", nameof(hashtag))
+            : (TimelineStreaming)GetStreaming(StreamingType.HashtagLocal, hashtag);
     }
 
     public TimelineStreaming GetDirectMessagesStreaming()
@@ -191,12 +185,9 @@ partial class MastodonClient
 
     public TimelineStreaming GetListStreaming(List list)
     {
-        if (list is null)
-        {
-            throw new ArgumentException("You must specify a list", nameof(list));
-        }
-
-        return GetStreaming(StreamingType.List, $"{list.Id}");
+        return list is null
+            ? throw new ArgumentException("You must specify a list", nameof(list))
+            : (TimelineStreaming)GetStreaming(StreamingType.List, $"{list.Id}");
     }
 
     #endregion

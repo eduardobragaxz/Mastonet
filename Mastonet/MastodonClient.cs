@@ -18,17 +18,17 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     public MastodonClient() : base()
     {
-        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
+        instanceGetter = new Lazy<Task<InstanceV2>>(GetInstanceV2);
     }
 
     [JsonConstructor]
     public MastodonClient(string instance, string accessToken, HttpClient client)
         : base(client)
     {
-        this.Instance = instance;
-        this.AccessToken = accessToken;
+        Instance = instance;
+        AccessToken = accessToken;
 
-        this.instanceGetter = new Lazy<Task<InstanceV2>>(this.GetInstanceV2);
+        instanceGetter = new Lazy<Task<InstanceV2>>(GetInstanceV2);
     }
 
     #endregion
@@ -42,7 +42,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     [Obsolete("This method is deprecated on Mastodon v4. Use GetInstanceV2() instead.")]
     public Task<Instance> GetInstance()
     {
-        return this.Get<Instance>("/api/v1/instance");
+        return Get<Instance>("/api/v1/instance");
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns the current Instance. Does not require authentication</returns>
     public Task<InstanceV2> GetInstanceV2()
     {
-        return this.Get<InstanceV2>("/api/v2/instance");
+        return Get<InstanceV2>("/api/v2/instance");
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns array of List</returns>
     public Task<ImmutableArray<List>> GetLists()
     {
-        return this.GetValue<ImmutableArray<List>>("/api/v1/lists");
+        return GetValue<ImmutableArray<List>>("/api/v1/lists");
     }
 
     /// <summary>
@@ -218,7 +218,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns array of List</returns>
     public Task<ImmutableArray<List>> GetListsContainingAccount(string accountId)
     {
-        return this.GetValue<ImmutableArray<List>>($"/api/v1/accounts/{accountId}/lists");
+        return GetValue<ImmutableArray<List>>($"/api/v1/accounts/{accountId}/lists");
     }
 
     /// <summary>
@@ -245,7 +245,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns List</returns>
     public Task<List> GetList(string listId)
     {
-        return this.Get<List>($"/api/v1/lists/{listId}");
+        return Get<List>($"/api/v1/lists/{listId}");
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         //    new("title", title),
         //];
 
-        return this.Post<List>("/api/v1/lists", data);
+        return Post<List>("/api/v1/lists", data);
     }
 
     /// <summary>
@@ -294,7 +294,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         //    new("replies_policy", replies_policy)
         //];
 
-        return this.Put<List>($"/api/v1/lists/{listId}", data.ToImmutable());
+        return Put<List>($"/api/v1/lists/{listId}", data.ToImmutable());
     }
 
     /// <summary>
@@ -303,7 +303,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <param name="listId"></param>
     public Task DeleteList(string listId)
     {
-        return this.Delete($"/api/v1/lists/{listId}");
+        return Delete($"/api/v1/lists/{listId}");
     }
 
     /// <summary>
@@ -321,7 +321,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
-        return this.Post($"/api/v1/lists/{listId}/accounts", data);
+        return Post($"/api/v1/lists/{listId}/accounts", data);
     }
 
     /// <summary>
@@ -349,7 +349,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
-        return this.Delete($"/api/v1/lists/{listId}/accounts", data);
+        return Delete($"/api/v1/lists/{listId}/accounts", data);
     }
 
     /// <summary>
@@ -413,7 +413,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
             data.Add(new("focus", $"{focus.X},{focus.Y}"));
         }
 
-        return this.Post<Attachment>("/api/v2/media", data.ToImmutable(), list);
+        return Post<Attachment>("/api/v2/media", data.ToImmutable(), list);
     }
 
     /// <summary>
@@ -450,7 +450,7 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns></returns>
     public Task<ImmutableArray<Emoji>> GetCustomEmojis()
     {
-        return this.GetValue<ImmutableArray<Emoji>>("/api/v1/custom_emojis");
+        return GetValue<ImmutableArray<Emoji>>("/api/v1/custom_emojis");
     }
 
     #endregion

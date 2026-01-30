@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-partial class MastodonClient
+public partial class MastodonClient
 {
     /// <summary>
     /// View information about a profile.
@@ -273,7 +273,7 @@ partial class MastodonClient
         {
             url += $"?{options.ToQueryString()}";
         }
-        return this.GetMastodonList<Account>(url);
+        return GetMastodonList<Account>(url);
     }
 
     /// <summary>
@@ -282,7 +282,7 @@ partial class MastodonClient
     /// <param name="accountId">The id of the account to authorize</param>
     public Task AuthorizeRequest(string accountId)
     {
-        return this.Post($"/api/v1/follow_requests/{accountId}/authorize");
+        return Post($"/api/v1/follow_requests/{accountId}/authorize");
     }
 
     /// <summary>
@@ -291,7 +291,7 @@ partial class MastodonClient
     /// <param name="accountId">The id of the account to reject</param>
     public Task RejectRequest(string accountId)
     {
-        return this.Post($"/api/v1/follow_requests/{accountId}/reject");
+        return Post($"/api/v1/follow_requests/{accountId}/reject");
     }
 
     #endregion

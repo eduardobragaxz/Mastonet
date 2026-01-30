@@ -73,7 +73,7 @@ public sealed class TimelineWebSocketStreaming(StreamingType type, string? param
         }
         ms.Dispose();
 
-        this.Stop();
+        Stop();
     }
 
     internal class TimelineMessage
@@ -89,7 +89,7 @@ public sealed class TimelineWebSocketStreaming(StreamingType type, string? param
     {
         if (socket is not null)
         {
-            socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+            _ = socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
             socket.Dispose();
             socket = null;
         }

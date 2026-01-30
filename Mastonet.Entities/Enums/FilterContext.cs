@@ -21,11 +21,11 @@ public sealed class FilterContextConverter : JsonConverter<FilterContext>
     {
         FilterContext context = 0;
 
-        var contextStrings = JsonSerializer.Deserialize(ref reader, EntitiesContext.Default.IEnumerableString);
+        IEnumerable<string>? contextStrings = JsonSerializer.Deserialize(ref reader, EntitiesContext.Default.IEnumerableString);
 
         if (contextStrings is not null)
         {
-            foreach (var contextString in contextStrings)
+            foreach (string contextString in contextStrings)
             {
                 switch (contextString)
                 {
@@ -50,11 +50,26 @@ public sealed class FilterContextConverter : JsonConverter<FilterContext>
 
     public override void Write(Utf8JsonWriter writer, FilterContext value, JsonSerializerOptions options)
     {
-        var contextStrings = new List<string>();
-        if ((value & FilterContext.Home) == FilterContext.Home) contextStrings.Add("home");
-        if ((value & FilterContext.Notifications) == FilterContext.Notifications) contextStrings.Add("notifications");
-        if ((value & FilterContext.Public) == FilterContext.Public) contextStrings.Add("public");
-        if ((value & FilterContext.Thread) == FilterContext.Thread) contextStrings.Add("thread");
+        List<string> contextStrings = [];
+        if ((value & FilterContext.Home) == FilterContext.Home)
+        {
+            contextStrings.Add("home");
+        }
+
+        if ((value & FilterContext.Notifications) == FilterContext.Notifications)
+        {
+            contextStrings.Add("notifications");
+        }
+
+        if ((value & FilterContext.Public) == FilterContext.Public)
+        {
+            contextStrings.Add("public");
+        }
+
+        if ((value & FilterContext.Thread) == FilterContext.Thread)
+        {
+            contextStrings.Add("thread");
+        }
 
         JsonSerializer.Serialize(writer, contextStrings, EntitiesContext.Default.ListString);
 

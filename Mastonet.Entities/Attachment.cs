@@ -129,14 +129,7 @@ public class NullToDoubleConverter : JsonConverter<double>
 {
     public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonTokenType.Null)
-        {
-            return 0;
-        }
-        else
-        {
-            return reader.GetDouble();
-        }
+        return reader.TokenType == JsonTokenType.Null ? 0 : reader.GetDouble();
     }
 
     public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)

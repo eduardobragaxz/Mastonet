@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-partial class MastodonClient
+public partial class MastodonClient
 {
     /// <summary>
     /// Fetching a status

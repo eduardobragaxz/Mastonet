@@ -18,18 +18,10 @@ public abstract partial class BaseHttpClient
     public string AccessToken { get; protected set; } = string.Empty;
 
     #region Instance 
-    private string instance = string.Empty;
     public string Instance
     {
-        get
-        {
-            return instance;
-        }
-        protected set
-        {
-            instance = CheckInstance(value);
-        }
-    }
+        get; protected set => field = CheckInstance(value);
+    } = string.Empty;
 
     private static string CheckInstance(string instance)
     {
@@ -45,23 +37,18 @@ public abstract partial class BaseHttpClient
 
         List<string> notSupportedList = ["gab.", "truthsocial."];
         string lowered = instance.ToLowerInvariant();
-        if (notSupportedList.Any(n => lowered.Contains(n)))
-        {
-            throw new NotSupportedException();
-        }
-
-        return instance;
+        return notSupportedList.Any(lowered.Contains) ? throw new NotSupportedException() : instance;
     }
 
     #endregion
 
     protected BaseHttpClient()
     {
-        this.Client = DefaultHttpClient.Instance;
+        Client = DefaultHttpClient.Instance;
     }
     protected BaseHttpClient(HttpClient client)
     {
-        this.Client = client;
+        Client = client;
     }
 
     #region Http helpers
@@ -77,10 +64,10 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Delete(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{string.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -94,10 +81,10 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Get(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{string.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -128,10 +115,10 @@ public abstract partial class BaseHttpClient
 
     protected async Task<MastodonList<T>> GetMastodonList<T>(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
         if (data is not null)
         {
-            string querystring = $"?{String.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+            string querystring = $"?{string.Join("&", data.Value.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
             url += querystring;
         }
 
@@ -172,7 +159,7 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Post(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
 
         using HttpRequestMessage request = new(HttpMethod.Post, url);
         AddHttpHeader(request);
@@ -191,7 +178,7 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> PostMedia(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
         using HttpRequestMessage request = new(HttpMethod.Post, url);
         AddHttpHeader(request);
 
@@ -221,7 +208,7 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Put(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
 
         using HttpRequestMessage request = new(HttpMethod.Put, url);
         AddHttpHeader(request);
@@ -238,7 +225,7 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> Patch(string route, ImmutableArray<KeyValuePair<string, string>>? data = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
 
         using HttpRequestMessage request = new(HttpMethod.Patch, url);
         AddHttpHeader(request);
@@ -257,7 +244,7 @@ public abstract partial class BaseHttpClient
 
     protected async Task<Stream> PatchMedia(string route, ImmutableArray<KeyValuePair<string, string>>? data = null, ImmutableArray<MediaDefinition>? media = null)
     {
-        string url = $"https://{this.Instance}{route}";
+        string url = $"https://{Instance}{route}";
         using HttpRequestMessage request = new(HttpMethod.Patch, url);
         AddHttpHeader(request);
         MultipartFormDataContent content = [];

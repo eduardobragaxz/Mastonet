@@ -19,13 +19,13 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     public AuthenticationClient(string instance, HttpClient client) : base(client)
     {
-        this.Instance = instance;
+        Instance = instance;
     }
 
     public AuthenticationClient(AppRegistration app, HttpClient client) : base(client)
     {
-        this.Instance = app.Instance;
-        this.AppRegistration = app;
+        Instance = app.Instance;
+        AppRegistration = app;
     }
 
     #region Apps
@@ -59,7 +59,7 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
         appRegistration.Instance = Instance;
         appRegistration.Scope = scopeString;
-        this.AppRegistration = appRegistration;
+        AppRegistration = appRegistration;
 
         return appRegistration;
     }
@@ -127,16 +127,9 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        if (redirectUri is not null)
-        {
-            redirectUri = WebUtility.UrlEncode(WebUtility.UrlDecode(redirectUri));
-        }
-        else
-        {
-            redirectUri = "urn:ietf:wg:oauth:2.0:oob";
-        }
+        redirectUri = redirectUri is not null ? WebUtility.UrlEncode(WebUtility.UrlDecode(redirectUri)) : "urn:ietf:wg:oauth:2.0:oob";
 
-        return $"https://{this.Instance}/oauth/authorize?response_type=code&client_id={AppRegistration.ClientId}&scope={AppRegistration.Scope.Replace(" ", "%20")}&redirect_uri={redirectUri ?? "urn:ietf:wg:oauth:2.0:oob"}";
+        return $"https://{Instance}/oauth/authorize?response_type=code&client_id={AppRegistration.ClientId}&scope={AppRegistration.Scope.Replace(" ", "%20")}&redirect_uri={redirectUri ?? "urn:ietf:wg:oauth:2.0:oob"}";
     }
 
     /// <summary>
@@ -167,12 +160,7 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
 
     private static string GetScopeParam(ImmutableArray<GranularScope>? scopes)
     {
-        if (scopes is null)
-        {
-            return "";
-        }
-
-        return String.Join(" ", scopes.Value.Select(s => $"{s}".ToLowerInvariant().Replace("__", ":")));
+        return scopes is null ? "" : string.Join(" ", scopes.Value.Select(s => $"{s}".ToLowerInvariant().Replace("__", ":")));
     }
 
     #endregion

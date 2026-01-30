@@ -66,10 +66,7 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
 
     public override void Stop()
     {
-        if (cts is not null)
-        {
-            cts.Cancel();
-            cts = null;
-        }
+        cts?.Cancel();
+        cts = null;
     }
 }

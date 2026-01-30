@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-partial class MastodonClient
+public partial class MastodonClient
 {
     #region Follow
 
@@ -28,7 +28,7 @@ partial class MastodonClient
         //    new("reblogs", $"{reblogs}".ToLowerInvariant()),
         //    new("notify", $"{notify}".ToLowerInvariant())
         //];
-        return this.Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
+        return Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Unfollow(string accountId)
     {
-        return this.Post<Relationship>($"/api/v1/accounts/{accountId}/unfollow");
+        return Post<Relationship>($"/api/v1/accounts/{accountId}/unfollow");
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ partial class MastodonClient
         //[
         //    new("uri", uri)
         //];
-        return this.Post<Account>($"/api/v1/follows", data);
+        return Post<Account>($"/api/v1/follows", data);
     }
 
     #endregion
