@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace Mastonet;
 
-[JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata)]
 [JsonSerializable(typeof(Status))]
 [JsonSerializable(typeof(Quote))]
 [JsonSerializable(typeof(QuoteState))]
@@ -57,7 +56,7 @@ internal partial class TryDeserializeContext : JsonSerializerContext
 {
 }
 
-[JsonSerializable(typeof(Error), GenerationMode = JsonSourceGenerationMode.Metadata)]
+[JsonSerializable(typeof(Error))]
 internal partial class ErrorContext : JsonSerializerContext
 {
 }
