@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net10.0</TargetFrameworks>
+		<TargetFrameworks>net11.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<Title>Mastonet</Title>
@@ -21,6 +21,13 @@
 		<PackageTags>Mastodon</PackageTags>
 		<IsAotCompatible>true</IsAotCompatible>
 		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+
+		<EnablePreviewFeatures>true</EnablePreviewFeatures>
+		<Features>$(Features);runtime-async=on</Features>
+		
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0|AnyCPU'">
