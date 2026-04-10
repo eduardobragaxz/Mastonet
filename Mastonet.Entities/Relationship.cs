@@ -86,7 +86,7 @@ public sealed record Relationship
     public bool BlockedBy { get; set; }
 
     /// <summary>
-    /// This user's profile bio
+    /// The authenticated user’s personal comment about this account
     /// </summary>
     [JsonPropertyName("note")]
     public string Note { get; set; } = string.Empty;
