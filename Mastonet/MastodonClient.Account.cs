@@ -258,6 +258,22 @@ public partial class MastodonClient
         return GetMastodonList<Status>($"{url}{queryParams}");
     }
 
+    /// <summary>
+    /// Add the given account to the user’s featured profiles.
+    /// </summary>
+    /// <param name="accountId">The ID of the account.</param>
+    /// <param name="note">The comment to be set on that user. 
+    /// Provide an empty string or leave out this parameter to clear the currently set note.</param>
+    /// <returns></returns>
+    public Task<Relationship> SetPrivateNote(string accountId, string note)
+    {
+        string url = $"/api/v1/accounts/{accountId}/note";
+
+        ImmutableArray<KeyValuePair<string, string>> data = [new("comment",$"{note}")];
+
+        return Post<Relationship>(url, data);
+    }
+
 
     #region Follow Requests
 
