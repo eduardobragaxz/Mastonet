@@ -54,7 +54,7 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             builder.Add(new KeyValuePair<string, string>("website", website));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>? array = builder.ToImmutable();
+        ImmutableArray<KeyValuePair<string, string>> array = builder.ToImmutable();
         AppRegistration appRegistration = await Post<AppRegistration>("/api/v1/apps", array).ConfigureAwait(false);
 
         appRegistration.Instance = Instance;
