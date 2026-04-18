@@ -21,7 +21,6 @@ public partial class MastodonClient : BaseHttpClient, IMastodonClient
         instanceGetter = new Lazy<Task<InstanceV2>>(GetInstanceV2);
     }
 
-    [JsonConstructor]
     public MastodonClient(string instance, string accessToken, HttpClient client)
         : base(client)
     {
