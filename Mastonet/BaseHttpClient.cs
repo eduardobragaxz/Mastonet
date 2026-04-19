@@ -133,8 +133,11 @@ public abstract partial class BaseHttpClient
         if (response.Headers.TryGetValues("Link", out IEnumerable<string>? linkHeader))
         {
             ReadOnlySpan<string> links = linkHeader.Single().Split(',');
-            foreach (string link in links)
+
+            for (int index = 0; index <= links.Length - 1; index++)
             {
+                string link = links[index];
+
                 if (link.Contains("rel=\"next\""))
                 {
                     result.NextPageMaxId = IdFinder().Match(link).Groups[1].Value;
