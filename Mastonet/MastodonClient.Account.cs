@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public partial class MastodonClient
+public sealed partial class MastodonClient
 {
     /// <summary>
     /// View information about a profile.

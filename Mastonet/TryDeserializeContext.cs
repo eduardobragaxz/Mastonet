@@ -52,11 +52,11 @@ namespace Mastonet;
 [JsonSerializable(typeof(ImmutableArray<ScheduledStatus>))]
 [JsonSerializable(typeof(ImmutableArray<string>))]
 [JsonSerializable(typeof(ImmutableArray<Filter>))]
-internal partial class TryDeserializeContext : JsonSerializerContext
+internal sealed partial class TryDeserializeContext : JsonSerializerContext
 {
 }
 
 [JsonSerializable(typeof(Error))]
-internal partial class ErrorContext : JsonSerializerContext
+internal sealed partial class ErrorContext : JsonSerializerContext
 {
 }

@@ -18,7 +18,7 @@ public enum AdminAccountStatus
     Suspended
 }
 
-public partial class MastodonClient
+public sealed partial class MastodonClient
 {
     public Task<MastodonList<AdminAccount>> GetAdminAccounts(ArrayOptions? options = null, AdminAccountOrigin? origin = null,
         AdminAccountStatus? status = null, string? permissions = null, string? invitedBy = null, string? username = null,

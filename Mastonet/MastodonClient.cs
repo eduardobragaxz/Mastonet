@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public partial class MastodonClient : BaseHttpClient, IMastodonClient
+public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
 {
     #region Ctor
 
