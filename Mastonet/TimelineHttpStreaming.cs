@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Mastonet;
 
-public class TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken, HttpClient client) : TimelineStreaming(type, param, accessToken)
+public class TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken) : TimelineStreaming(type, param, accessToken)
 {
     private CancellationTokenSource? cts;
 
-    public TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken)
-        : this(type, param, instance, accessToken, DefaultHttpClient.Instance) { }
+    //public TimelineHttpStreaming(StreamingType type, string? param, string instance, string? accessToken)
+    //    : this(type, param, instance, accessToken) { }
 
     public override async Task Start()
     {
@@ -32,7 +32,7 @@ public class TimelineHttpStreaming(StreamingType type, string? param, string ins
         using (cts = new CancellationTokenSource())
         {
             request.Headers.Add("Authorization", $"Bearer {accessToken}");
-            using HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
+            using HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
             Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             using StreamReader reader = new(stream);
             string? eventName = null;

@@ -140,7 +140,7 @@ public sealed partial class MastodonClient
 
     private TimelineWebSocketStreaming GetStreaming(StreamingType streamingType, string? param)
     {
-        return new TimelineWebSocketStreaming(streamingType, param, Instance, instanceGetter.Value, AccessToken, Client);
+        return new TimelineWebSocketStreaming(streamingType, param, Instance, instanceGetter.Value, AccessToken);
     }
 
 

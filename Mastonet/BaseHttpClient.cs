@@ -13,8 +13,6 @@ namespace Mastonet;
 
 public abstract partial class BaseHttpClient
 {
-    public HttpClient Client { get; }
-
     public string AccessToken { get; protected set; } = string.Empty;
 
     #region Instance 
@@ -44,11 +42,11 @@ public abstract partial class BaseHttpClient
 
     protected BaseHttpClient()
     {
-        Client = DefaultHttpClient.Instance;
+        DefaultHttpClient.Instance = new();
     }
     protected BaseHttpClient(HttpClient client)
     {
-        Client = client;
+        DefaultHttpClient.Instance = client;
     }
 
     #region Http helpers
@@ -73,7 +71,7 @@ public abstract partial class BaseHttpClient
 
         using HttpRequestMessage request = new(HttpMethod.Delete, url);
         AddHttpHeader(request);
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -90,7 +88,7 @@ public abstract partial class BaseHttpClient
 
         using HttpRequestMessage request = new(HttpMethod.Get, url);
         AddHttpHeader(request);
-        using HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        using HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -124,7 +122,7 @@ public abstract partial class BaseHttpClient
 
         using HttpRequestMessage request = new(HttpMethod.Get, url);
         AddHttpHeader(request);
-        using HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        using HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         byte[] content = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
@@ -167,7 +165,7 @@ public abstract partial class BaseHttpClient
         using HttpRequestMessage request = new(HttpMethod.Post, url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -204,7 +202,7 @@ public abstract partial class BaseHttpClient
         }
         request.Content = content;
 
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -216,7 +214,7 @@ public abstract partial class BaseHttpClient
         using HttpRequestMessage request = new(HttpMethod.Put, url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -233,7 +231,7 @@ public abstract partial class BaseHttpClient
         using HttpRequestMessage request = new(HttpMethod.Patch, url);
         AddHttpHeader(request);
         request.Content = new FormUrlEncodedContent(data ?? []);
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
@@ -269,7 +267,7 @@ public abstract partial class BaseHttpClient
         }
         request.Content = content;
 
-        HttpResponseMessage response = await Client.SendAsync(request).ConfigureAwait(false);
+        HttpResponseMessage response = await DefaultHttpClient.Instance!.SendAsync(request).ConfigureAwait(false);
         OnResponseReceived(response);
         return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
     }
