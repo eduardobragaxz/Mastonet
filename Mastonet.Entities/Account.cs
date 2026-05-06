@@ -83,7 +83,7 @@ public sealed record Account
     /// Custom emoji entities to be used when rendering the profile. If none, an empty array will be returned.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public ImmutableArray<Emoji> Emojis { get; init; } = [];
+    public ImmutableArray<Emoji> Emojis { get; init; }
 
     /// <summary>
     /// Whether the account has opted into discovery features such as the profile directory.
