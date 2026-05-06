@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0</TargetFrameworks>
-		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<Title>Mastonet.Entities</Title>
 		<Authors>Guillaume Lacasa</Authors>
