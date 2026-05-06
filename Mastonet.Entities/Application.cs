@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
 
@@ -7,6 +8,11 @@ namespace Mastonet.Entities;
 /// </summary>
 public sealed record Application
 {
+    /// <summary>
+    /// The numeric ID of the application.
+    /// </summary>
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = string.Empty;
     /// <summary>
     /// The name of your application.
     /// </summary>
@@ -23,5 +29,6 @@ public sealed record Application
     /// Used for Push Streaming API.
     /// </summary>
     [JsonPropertyName("vapid_key")]
+    [Obsolete("Deprecated pending removal, please see api/v2/instance for this value (configuration.vapid.public_key)")]
     public string? VapidKey { get; set; }
 }
