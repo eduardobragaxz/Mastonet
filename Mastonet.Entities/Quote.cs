@@ -12,12 +12,12 @@ public sealed record Quote
     /// </summary>
     [JsonPropertyName("state")]
     [JsonConverter(typeof(JsonStringEnumConverter<QuoteState>))]
-    public QuoteState State { get; set; }
+    public QuoteState State { get; init; }
     /// <summary>
     /// The status being quoted, if the quote has been accepted. This will be null, unless the state attribute is accepted.
     /// </summary>
     [JsonPropertyName("quoted_status")]
-    public Status? QuotedStatus { get; set; }
+    public Status? QuotedStatus { get; init; }
 }
 
 public enum QuoteState

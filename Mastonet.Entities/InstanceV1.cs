@@ -110,17 +110,17 @@ public class InstanceStats
     /// Users registered on this instance. 
     /// </summary>
     [JsonPropertyName("user_count")]
-    public long UserCount { get; set; }
+    public int UserCount { get; set; }
 
     /// <summary>
     /// Statuses authored by users on instance. 
     /// </summary>
     [JsonPropertyName("status_count")]
-    public long StatusCount { get; set; }
+    public int StatusCount { get; set; }
 
     /// <summary>
     /// Domains federated with this instance. 
     /// </summary>
     [JsonPropertyName("domain_count")]
-    public long DomainCount { get; set; }
+    public int DomainCount { get; set; }
 }

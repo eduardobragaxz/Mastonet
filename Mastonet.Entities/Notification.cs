@@ -13,7 +13,7 @@ public sealed record Notification
     /// The id of the notification in the database.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; init; } = string.Empty;
 
     /// <summary>
     /// The type of event that resulted in the notification. One of: 
@@ -32,41 +32,41 @@ public sealed record Notification
     /// </summary>
     [JsonPropertyName("type")]
     [JsonConverter(typeof(JsonStringEnumConverter<NotificationType>))]
-    public NotificationType Type { get; set; }
+    public NotificationType Type { get; init; }
 
     /// <summary>
     /// Group key shared by similar notifications, to be used in the grouped notifications feature. Should be considered opaque, but ungrouped notifications can be assumed to have a group_key of the form 
     /// </summary>
     [JsonPropertyName("group_key")]
-    public string GroupKey { get; set; } = string.Empty;
+    public string GroupKey { get; init; } = string.Empty;
 
     /// <summary>
     /// The timestamp of the notification.
     /// </summary>
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
     /// <summary>
     /// The account that performed the action that generated the notification.
     /// </summary>
     [JsonPropertyName("account")]
-    public Account Account { get; set; } = new Account();
+    public Account Account { get; init; } = new Account();
 
     /// <summary>
     /// Status that was the object of the notification, e.g. in mentions, reblogs, favourites, or polls.
     /// </summary>
     [JsonPropertyName("status")]
-    public Status? Status { get; set; }
+    public Status? Status { get; init; }
 
     /// <summary>
     /// Summary of the event that caused follow relationships to be severed. Attached when type of the notification is severed_relationships.
     /// </summary>
-    [JsonPropertyName("relationship_severance_event")]
-    public RelationshipSeveranceEvent RelationshipSeveranceEvent { get; set; } = new RelationshipSeveranceEvent();
+    [JsonPropertyName("event")]
+    public RelationshipSeveranceEvent? RelationshipSeveranceEvent { get; init; }
 
     /// <summary>
     /// Moderation warning that caused the notification. Attached when type of the notification is moderation_warning.
     /// </summary>
     [JsonPropertyName("moderation_warning")]
-    public AccountWarning ModerationWarning { get; set; } = new AccountWarning();
+    public AccountWarning? ModerationWarning { get; init; }
 }

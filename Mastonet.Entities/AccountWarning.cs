@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -28,7 +29,7 @@ public sealed record AccountWarning
     /// List of status IDs that are relevant to the warning. When action is mark_statuses_as_sensitive or delete_statuses, those are the affected statuses.
     /// </summary>
     [JsonPropertyName("status_ids")]
-    public IEnumerable<string> StatusIds { get; set; } = Enumerable.Empty<string>();
+    public ImmutableArray<string>? StatusIds { get; set; }
 
     /// <summary>
     /// Account against which a moderation decision has been taken.

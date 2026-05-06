@@ -30,5 +30,5 @@ public sealed record Application
     /// </summary>
     [JsonPropertyName("vapid_key")]
     [Obsolete("Deprecated pending removal, please see api/v2/instance for this value (configuration.vapid.public_key)")]
-    public string? VapidKey { get; set; }
+    public string VapidKey { get; set; } = string.Empty;
 }

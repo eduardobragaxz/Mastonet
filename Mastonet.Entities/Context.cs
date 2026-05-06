@@ -12,11 +12,11 @@ public sealed record Context
     /// Parents in the thread.
     /// </summary>
     [JsonPropertyName("ancestors")]
-    public ImmutableArray<Status> Ancestors { get; set; } = [];
+    public ImmutableArray<Status> Ancestors { get; init; }
 
     /// <summary>
     /// Children in the thread.
     /// </summary>
     [JsonPropertyName("descendants")]
-    public ImmutableArray<Status> Descendants { get; set; } = [];
+    public ImmutableArray<Status> Descendants { get; init; }
 }

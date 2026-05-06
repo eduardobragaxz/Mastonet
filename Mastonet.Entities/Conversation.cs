@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -18,7 +19,7 @@ public sealed record Conversation
     /// Participants in the conversation.
     /// </summary>
     [JsonPropertyName("accounts")]
-    public IEnumerable<Account> Accounts { get; set; } = [];
+    public ImmutableArray<Account> Accounts { get; set; }
 
     /// <summary>
     /// Is the conversation currently marked as unread?

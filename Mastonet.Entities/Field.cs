@@ -12,17 +12,17 @@ public sealed record Field
     /// The key of a given field's key-value pair.
     /// </summary>
     [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
 
     /// <summary>
     /// The value associated with the name key.
     /// </summary>
     [JsonPropertyName("value")]
-    public string Value { get; set; } = string.Empty;
+    public string Value { get; init; } = string.Empty;
 
     /// <summary>
     /// Timestamp of when the server verified a URL value for a rel="me” link.
     /// </summary>
     [JsonPropertyName("verified_at")]
-    public DateTime? VerifiedAt { get; set; }
+    public DateTime? VerifiedAt { get; init; }
 }

@@ -13,17 +13,17 @@ public sealed record SearchResults
     /// Accounts which match the given query
     /// </summary>
     [JsonPropertyName("accounts")]
-    public ImmutableArray<Account> Accounts { get; set; } = [];
+    public ImmutableArray<Account> Accounts { get; set; }
 
     /// <summary>
     /// Statuses which match the given query
     /// </summary>
     [JsonPropertyName("statuses")]
-    public ImmutableArray<Status> Statuses { get; set; } = [];
+    public ImmutableArray<Status> Statuses { get; set; }
 
     /// <summary>
     /// Hashtags which match the given query
     /// </summary>
     [JsonPropertyName("hashtags")]
-    public ImmutableArray<Tag> Hashtags { get; set; } = [];
+    public ImmutableArray<Tag> Hashtags { get; set; }
 }

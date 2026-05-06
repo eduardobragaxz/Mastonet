@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -12,23 +12,28 @@ public sealed record Tag
     /// The value of the hashtag after the # sign.
     /// </summary>
     [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
 
     /// <summary>
     /// A link to the hashtag on the instance.
     /// </summary>
     [JsonPropertyName("url")]
-    public string Url { get; set; } = string.Empty;
+    public string Url { get; init; } = string.Empty;
 
     /// <summary>
     /// Usage statistics for given days.
     /// </summary>
     [JsonPropertyName("history")]
-    public IEnumerable<History>? History { get; set; }
+    public ImmutableArray<History> History { get; init; }
 
     /// <summary>
     /// Whether the current token’s authorized user is following this tag.
     /// </summary>
     [JsonPropertyName("following")]
-    public bool? Following { get; set; }
+    public bool? Following { get; init; }
+    /// <summary>
+    /// Whether the current token’s authorized user is featuring this tag on their profile.
+    /// </summary>
+    [JsonPropertyName("featuring")]
+    public bool? Featuring { get; init; }
 }

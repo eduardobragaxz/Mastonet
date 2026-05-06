@@ -38,5 +38,5 @@ public sealed record NotificationRequest
     /// Most recent status associated with a filtered notification from that account.
     /// </summary>
     [JsonPropertyName("last_status")]
-    public string LastStatus { get; set; } = string.Empty;
+    public Status? LastStatus { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -51,13 +52,13 @@ public sealed record Announcement
     /// Whether the announcement has been read by the user.
     /// </summary>
     [JsonPropertyName("read")]
-    public bool Read { get; set; }
+    public bool? Read { get; set; }
 
     /// <summary>
     /// Emoji reactions attached to the announcement.
     /// </summary>
     [JsonPropertyName("reactions")]
-    public IEnumerable<AnnouncementReaction> Reactions { get; set; } = [];
+    public ImmutableArray<AnnouncementReaction> Reactions { get; set; }
 
     // Optional attributes
 

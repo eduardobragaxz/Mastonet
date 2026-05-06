@@ -33,7 +33,13 @@ public sealed record Account
     /// The location of the user's profile page.
     /// </summary>
     [JsonPropertyName("url")]
-    public string ProfileUrl { get; init; } = string.Empty;
+    public string? ProfileUrl { get; init; }
+
+    /// <summary>
+    /// The user’s ActivityPub actor identifier (used for federation).
+    /// </summary>
+    [JsonPropertyName("uri")]
+    public string? ProfileUri { get; init; }
 
     // Display attributes
 
@@ -109,19 +115,19 @@ public sealed record Account
     /// How many statuses are attached to this account.
     /// </summary>
     [JsonPropertyName("statuses_count")]
-    public long StatusesCount { get; init; }
+    public int StatusesCount { get; init; }
 
     /// <summary>
     /// The reported followers of this profile.
     /// </summary>
     [JsonPropertyName("followers_count")]
-    public long FollowersCount { get; init; }
+    public int FollowersCount { get; init; }
 
     /// <summary>
     /// The reported follows of this profile.
     /// </summary>
     [JsonPropertyName("following_count")]
-    public long FollowingCount { get; init; }
+    public int FollowingCount { get; init; }
 
     // Optional attributes
 
@@ -135,13 +141,13 @@ public sealed record Account
     /// Additional metadata attached to a profile as name-value pairs.
     /// </summary>
     [JsonPropertyName("fields")]
-    public ImmutableArray<Field>? Fields { get; init; }
+    public ImmutableArray<Field> Fields { get; init; }
 
     /// <summary>
     /// A presentational flag. Indicates that the account may perform automated actions, may not be monitored, or identifies as a robot.
     /// </summary>
     [JsonPropertyName("bot")]
-    public bool? Bot { get; init; }
+    public bool Bot { get; init; }
 
     /// <summary>
     /// An extra entity to be used with API methods to verify credentials and update credentials.
@@ -153,13 +159,13 @@ public sealed record Account
     /// An extra entity returned when an account is suspended.
     /// </summary>
     [JsonPropertyName("suspended")]
-    public bool Suspended { get; init; }
+    public bool? Suspended { get; init; }
 
     /// <summary>
     /// An extra attribute returned only when an account is silenced. If true, indicates that the account should be hidden behind a warning screen.
     /// </summary>
     [JsonPropertyName("limited")]
-    public bool Limited { get; init; }
+    public bool? Limited { get; init; }
 
     /// <summary>
     /// When a timed mute will expire, if applicable.

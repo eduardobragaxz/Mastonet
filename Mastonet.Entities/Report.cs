@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -57,13 +58,13 @@ public sealed record Report
     /// IDs of statuses that have been attached to this report for additional context.
     /// </summary>
     [JsonPropertyName("status_ids")]
-    public IEnumerable<string>? StatusIds { get; set; }
+    public ImmutableArray<string>? StatusIds { get; set; }
 
     /// <summary>
     /// IDs of the rules that have been cited as a violation by this report.
     /// </summary>
     [JsonPropertyName("rule_ids")]
-    public IEnumerable<string>? RuleIds { get; set; }
+    public ImmutableArray<string>? RuleIds { get; set; }
 
     /// <summary>
     /// The account that was reported.

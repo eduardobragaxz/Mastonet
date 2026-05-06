@@ -11,83 +11,83 @@ public sealed record Relationship
     /// The account id.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; init; } = string.Empty;
 
     /// <summary>
     /// Are you following this user?
     /// </summary>
     [JsonPropertyName("following")]
-    public bool Following { get; set; }
+    public bool Following { get; init; }
 
     /// <summary>
     /// Do you have a pending follow request for this user?
     /// </summary>
     [JsonPropertyName("requested")]
-    public bool Requested { get; set; }
+    public bool Requested { get; init; }
 
     /// <summary>
     /// Has this user requested to follow you?
     /// </summary>
     [JsonPropertyName("requested_by")]
-    public bool RequestedBy { get; set; }
+    public bool RequestedBy { get; init; }
 
     /// <summary>
     /// Are you featuring this user on your profile?
     /// </summary>
     [JsonPropertyName("endorsed")]
-    public bool Endorsed { get; set; }
+    public bool Endorsed { get; init; }
 
     /// <summary>
     /// Are you followed by this user?
     /// </summary>
     [JsonPropertyName("followed_by")]
-    public bool FollowedBy { get; set; }
+    public bool FollowedBy { get; init; }
 
     /// <summary>
     /// Are you muting this user?
     /// </summary>
     [JsonPropertyName("muting")]
-    public bool Muting { get; set; }
+    public bool Muting { get; init; }
 
     /// <summary>
     /// Are you muting notifications from this user?
     /// </summary>
     [JsonPropertyName("muting_notifications")]
-    public bool MutingNotifications { get; set; }
+    public bool MutingNotifications { get; init; }
 
     /// <summary>
     /// Are you receiving this user's boosts in your home timeline?
     /// </summary>
     [JsonPropertyName("showing_reblogs")]
-    public bool ShowingReblogs { get; set; }
+    public bool ShowingReblogs { get; init; }
 
     /// <summary>
     /// Have you enabled notifications for this user?
     /// </summary>
     [JsonPropertyName("notifying")]
-    public bool Notifying { get; set; }
+    public bool Notifying { get; init; }
 
     /// <summary>
     /// Are you blocking this user?
     /// </summary>
     [JsonPropertyName("blocking")]
-    public bool Blocking { get; set; }
+    public bool Blocking { get; init; }
 
     /// <summary>
     /// Are you blocking this user's domain?
     /// </summary>
     [JsonPropertyName("domain_blocking")]
-    public bool DomainBlocking { get; set; }
+    public bool DomainBlocking { get; init; }
 
     /// <summary>
     /// Is this user blocking you?
     /// </summary>
     [JsonPropertyName("blocked_by")]
-    public bool BlockedBy { get; set; }
+    public bool BlockedBy { get; init; }
 
     /// <summary>
     /// The authenticated user’s personal comment about this account
     /// </summary>
     [JsonPropertyName("note")]
-    public string Note { get; set; } = string.Empty;
+    public string Note { get; init; } = string.Empty;
 }

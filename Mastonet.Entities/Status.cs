@@ -72,7 +72,7 @@ public sealed record Status
     /// The application used to post this status.
     /// </summary>
     [JsonPropertyName("application")]
-    public Application Application { get; init; } = new Application();
+    public Application? Application { get; init; }
 
     // Rendering attributes
 
@@ -185,28 +185,28 @@ public sealed record Status
     /// Have you favourited this status?
     /// </summary>
     [JsonPropertyName("favourited")]
-    public bool Favourited { get; set; }
+    public bool? Favourited { get; set; }
 
     /// <summary>
     /// Have you boosted this status?
     /// </summary>
     [JsonPropertyName("reblogged")]
-    public bool Reblogged { get; set; }
+    public bool? Reblogged { get; set; }
 
     /// <summary>
     /// Have you muted notifications for this status's conversation?
     /// </summary>
     [JsonPropertyName("muted")]
-    public bool Muted { get; init; }
+    public bool? Muted { get; init; }
 
     [JsonPropertyName("bookmarked")]
-    public bool Bookmarked { get; set; }
+    public bool? Bookmarked { get; set; }
 
     /// <summary>
     /// Whether the status is pinned
     /// </summary>
     [JsonPropertyName("pinned")]
-    public bool Pinned { get; init; }
+    public bool? Pinned { get; init; }
 }
 
 public class StatusParameters

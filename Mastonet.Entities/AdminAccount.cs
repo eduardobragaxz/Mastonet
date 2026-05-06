@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Mastonet.Entities;
@@ -50,7 +51,7 @@ public sealed record AdminAccount
     /// The current role of the account.
     /// </summary>
     [JsonPropertyName("role")]
-    public Role Role { get; set; } = default!;
+    public Role Role { get; set; } = new();
 
     /// <summary>
     /// Whether the account has confirmed their email address.
@@ -104,13 +105,13 @@ public sealed record AdminAccount
     /// All known IP addresses associated with this account.
     /// </summary>
     [JsonPropertyName("ips")]
-    public IEnumerable<AccountIp> Ips { get; set; } = [];
+    public ImmutableArray<AccountIp> Ips { get; set; }
 
     /// <summary>
     /// User-level information about the account.
     /// </summary>
     [JsonPropertyName("account")]
-    public Account? Account { get; set; }
+    public Account Account { get; set; } = new();
 
     /// <summary>
     /// The ID of the Application that created this account, if applicable.

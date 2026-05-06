@@ -29,7 +29,7 @@ public sealed record Translation
     /// The translated media descriptions of the status.
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public TranslatedAttachments? TranslatedAttachments { get; set; }
+    public TranslatedAttachments TranslatedAttachments { get; set; } = new();
 
     /// <summary>
     /// The language of the source text, as auto-detected by the machine translation provider.

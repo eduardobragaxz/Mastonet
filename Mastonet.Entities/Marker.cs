@@ -12,13 +12,13 @@ public sealed record Marker
     /// Information about the user's position in the home timeline.
     /// </summary>
     [JsonPropertyName("home")]
-    public MarkerInfo Home { get; set; } = default!;
+    public MarkerInfo Home { get; set; } = new();
 
     /// <summary>
     /// Information about the user's position in their notifications.
     /// </summary>
     [JsonPropertyName("notifications")]
-    public MarkerInfo Notifications { get; set; } = default!;
+    public MarkerInfo Notifications { get; set; } = new();
 
 }
 
