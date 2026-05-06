@@ -54,7 +54,7 @@ public sealed record Status
     /// Is this status marked as sensitive content?
     /// </summary>
     [JsonPropertyName("sensitive")]
-    public bool? Sensitive { get; init; }
+    public bool Sensitive { get; init; }
 
     /// <summary>
     /// Subject or summary line, below which status content is collapsed until expanded.
@@ -66,7 +66,7 @@ public sealed record Status
     /// Media that is attached to this status.
     /// </summary>
     [JsonPropertyName("media_attachments")]
-    public ImmutableArray<Attachment> MediaAttachments { get; init; } = [];
+    public ImmutableArray<Attachment> MediaAttachments { get; init; }
 
     /// <summary>
     /// The application used to post this status.
@@ -80,19 +80,19 @@ public sealed record Status
     /// Mentions of users within the status content.
     /// </summary>
     [JsonPropertyName("mentions")]
-    public ImmutableArray<Mention> Mentions { get; init; } = [];
+    public ImmutableArray<Mention> Mentions { get; init; }
 
     /// <summary>
     /// Hashtags used within the status content.
     /// </summary>
     [JsonPropertyName("tags")]
-    public ImmutableArray<Tag> Tags { get; init; } = [];
+    public ImmutableArray<Tag> Tags { get; init; }
 
     /// <summary>
     /// Custom emoji to be used when rendering status content.
     /// </summary>
     [JsonPropertyName("emojis")]
-    public ImmutableArray<Emoji> Emojis { get; init; } = [];
+    public ImmutableArray<Emoji> Emojis { get; init; }
 
 
     // Informational attributes
@@ -101,19 +101,19 @@ public sealed record Status
     /// How many boosts this status has received.
     /// </summary>
     [JsonPropertyName("reblogs_count")]
-    public long ReblogCount { get; init; }
+    public int ReblogCount { get; init; }
 
     /// <summary>
     /// How many favourites this status has received.
     /// </summary>
     [JsonPropertyName("favourites_count")]
-    public long FavouritesCount { get; init; }
+    public int FavouritesCount { get; init; }
 
     /// <summary>
     /// How many replies this status has received.
     /// </summary>
     [JsonPropertyName("replies_count")]
-    public long RepliesCount { get; init; }
+    public int RepliesCount { get; init; }
 
 
     // Nullable attributes
@@ -177,7 +177,7 @@ public sealed record Status
     /// Summary of the post quote’s approval policy and how it applies to the user making the request, that is, whether the user can be expected to be allowed to quote that post
     /// </summary>
     [JsonPropertyName("quote_approval")]
-    public QuoteApproval? QuoteApproval { get; init; }
+    public QuoteApproval QuoteApproval { get; init; } = new();
 
     // Authorized user attributes
 
@@ -185,28 +185,28 @@ public sealed record Status
     /// Have you favourited this status?
     /// </summary>
     [JsonPropertyName("favourited")]
-    public bool? Favourited { get; set; }
+    public bool Favourited { get; set; }
 
     /// <summary>
     /// Have you boosted this status?
     /// </summary>
     [JsonPropertyName("reblogged")]
-    public bool? Reblogged { get; set; }
+    public bool Reblogged { get; set; }
 
     /// <summary>
     /// Have you muted notifications for this status's conversation?
     /// </summary>
     [JsonPropertyName("muted")]
-    public bool? Muted { get; init; }
+    public bool Muted { get; init; }
 
     [JsonPropertyName("bookmarked")]
-    public bool? Bookmarked { get; set; }
+    public bool Bookmarked { get; set; }
 
     /// <summary>
     /// Whether the status is pinned
     /// </summary>
     [JsonPropertyName("pinned")]
-    public bool? Pinned { get; init; }
+    public bool Pinned { get; init; }
 }
 
 public class StatusParameters
