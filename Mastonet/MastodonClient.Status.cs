@@ -354,6 +354,14 @@ public sealed partial class MastodonClient
             }
         }
 
+        if (statusParameters.MediaAttributes is not null)
+        {
+            foreach (KeyValuePair<string, string> pair in statusParameters.MediaAttributes)
+            {
+                data.Add(new KeyValuePair<string, string>($"media_attributes[][{pair.Key}]", $"{pair.Value}"));
+            }
+        }
+
         if (statusParameters.Sensitive)
         {
             data.Add(new KeyValuePair<string, string>("sensitive", "true"));

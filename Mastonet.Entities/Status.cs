@@ -239,6 +239,8 @@ public class StatusParameters
     /// </summary>
     public IEnumerable<string>? MediaIds { get; set; }
 
+    public IEnumerable<KeyValuePair<string,string>>? MediaAttributes { get; set; }
+
     /// <summary>
     /// Set this to mark the media of the status as NSFW
     /// </summary>
