@@ -98,8 +98,11 @@ public sealed partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("status", status));
+
+        Dictionary<string, string> data = new()
+        {
+            ["status"] = status
+        };
 
         //List<KeyValuePair<string, string>> data =
         //[
@@ -108,68 +111,72 @@ public sealed partial class MastodonClient
 
         if (!string.IsNullOrEmpty(quotedStatusId))
         {
-            data.Add(new KeyValuePair<string, string>("quoted_status_id", quotedStatusId!));
+            data.Add("quoted_status_id", quotedStatusId!);
         }
 
         if (!string.IsNullOrEmpty(replyStatusId))
         {
-            data.Add(new KeyValuePair<string, string>("in_reply_to_id", replyStatusId!));
+            data.Add("in_reply_to_id", replyStatusId!);
         }
 
         if (mediaIds is not null)
         {
             foreach (string mediaId in mediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId));
+                data.Add("media_ids[]", mediaId);
             }
         }
 
         if (sensitive)
         {
-            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
+            data.Add("sensitive", "true");
         }
 
         if (spoilerText is not null)
         {
-            data.Add(new KeyValuePair<string, string>("spoiler_text", spoilerText));
+            data.Add("spoiler_text", spoilerText);
         }
 
         if (quoteApprovalPolicy.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("quote_approval_policy", $"{quoteApprovalPolicy.Value}".ToLowerInvariant()));
+            data.Add("quote_approval_policy", $"{quoteApprovalPolicy.Value}".ToLowerInvariant());
         }
 
         if (visibility.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("visibility", $"{visibility.Value}".ToLowerInvariant()));
+            data.Add("visibility", $"{visibility.Value}".ToLowerInvariant());
         }
 
         if (scheduledAt.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("scheduled_at", scheduledAt.Value.ToString("o")));
+            data.Add("scheduled_at", scheduledAt.Value.ToString("o"));
         }
 
         if (language is not null)
         {
-            data.Add(new KeyValuePair<string, string>("language", language));
+            data.Add("language", language);
         }
 
         if (pollParameters is not null)
         {
-            data.AddRange(pollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{pollParameters.ExpiresIn.TotalSeconds}"));
+            foreach (string option in pollParameters.Options!)
+            {
+                data.Add("poll[options][]", option);
+            }
+
+            data.Add("poll[expires_in]", $"{pollParameters.ExpiresIn.TotalSeconds}");
             if (pollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{pollParameters.Multiple.Value}".ToLowerInvariant()));
+                data.Add("poll[multiple]", $"{pollParameters.Multiple.Value}".ToLowerInvariant());
             }
 
             if (pollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{pollParameters.HideTotals.Value}".ToLowerInvariant()));
+                data.Add("poll[hide_totals]", $"{pollParameters.HideTotals.Value}".ToLowerInvariant());
             }
         }
 
-        return Post<Status>("/api/v1/statuses", data.ToImmutable());
+        return Post<Status>("/api/v1/statuses", data);
     }
 
     /// <summary>
@@ -185,77 +192,79 @@ public sealed partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("status", statusParameters.Status!));
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("status", statusParameters.Status!),
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["status"] = statusParameters.Status!
+        };
 
         if (!string.IsNullOrEmpty(statusParameters.QuotedStatusId))
         {
-            data.Add(new KeyValuePair<string, string>("quoted_status_id", statusParameters.QuotedStatusId));
+            data.Add("quoted_status_id", statusParameters.QuotedStatusId);
         }
 
         if (!string.IsNullOrEmpty(statusParameters.ReplyStatusId))
         {
-            data.Add(new KeyValuePair<string, string>("in_reply_to_id", statusParameters.ReplyStatusId));
+            data.Add("in_reply_to_id", statusParameters.ReplyStatusId);
         }
 
         if (statusParameters.MediaIds is not null)
         {
             foreach (string mediaId in statusParameters.MediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", mediaId));
+                data.Add("media_ids[]", mediaId);
             }
         }
 
         if (statusParameters.Sensitive)
         {
-            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
+            data.Add("sensitive", "true");
         }
 
         if (statusParameters.SpoilerText is not null)
         {
-            data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
+            data.Add("spoiler_text", statusParameters.SpoilerText);
         }
 
         if (statusParameters.QuoteApprovalPolicy.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("quote_approval_policy", $"{statusParameters.QuoteApprovalPolicy.Value}".ToLowerInvariant()));
+            data.Add("quote_approval_policy", $"{statusParameters.QuoteApprovalPolicy.Value}".ToLowerInvariant());
         }
 
         if (statusParameters.Visibility.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("visibility", $"{statusParameters.Visibility.Value}".ToLowerInvariant()));
+            data.Add("visibility", $"{statusParameters.Visibility.Value}".ToLowerInvariant());
         }
 
         if (statusParameters.ScheduledAt.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("scheduled_at", statusParameters.ScheduledAt.Value.ToString("o")));
+            data.Add("scheduled_at", statusParameters.ScheduledAt.Value.ToString("o"));
         }
 
         if (statusParameters.Language is not null)
         {
-            data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
+            data.Add("language", statusParameters.Language);
         }
 
         if (statusParameters.PollParameters is not null)
         {
-            data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));
+            foreach (string option in statusParameters.PollParameters.Options!)
+            {
+                data.Add("poll[options][]", option);
+            }
+
+            data.Add("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}");
             if (statusParameters.PollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}".ToLowerInvariant()));
+                data.Add("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}".ToLowerInvariant());
             }
 
             if (statusParameters.PollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}".ToLowerInvariant()));
+                data.Add("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}".ToLowerInvariant());
             }
         }
 
-        return Post<Status>("/api/v1/statuses", data.ToImmutable());
+        return Post<Status>("/api/v1/statuses", data);
     }
 
     /// <summary>
@@ -277,52 +286,54 @@ public sealed partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(status));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("status", status));
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("status", status),
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["status"] = status
+        };
 
         if (mediaIds is not null)
         {
             foreach (string mediaId in mediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
+                data.Add("media_ids[]", mediaId);
             }
         }
 
         if (sensitive)
         {
-            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
+            data.Add("sensitive", "true");
         }
 
         if (spoilerText is not null)
         {
-            data.Add(new KeyValuePair<string, string>("spoiler_text", spoilerText));
+            data.Add("spoiler_text", spoilerText);
         }
 
         if (language is not null)
         {
-            data.Add(new KeyValuePair<string, string>("language", language));
+            data.Add("language", language);
         }
 
         if (poll is not null)
         {
-            data.AddRange(poll.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{poll.ExpiresIn.TotalSeconds}"));
+            foreach (string option in poll.Options!)
+            {
+                data.Add("poll[options][]", option);
+            }
+
+            data.Add("poll[expires_in]", $"{poll.ExpiresIn.TotalSeconds}");
             if (poll.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{poll.Multiple.Value}"));
+                data.Add("poll[multiple]", $"{poll.Multiple.Value}");
             }
 
             if (poll.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{poll.HideTotals.Value}"));
+                data.Add("poll[hide_totals]", $"{poll.HideTotals.Value}");
             }
         }
 
-        return Put<Status>($"/api/v1/statuses/{statusId}", data.ToImmutable());
+        return Put<Status>($"/api/v1/statuses/{statusId}", data);
     }
 
     /// <summary>
@@ -339,18 +350,16 @@ public sealed partial class MastodonClient
             throw new ArgumentException("A status must have either text (status) or media (mediaIds)", nameof(statusParameters));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("status", statusParameters.Status!));
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("status", statusParameters.Status!),
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["status"] = statusParameters.Status!
+        };
 
         if (statusParameters.MediaIds is not null)
         {
             foreach (string mediaId in statusParameters.MediaIds)
             {
-                data.Add(new KeyValuePair<string, string>("media_ids[]", $"{mediaId}"));
+                data.Add("media_ids[]", mediaId);
             }
         }
 
@@ -358,41 +367,45 @@ public sealed partial class MastodonClient
         {
             foreach (KeyValuePair<string, string> pair in statusParameters.MediaAttributes)
             {
-                data.Add(new KeyValuePair<string, string>($"media_attributes[][{pair.Key}]", $"{pair.Value}"));
+                data.Add($"media_attributes[][{pair.Key}]", pair.Value);
             }
         }
 
         if (statusParameters.Sensitive)
         {
-            data.Add(new KeyValuePair<string, string>("sensitive", "true"));
+            data.Add("sensitive", "true");
         }
 
         if (statusParameters.SpoilerText is not null)
         {
-            data.Add(new KeyValuePair<string, string>("spoiler_text", statusParameters.SpoilerText));
+            data.Add("spoiler_text", statusParameters.SpoilerText);
         }
 
         if (statusParameters.Language is not null)
         {
-            data.Add(new KeyValuePair<string, string>("language", statusParameters.Language));
+            data.Add("language", statusParameters.Language);
         }
 
         if (statusParameters.PollParameters is not null)
         {
-            data.AddRange(statusParameters.PollParameters.Options.Select(option => new KeyValuePair<string, string>("poll[options][]", option)));
-            data.Add(new KeyValuePair<string, string>("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}"));
+            foreach (string option in statusParameters.PollParameters.Options!)
+            {
+                data.Add("poll[options][]", option);
+            }
+
+            data.Add("poll[expires_in]", $"{statusParameters.PollParameters.ExpiresIn.TotalSeconds}");
             if (statusParameters.PollParameters.Multiple.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}"));
+                data.Add("poll[multiple]", $"{statusParameters.PollParameters.Multiple.Value}");
             }
 
             if (statusParameters.PollParameters.HideTotals.HasValue)
             {
-                data.Add(new KeyValuePair<string, string>("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}"));
+                data.Add("poll[hide_totals]", $"{statusParameters.PollParameters.HideTotals.Value}");
             }
         }
 
-        return Put<Status>($"/api/v1/statuses/{statusId}", data.ToImmutable());
+        return Put<Status>($"/api/v1/statuses/{statusId}", data);
     }
 
 
@@ -432,14 +445,14 @@ public sealed partial class MastodonClient
     /// <returns>Returns ScheduledStatus</returns>
     public Task<ScheduledStatus> UpdateScheduledStatus(string scheduledStatusId, DateTime? scheduledAt)
     {
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        //List<KeyValuePair<string, string>> data = [];
+        Dictionary<string, string> data = [];
+
         if (scheduledAt.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("scheduled_at", $"{scheduledAt.Value}"));
+            data.Add("scheduled_at", $"{scheduledAt.Value}");
         }
 
-        return Put<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}", data.ToImmutable());
+        return Put<ScheduledStatus>($"/api/v1/scheduled_statuses/{scheduledStatusId}", data);
     }
 
     /// <summary>

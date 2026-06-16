@@ -259,11 +259,7 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("The title is required", nameof(title));
         }
 
-        ImmutableArray<KeyValuePair<string, string>> data = [new("title", title)];
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("title", title),
-        //];
+        Dictionary<string, string> data = new() { ["title"] = title };
 
         return Post<List>("/api/v1/lists", data);
     }
@@ -282,18 +278,14 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("The title is required", nameof(newTitle));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("title", newTitle));
-        data.Add(new("exclusive", $"{exclusive}"));
-        data.Add(new("replies_policy", replies_policy));
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("title", newTitle),
-        //    new("exclusive", $"{exclusive}"),
-        //    new("replies_policy", replies_policy)
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["title"] = newTitle,
+            ["exclusive"] = $"{exclusive}",
+            ["replies_policy"] = replies_policy
+        };
 
-        return Put<List>($"/api/v1/lists/{listId}", data.ToImmutable());
+        return Put<List>($"/api/v1/lists/{listId}", data);
     }
 
     /// <summary>
@@ -318,7 +310,8 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
+        Dictionary<string, string> data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id)).ToDictionary();
+        //ImmutableArray <KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
         return Post($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -346,7 +339,8 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("Accounts are required", nameof(accountIds));
         }
 
-        ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
+        Dictionary<string, string> data = accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id)).ToDictionary();
+        //ImmutableArray<KeyValuePair<string, string>> data = [.. accountIds.Select(id => new KeyValuePair<string, string>("account_ids[]", id))];
 
         return Delete($"/api/v1/lists/{listId}/accounts", data);
     }
@@ -399,20 +393,20 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
     {
         media.ParamName = "file";
         ImmutableArray<MediaDefinition> list = [media];
-        //List<MediaDefinition> list = [media];
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        //Dictionary<string, string> data = [];
+
+        Dictionary<string, string> data = new();
+
         if (description is not null)
         {
-            data.Add(new("description", description));
+            data.Add("description", description);
         }
 
         if (focus is not null)
         {
-            data.Add(new("focus", $"{focus.X},{focus.Y}"));
+            data.Add("focus", $"{focus.X},{focus.Y}");
         }
 
-        return Post<Attachment>("/api/v2/media", data.ToImmutable(), list);
+        return Post<Attachment>("/api/v2/media", data, list);
     }
 
     /// <summary>
@@ -424,19 +418,19 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns an Attachment that can be used when creating a status</returns>
     public Task<Attachment> UpdateMedia(string mediaId, string? description = null, AttachmentFocusData? focus = null)
     {
-        //Dictionary<string, string> data = [];
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        Dictionary<string, string> data = [];
+
         if (description is not null)
         {
-            data.Add(new("description", description));
+            data.Add("description", description);
         }
 
         if (focus is not null)
         {
-            data.Add(new("focus", $"{focus.X},{focus.Y}"));
+            data.Add("focus", $"{focus.X},{focus.Y}");
         }
 
-        return Put<Attachment>($"/api/v1/media/{mediaId}", data.ToImmutable());
+        return Put<Attachment>($"/api/v1/media/{mediaId}", data);
     }
 
     #endregion
@@ -553,31 +547,30 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
     public Task<Report> Report(string accountId, ImmutableArray<string>? statusIds = null, string? comment = null,
         bool? forward = null)
     {
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("account_id", accountId));
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("account_id", accountId),
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["account_id"] = accountId
+        };
+
         if (statusIds is not null)
         {
             foreach (string statusId in statusIds)
             {
-                data.Add(new KeyValuePair<string, string>("status_ids[]", statusId));
+                data.Add("status_ids[]", statusId);
             }
         }
 
         if (comment is not null)
         {
-            data.Add(new KeyValuePair<string, string>("comment", comment));
+            data.Add("comment", comment);
         }
 
         if (forward.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("forward", $"{forward.Value}".ToLowerInvariant()));
+            data.Add("forward", $"{forward.Value}".ToLowerInvariant());
         }
 
-        return Post<Report>("/api/v1/reports", data.ToImmutable());
+        return Post<Report>("/api/v1/reports", data);
     }
 
     #endregion
@@ -676,34 +669,33 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context must be specified", nameof(context));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        data.Add(new("phrase", phrase));
-        //List<KeyValuePair<string, string>> data = [new("phrase", phrase)];
+        Dictionary<string, string> data = new() { ["phrase"] = phrase };
+
         foreach (FilterContext checkFlag in new[]
                      { FilterContext.Home, FilterContext.Notifications, FilterContext.Public, FilterContext.Thread })
         {
             if ((context & checkFlag) == checkFlag)
             {
-                data.Add(new KeyValuePair<string, string>("context[]", $"{checkFlag}".ToLowerInvariant()));
+                data.Add("context[]", $"{checkFlag}".ToLowerInvariant());
             }
         }
 
         if (irreversible)
         {
-            data.Add(new KeyValuePair<string, string>("irreversible", "true"));
+            data.Add("irreversible", "true");
         }
 
         if (wholeWord)
         {
-            data.Add(new KeyValuePair<string, string>("whole_word", "true"));
+            data.Add("whole_word", "true");
         }
 
         if (expiresIn.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("expires_in", $"{expiresIn.Value}"));
+            data.Add("expires_in", $"{expiresIn.Value}");
         }
 
-        return Post<Filter>("/api/v1/filters", data.ToImmutable());
+        return Post<Filter>("/api/v1/filters", data);
     }
 
     /// <summary>
@@ -734,11 +726,11 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             throw new ArgumentException("At least one context to filter must be specified", nameof(context));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-        //List<KeyValuePair<string, string>> data = [];
+        Dictionary<string, string> data = [];
+
         if (phrase is not null)
         {
-            data.Add(new KeyValuePair<string, string>("phrase", phrase));
+            data.Add("phrase", phrase);
         }
 
         if (context.HasValue)
@@ -750,28 +742,28 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
             {
                 if ((context & checkFlag) == checkFlag)
                 {
-                    data.Add(new KeyValuePair<string, string>("context[]", $"{checkFlag}".ToLowerInvariant()));
+                    data.Add("context[]", $"{checkFlag}".ToLowerInvariant());
                 }
             }
         }
 
         if (irreversible.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("irreversible",
-                $"{irreversible.Value}".ToLowerInvariant()));
+            data.Add("irreversible",
+                $"{irreversible.Value}".ToLowerInvariant());
         }
 
         if (wholeWord.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("whole_word", $"{wholeWord.Value}".ToLowerInvariant()));
+            data.Add("whole_word", $"{wholeWord.Value}".ToLowerInvariant());
         }
 
         if (expiresIn.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("expires_in", $"{expiresIn.Value}"));
+            data.Add("expires_in", $"{expiresIn.Value}");
         }
 
-        return Put<Filter>($"/api/v1/filters/{filterId}", data.ToImmutable());
+        return Put<Filter>($"/api/v1/filters/{filterId}", data);
     }
 
     /// <summary>
@@ -805,7 +797,8 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
     /// <returns>Returns Poll</returns>
     public Task<Poll> Vote(string id, ImmutableArray<int> choices)
     {
-        ImmutableArray<KeyValuePair<string, string>> data = [.. choices.Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))];
+        Dictionary<string, string> data = choices.Select(index => new KeyValuePair<string, string>("choices[]", $"{index}")).ToDictionary();
+        //ImmutableArray<KeyValuePair<string, string>> data = [.. choices.Select(index => new KeyValuePair<string, string>("choices[]", $"{index}"))];
         return Post<Poll>($"/api/v1/polls/{id}/votes", data);
     }
 

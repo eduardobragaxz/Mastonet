@@ -67,28 +67,28 @@ public sealed partial class MastodonClient
             throw new ArgumentException("Number of fields must be 4 or fewer.", nameof(fields_attributes));
         }
 
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        Dictionary<string, string> data = [];
         ImmutableArray<MediaDefinition>.Builder media = ImmutableArray.CreateBuilder<MediaDefinition>();
         //List<KeyValuePair<string, string>> data = [];
         //List<MediaDefinition> media = [];
 
         if (discoverable is not null)
         {
-            data.Add(new KeyValuePair<string, string>("discoverable", $"{discoverable.Value}"));
+            data.Add("discoverable", $"{discoverable.Value}");
         }
 
         if (bot is not null)
         {
-            data.Add(new KeyValuePair<string, string>("bot", $"{bot.Value}"));
+            data.Add("bot", $"{bot.Value}");
         }
 
         if (display_name is not null)
         {
-            data.Add(new KeyValuePair<string, string>("display_name", display_name));
+            data.Add("display_name", display_name);
         }
         if (note is not null)
         {
-            data.Add(new KeyValuePair<string, string>("note", note));
+            data.Add("note", note);
         }
 
         if (avatar is not null)
@@ -103,30 +103,30 @@ public sealed partial class MastodonClient
         }
         if (locked.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("locked", $"{locked.Value}".ToLowerInvariant()));
+            data.Add("locked", $"{locked.Value}".ToLowerInvariant());
         }
         if (source_privacy.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("source[privacy]", $"{source_privacy.Value}".ToLowerInvariant()));
+            data.Add("source[privacy]", $"{source_privacy.Value}".ToLowerInvariant());
         }
         if (source_sensitive.HasValue)
         {
-            data.Add(new KeyValuePair<string, string>("source[sensitive]", $"{source_sensitive.Value}".ToLowerInvariant()));
+            data.Add("source[sensitive]", $"{source_sensitive.Value}".ToLowerInvariant());
         }
         if (source_language is not null)
         {
-            data.Add(new KeyValuePair<string, string>("source[language]", source_language));
+            data.Add("source[language]", source_language);
         }
         if (fields_attributes is not null)
         {
             foreach (var item in fields_attributes.Value.Select((f, i) => new { f, i }))
             {
-                data.Add(new KeyValuePair<string, string>($"fields_attributes[{item.i}][name]", item.f.Name));
-                data.Add(new KeyValuePair<string, string>($"fields_attributes[{item.i}][value]", item.f.Value));
+                data.Add($"fields_attributes[{item.i}][name]", item.f.Name);
+                data.Add($"fields_attributes[{item.i}][value]", item.f.Value);
             }
         }
 
-        return Patch<Account>($"/api/v1/accounts/update_credentials", data.ToImmutable(), media.ToImmutable());
+        return Patch<Account>($"/api/v1/accounts/update_credentials", data, media.ToImmutable());
     }
 
     /// <summary>
@@ -146,13 +146,13 @@ public sealed partial class MastodonClient
     /// <returns>Returns an array of Relationships of the current user to a list of given accounts</returns>
     public Task<ImmutableArray<Relationship>> GetAccountRelationships(ImmutableArray<string> ids)
     {
-        ImmutableArray<KeyValuePair<string, string>>.Builder data = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+        Dictionary<string, string> data = [];
         //List<KeyValuePair<string, string>> data = new(ids.Length);
         foreach (string id in ids)
         {
-            data.Add(new KeyValuePair<string, string>("id[]", $"{id}"));
+            data.Add("id[]", id);
         }
-        return GetValue<ImmutableArray<Relationship>>("/api/v1/accounts/relationships", data.ToImmutable());
+        return GetValue<ImmutableArray<Relationship>>("/api/v1/accounts/relationships", data);
     }
 
     /// <summary>
@@ -269,7 +269,10 @@ public sealed partial class MastodonClient
     {
         string url = $"/api/v1/accounts/{accountId}/note";
 
-        ImmutableArray<KeyValuePair<string, string>> data = [new("comment",$"{note}")];
+        Dictionary<string, string> data = new()
+        {
+            ["comment"] = note
+        };
 
         return Post<Relationship>(url, data);
     }
@@ -399,11 +402,10 @@ public sealed partial class MastodonClient
     /// <returns></returns>
     public Task<FeaturedTag> FeatureTag(string name)
     {
-        ImmutableArray<KeyValuePair<string, string>> data = [new KeyValuePair<string, string>("name", name)];
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("name",name)
-        //];
+        Dictionary<string, string> data = new()
+        {
+            ["name"] = name
+        };
 
         return Post<FeaturedTag>("/api/v1/featured_tags", data);
     }
