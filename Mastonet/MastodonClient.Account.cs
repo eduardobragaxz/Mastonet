@@ -69,8 +69,6 @@ public sealed partial class MastodonClient
 
         Dictionary<string, string> data = [];
         ImmutableArray<MediaDefinition>.Builder media = ImmutableArray.CreateBuilder<MediaDefinition>();
-        //List<KeyValuePair<string, string>> data = [];
-        //List<MediaDefinition> media = [];
 
         if (discoverable is not null)
         {
