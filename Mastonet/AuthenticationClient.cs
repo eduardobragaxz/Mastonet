@@ -39,16 +39,16 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
     public async Task<AppRegistration> CreateApp(string appName, string? website = null, string? redirectUri = null, ImmutableArray<GranularScope>? scope = null)
     {
         string scopeString = GetScopeParam(scope);
-        Dictionary<string, string> array = new()
-        {
-            ["client_name"] = appName,
-            ["scopes"] = scopeString,
-            ["redirect_uris"] = redirectUri ?? "urn:ietf:wg:oauth:2.0:oob"
-        };
+        List<KeyValuePair<string, string>> array =
+        [
+            new("client_name",appName),
+            new("scopes", scopeString),
+            new("redirect_uris", redirectUri ?? "urn:ietf:wg:oauth:2.0:oob")
+        ];
 
         if (website is not null)
         {
-            array.Add("website", website);
+            array.Add(new("website", website));
         }
 
         AppRegistration appRegistration = await Post<AppRegistration>("/api/v1/apps", array).ConfigureAwait(false);
@@ -71,15 +71,15 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        Dictionary<string, string> builder = new()
-        {
-            ["client_id"] = AppRegistration.ClientId,
-            ["client_secret"] = AppRegistration.ClientSecret,
-            ["grant_type"] = "password",
-            ["username"] = email,
-            ["password"] = password,
-            ["scope"] = AppRegistration.Scope
-        };
+        List<KeyValuePair<string, string>> builder =
+        [
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("grant_type", "password"),
+            new("username", email),
+            new("password", password),
+            new("scope", AppRegistration.Scope)
+        ];
 
         return Post<Auth>("/oauth/token", builder);
     }
@@ -91,14 +91,14 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("The app must be registered before you can connect");
         }
 
-        Dictionary<string, string> builder = new()
-        {
-            ["client_id"] = AppRegistration.ClientId,
-            ["client_secret"] = AppRegistration.ClientSecret,
-            ["grant_type"] = "authorization_code",
-            ["redirect_uri"] = redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob",
-            ["code"] = code
-        };
+        List<KeyValuePair<string, string>> builder =
+        [
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("grant_type", "authorization_code"),
+            new("redirect_uri", redirect_uri ?? "urn:ietf:wg:oauth:2.0:oob"),
+            new("code", code)
+        ];
 
         return Post<Auth>("/oauth/token", builder);
     }
@@ -127,12 +127,12 @@ public sealed class AuthenticationClient : BaseHttpClient, IAuthenticationClient
             throw new InvalidOperationException("You need to revoke a token with the app CclientId and ClientSecret used to obtain the Token");
         }
 
-        Dictionary<string, string> builder = new()
-        {
-            ["client_id"] = AppRegistration.ClientId,
-            ["client_secret"] = AppRegistration.ClientSecret,
-            ["token"] = token
-        };
+        List<KeyValuePair<string, string>> builder =
+        [
+            new("client_id", AppRegistration.ClientId),
+            new("client_secret", AppRegistration.ClientSecret),
+            new("token", token)
+        ];
         return Post<Auth>("/oauth/revoke", builder);
     }
 

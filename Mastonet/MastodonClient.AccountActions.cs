@@ -18,16 +18,11 @@ public sealed partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Follow(string accountId, bool reblogs = true, bool notify = false)
     {
-        Dictionary<string, string> data = new()
-        {
-            ["reblogs"] = $"{reblogs}".ToLowerInvariant(),
-            ["notify"] = $"{notify}".ToLowerInvariant()
-        };
-        //List<KeyValuePair<string, string>> data =
-        //[
-        //    new("reblogs", $"{reblogs}".ToLowerInvariant()),
-        //    new("notify", $"{notify}".ToLowerInvariant())
-        //];
+        List<KeyValuePair<string, string>> data =
+        [
+            new("reblogs", $"{reblogs}".ToLowerInvariant()),
+            new("notify", $"{notify}".ToLowerInvariant())
+        ];
         return Post<Relationship>($"/api/v1/accounts/{accountId}/follow", data);
     }
 
@@ -48,7 +43,7 @@ public sealed partial class MastodonClient
     /// <returns>Returns the local representation of the followed account, as an Account</returns>
     public Task<Account> Follow(string uri)
     {
-        Dictionary<string, string> data = new() { ["uri"] = uri };
+        List<KeyValuePair<string, string>> data = [new("uri", uri)];
 
         return Post<Account>($"/api/v1/follows", data);
     }
@@ -105,7 +100,7 @@ public sealed partial class MastodonClient
     /// <returns>Returns the target Account</returns>
     public Task<Relationship> Mute(string accountId, bool notifications = true)
     {
-        Dictionary<string, string>? data = notifications ? null : new() { ["notifications"] = "false" };
+        List<KeyValuePair<string, string>>? data = notifications ? null : new() { new("notifications", "false") };
         return Post<Relationship>($"/api/v1/accounts/{accountId}/mute", data);
     }
 
@@ -176,16 +171,16 @@ public sealed partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> GetMarkers(bool home = false, bool notifications = false)
     {
-        Dictionary<string, string> data = [];
+        List<KeyValuePair<string, string>> data = [];
 
         if (home)
         {
-            data.Add("timeline[]", "home");
+            data.Add(new KeyValuePair<string, string>("timeline[]", "home"));
         }
 
         if (notifications)
         {
-            data.Add("timeline[]", "notifications");
+            data.Add(new KeyValuePair<string, string>("timeline[]", "notifications"));
         }
 
         return Get<Marker>("/api/v1/markers", data);
@@ -199,17 +194,16 @@ public sealed partial class MastodonClient
     /// <returns></returns>
     public Task<Marker> SetMarkers(string? homeLastReadId = null, string? notificationLastReadId = null)
     {
-        Dictionary<string, string> data = [];
-        //List<KeyValuePair<string, string>> data = [];
+        List<KeyValuePair<string, string>> data = [];
 
         if (!string.IsNullOrEmpty(homeLastReadId))
         {
-            data.Add("home[last_read_id]", homeLastReadId!);
+            data.Add(new KeyValuePair<string, string>("home[last_read_id]", homeLastReadId!));
         }
 
         if (!string.IsNullOrEmpty(notificationLastReadId))
         {
-            data.Add("notifications[last_read_id]", notificationLastReadId!);
+            data.Add(new KeyValuePair<string, string>("notifications[last_read_id]", notificationLastReadId!));
         }
 
         return Post<Marker>("/api/v1/markers", data);
