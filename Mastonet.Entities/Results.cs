@@ -26,4 +26,10 @@ public sealed record SearchResults
     /// </summary>
     [JsonPropertyName("hashtags")]
     public ImmutableArray<Tag> Hashtags { get; set; }
+
+    /// <summary>
+    /// Collections which match the given query
+    /// </summary>
+    [JsonPropertyName("collections")]
+    public ImmutableArray<Collection> Collections { get; set; }
 }
