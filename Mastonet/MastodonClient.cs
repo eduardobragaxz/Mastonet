@@ -484,6 +484,42 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
 
         return GetMastodonList<Notification>($"{url}{queryParams}");
     }
+    /// <summary>
+    /// Fetching a user's notifications
+    /// </summary>
+    /// <param name="options">Define the first and last items to get</param>
+    /// <param name="types">Types to include</param>
+    /// <returns>Returns a list of Notifications for the authenticated user</returns>
+    public Task<MastodonList<Notification>> GetNotificationsWithTypes(IEnumerable<NotificationType>? includeTypes = null,
+        ArrayOptions? options = null)
+    {
+        string url = "/api/v1/notifications";
+        string queryParams = "";
+        if (options is not null)
+        {
+            queryParams += $"?{options.ToQueryString()}";
+        }
+
+        if (includeTypes is not null && includeTypes.Any())
+        {
+            foreach (NotificationType type in includeTypes)
+            {
+                queryParams += type switch
+                {
+                    NotificationType.Follow => $"{(queryParams != "" ? "&" : "?")}types[]=follow",
+                    NotificationType.Favourite => $"{(queryParams != "" ? "&" : "?")}types[]=favourite",
+                    NotificationType.Reblog => $"{(queryParams != "" ? "&" : "?")}types[]=reblog",
+                    NotificationType.Mention => $"{(queryParams != "" ? "&" : "?")}types[]=mention",
+                    NotificationType.Poll => $"{(queryParams != "" ? "&" : "?")}types[]=poll",
+                    NotificationType.Follow_request => $"{(queryParams != "" ? "&" : "?")}types[]=follow_request",
+                    NotificationType.Status => $"{(queryParams != "" ? "&" : "?")}types[]=status",
+                    _ => $"{(queryParams != "" ? "&" : "?")}types[]=update"
+                };
+            }
+        }
+
+        return GetMastodonList<Notification>($"{url}{queryParams}");
+    }
 
     /// <summary>
     /// Getting a single notification
