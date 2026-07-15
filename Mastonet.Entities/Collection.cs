@@ -91,7 +91,7 @@ public record Collection
     public int ItemCount { get; init; }
 
     /// <summary>
-    ///  The number of items in this Collection.
+    ///  The items in this Collection.
     /// </summary>
     [JsonPropertyName("items")]
     public ImmutableArray<CollectionItem> Items { get; init; }
@@ -112,13 +112,13 @@ public record Collection
 public record CollectionItem
 {
     /// <summary>
-    /// The collection id.
+    /// The item id.
     /// </summary>
     [JsonPropertyName("id")]
     public string Id { get; init; } = string.Empty;
 
     /// <summary>
-    /// The id of the account that curates this Collection.
+    /// The id of the account this item represents.
     /// </summary>
     [JsonPropertyName("account_id")]
     public string AccountId { get; init; } = string.Empty;
@@ -131,7 +131,7 @@ public record CollectionItem
     public CollectionItemState State { get; init; }
 
     /// <summary>
-    ///  When the Collection was created.
+    ///  When the item was added to the collection.
     /// </summary>
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }
