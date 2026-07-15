@@ -135,12 +135,26 @@ public record CollectionItem
     /// </summary>
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }
+
     /// <summary>
     /// The actual Collection item.
     /// </summary>
-
     [JsonPropertyName("collection_item")]
     public CollectionItem? CollectionItemEntity { get; init; }
+}
+
+public record CollectionWithAccounts
+{
+    /// <summary>
+    /// Full account entities for the owner of the Collection and every account within the Collection.
+    /// </summary>
+    [JsonPropertyName("accounts")]
+    public ImmutableArray<Account> Accounts { get; init; }
+    /// <summary>
+    /// The actual Collection.
+    /// </summary>
+    [JsonPropertyName("collection")]
+    public Collection? Collection { get; init; }
 }
 
 public enum CollectionItemState
