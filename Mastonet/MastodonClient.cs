@@ -837,6 +837,15 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     #endregion
 
+    #region Collections
+
+    public Task<CollectionWithAccounts> GetCollection(string id)
+    {
+        return Get<CollectionWithAccounts>($"/api/v1/collections/{id}");
+    }
+
+    #endregion
+
     #region Rate limits
 
     public event EventHandler<RateLimitEventArgs>? RateLimitsUpdated;
