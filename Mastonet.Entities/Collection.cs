@@ -95,19 +95,9 @@ public record Collection
     /// </summary>
     [JsonPropertyName("items")]
     public ImmutableArray<CollectionItem> Items { get; init; }
-
-    /// <summary>
-    ///  The actual Collection.
-    /// </summary>
-    [JsonPropertyName("collection")]
-    public Collection? CollectionEntity { get; init; }
-
-    /// <summary>
-    ///  A list of Collections.
-    /// </summary>
-    [JsonPropertyName("collections")]
-    public ImmutableArray<Collection> CollectionsEntity { get; init; }
 }
+
+public record Collections([property: JsonPropertyName("collections")] ImmutableArray<Collection> Items);
 
 public record CollectionItem
 {
@@ -135,12 +125,6 @@ public record CollectionItem
     /// </summary>
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }
-
-    /// <summary>
-    /// The actual Collection item.
-    /// </summary>
-    [JsonPropertyName("collection_item")]
-    public CollectionItem? CollectionItemEntity { get; init; }
 }
 
 public record CollectionWithAccounts
