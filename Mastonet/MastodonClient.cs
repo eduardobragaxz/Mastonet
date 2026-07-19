@@ -839,6 +839,10 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     #region Collections
 
+    public Task<Collections> GetUserCollections(string id)
+    {
+        return Get<Collections>($"/api/v1/accounts/{id}/collections");
+    }
     public Task<CollectionWithAccounts> GetCollection(string id)
     {
         return Get<CollectionWithAccounts>($"/api/v1/collections/{id}");
