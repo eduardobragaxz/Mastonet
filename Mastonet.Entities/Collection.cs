@@ -141,6 +141,15 @@ public record CollectionWithAccounts
     public Collection? Collection { get; init; }
 }
 
+public record WrappedCollection
+{
+    /// <summary>
+    /// The actual Collection.
+    /// </summary>
+    [JsonPropertyName("collection")]
+    public Collection? Collection { get; init; }
+}
+
 public enum CollectionItemState
 {
     Pending,

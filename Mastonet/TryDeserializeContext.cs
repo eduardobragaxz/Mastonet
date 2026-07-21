@@ -54,6 +54,7 @@ namespace Mastonet;
 [JsonSerializable(typeof(ImmutableArray<Filter>))]
 [JsonSerializable(typeof(CollectionWithAccounts))]
 [JsonSerializable(typeof(Collections))]
+[JsonSerializable(typeof(WrappedCollection))]
 internal sealed partial class TryDeserializeContext : JsonSerializerContext
 {
 }
