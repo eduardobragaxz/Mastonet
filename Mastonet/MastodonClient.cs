@@ -839,13 +839,50 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
 
     #region Collections
 
+    /// <summary>
+    /// Get all Collections from a given account.
+    /// </summary>
+    /// <param name="id">The id of the collection.</param>
+    /// <returns></returns>
     public Task<Collections> GetUserCollections(string id)
     {
         return Get<Collections>($"/api/v1/accounts/{id}/collections");
     }
+
+    /// <summary>
+    /// Get a single Collection.
+    /// </summary>
+    /// <param name="id">The id of the collection.</param>
+    /// <returns></returns>
     public Task<CollectionWithAccounts> GetCollection(string id)
     {
         return Get<CollectionWithAccounts>($"/api/v1/collections/{id}");
+    }
+
+    /// <summary>
+    /// Update a Collection.
+    /// </summary>
+    /// <param name="id">The id of the collection.</param>
+    /// <param name="name">A name for this Collection, max.</param>
+    /// <param name="description">A longer description of this Collection.</param>
+    /// <param name="language">One of Mastodon’s supported language codes.</param>
+    /// <param name="tag">A single hashtag that describes the Collection</param>
+    /// <param name="sensitive">Whether this Collection should be marked as sensitive.</param>
+    /// <param name="discoverable">Whether this Collection should appear in search results and other discovery mechanisms.</param>
+    /// <returns></returns>
+    public Task<WrappedCollection> UpdateCollection(string id, string name, string description, string language, string tag, bool sensitive, bool discoverable)
+    {
+        List<KeyValuePair<string, string>> data =
+            [
+                new("\"name\"", $"\"{name}\""),
+                new("\"description\"", $"\"{description}\""),
+                new("\"language\"", $"\"{language}\""),
+                new("\"tag_name\"", $"\"{tag}\""),
+                new("\"sensitive\"", $"{sensitive}".ToLower()),
+                new("\"discoverable\"", $"{discoverable}".ToLower()),
+            ];
+
+        return Patch<WrappedCollection>($"/api/v1/collections/{id}", data);
     }
 
     #endregion
