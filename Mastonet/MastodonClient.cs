@@ -885,6 +885,11 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
         return Patch<WrappedCollection>($"/api/v1/collections/{id}", data);
     }
 
+    public async Task DeleteCollection(string id)
+    {
+        await Delete($"/api/v1/collections/{id}");
+    }
+
     #endregion
 
     #region Rate limits
