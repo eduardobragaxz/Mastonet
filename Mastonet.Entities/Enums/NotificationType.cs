@@ -1,4 +1,6 @@
-﻿namespace Mastonet.Entities.Enums;
+﻿using System.Text.Json.Serialization;
+
+namespace Mastonet.Entities.Enums;
 
 public enum NotificationType
 {
@@ -7,10 +9,14 @@ public enum NotificationType
     Status,
     Reblog,
     Follow,
-    Follow_request,
+
+    [JsonStringEnumMemberName("follow_request")]
+    FollowRequest,
     Favourite,
     Poll,
     Update,
     Quote,
-    Quoted_update
+
+    [JsonStringEnumMemberName("quoted_update")]
+    QuotedUpdate
 }
