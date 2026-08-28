@@ -421,7 +421,7 @@ public interface IMastodonClient
     /// Listing accounts the user had past positive interactions with, but is not following yet
     /// </summary>
     /// <returns>Returns array of Account</returns>
-    Task<ImmutableArray<Account>> GetFollowSuggestions();
+    Task<ImmutableArray<Suggestion>> GetFollowSuggestions();
 
     /// <summary>
     /// Removing account from suggestions

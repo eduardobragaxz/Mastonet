@@ -311,12 +311,12 @@ public sealed partial class MastodonClient
 
     #region Follow Suggestions
     /// <summary>
-    /// Listing accounts the user had past positive interactions with, but is not following yet
+    /// Accounts that are promoted by staff, or that the user has had past positive interactions with, but is not yet following.
     /// </summary>
-    /// <returns>Returns array of Account</returns>
-    public Task<ImmutableArray<Account>> GetFollowSuggestions()
+    /// <returns>Returns array of Suggestion</returns>
+    public Task<ImmutableArray<Suggestion>> GetFollowSuggestions()
     {
-        return GetValue<ImmutableArray<Account>>("/api/v1/suggestions");
+        return GetValue<ImmutableArray<Suggestion>>("/api/v2/suggestions");
     }
 
     /// <summary>
