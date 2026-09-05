@@ -475,7 +475,7 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
                     NotificationType.Reblog => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=reblog",
                     NotificationType.Mention => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=mention",
                     NotificationType.Poll => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=poll",
-                    NotificationType.Follow_request => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request",
+                    NotificationType.FollowRequest => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=follow_request",
                     NotificationType.Status => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=status",
                     _ => $"{(queryParams != "" ? "&" : "?")}exclude_types[]=update"
                 };
@@ -511,8 +511,12 @@ public sealed partial class MastodonClient : BaseHttpClient, IMastodonClient
                     NotificationType.Reblog => $"{(queryParams != "" ? "&" : "?")}types[]=reblog",
                     NotificationType.Mention => $"{(queryParams != "" ? "&" : "?")}types[]=mention",
                     NotificationType.Poll => $"{(queryParams != "" ? "&" : "?")}types[]=poll",
-                    NotificationType.Follow_request => $"{(queryParams != "" ? "&" : "?")}types[]=follow_request",
+                    NotificationType.FollowRequest => $"{(queryParams != "" ? "&" : "?")}types[]=follow_request",
                     NotificationType.Status => $"{(queryParams != "" ? "&" : "?")}types[]=status",
+                    NotificationType.Quote => $"{(queryParams != "" ? "&" : "?")}types[]=quote",
+                    NotificationType.QuotedUpdate => $"{(queryParams != "" ? "&" : "?")}types[]=quoted_update",
+                    NotificationType.AddedToCollection => $"{(queryParams != "" ? "&" : "?")}types[]=added_to_collection",
+                    NotificationType.CollectionUpdate => $"{(queryParams != "" ? "&" : "?")}types[]=collection_update",
                     _ => $"{(queryParams != "" ? "&" : "?")}types[]=update"
                 };
             }

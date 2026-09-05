@@ -18,5 +18,11 @@ public enum NotificationType
     Quote,
 
     [JsonStringEnumMemberName("quoted_update")]
-    QuotedUpdate
+    QuotedUpdate,
+
+    [JsonStringEnumMemberName("added_to_collection")]
+    AddedToCollection,
+
+    [JsonStringEnumMemberName("collection_update")]
+    CollectionUpdate
 }

@@ -69,4 +69,10 @@ public sealed record Notification
     /// </summary>
     [JsonPropertyName("moderation_warning")]
     public AccountWarning? ModerationWarning { get; init; }
+
+    /// <summary>
+    /// Collection that was the object of the notification. Attached when type of the notification is added_to_collection or collection_update.
+    /// </summary>
+    [JsonPropertyName("collection")]
+    public Collection? Collection { get; init; }
 }
