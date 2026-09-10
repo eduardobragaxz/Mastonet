@@ -68,6 +68,12 @@ public sealed record Account
     public string StaticAvatarUrl { get; init; } = string.Empty;
 
     /// <summary>
+    /// A textual description of the avatar image.
+    /// </summary>
+    [JsonPropertyName("avatar_description")]
+    public string AvatarDescription { get; init; } = string.Empty;
+
+    /// <summary>
     /// An image banner that is shown above the profile and in profile cards.
     /// </summary>
     [JsonPropertyName("header")]
@@ -78,6 +84,12 @@ public sealed record Account
     /// </summary>
     [JsonPropertyName("header_static")]
     public string StaticHeaderUrl { get; init; } = string.Empty;
+
+    /// <summary>
+    /// A textual description of the header image.
+    /// </summary>
+    [JsonPropertyName("header_description")]
+    public string HeaderDescription { get; init; } = string.Empty;
 
     /// <summary>
     /// Whether the account manually approves follow requests.
@@ -129,7 +141,29 @@ public sealed record Account
     [JsonPropertyName("following_count")]
     public int FollowingCount { get; init; }
 
-    // Optional attributes
+    /// <summary>
+    /// Whether the user hides the contents of their follows and followers collections.
+    /// </summary>
+    [JsonPropertyName("hide_collections")]
+    public bool? HideCollections { get; init; }
+
+    /// <summary>
+    /// Whether the account wishes to have a “Media” tab with media attachments on their profile.
+    /// </summary>
+    [JsonPropertyName("show_media")]
+    public bool ShowMedia { get; init; }
+
+    /// <summary>
+    /// Whether the account wishes to have replies in the “Media” tab on their profile.
+    /// </summary>
+    [JsonPropertyName("show_media_replies")]
+    public bool ShowMediaReplies { get; init; }
+
+    /// <summary>
+    /// Whether the account wishes to have a “Featured” tab on their profile.
+    /// </summary>
+    [JsonPropertyName("show_featured")]
+    public bool ShowFeatured { get; init; }
 
     /// <summary>
     /// Indicates that the profile is currently inactive and that its user has moved to a new account.
