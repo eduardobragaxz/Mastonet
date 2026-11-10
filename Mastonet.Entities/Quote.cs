@@ -45,5 +45,23 @@ public enum QuoteState
     /// <summary>
     /// The quote has been approved, but cannot be displayed because the user is not authorized to see it.
     /// </summary>
-    Unauthorized
+    Unauthorized,
+
+    /// <summary>
+    /// he quote has been approved, but should not be displayed because the user has blocked the account being quoted.
+    /// </summary>
+    [JsonStringEnumMemberName("blocked_account")]
+    BlockedAccount,
+
+    /// <summary>
+    /// The quote has been approved, but should not be displayed because the user has blocked the domain of the account being quoted.
+    /// </summary>
+    [JsonStringEnumMemberName("blocked_domain")]
+    BlockedDomain,
+
+    /// <summary>
+    /// The quote has been approved, but should not be displayed because the user has muted the the account being quoted. 
+    /// </summary>
+    [JsonStringEnumMemberName("muted_account")]
+    MutedAccount
 }
